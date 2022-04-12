@@ -16,5 +16,5 @@ public interface ProductService {
 
     ProductDto update(Long id, ProductFormDto productFormDto);
 
-    ResponseEntity<Object> delete(Long id);
+    ResponseEntity<Object> deleteById(Long id);
 }

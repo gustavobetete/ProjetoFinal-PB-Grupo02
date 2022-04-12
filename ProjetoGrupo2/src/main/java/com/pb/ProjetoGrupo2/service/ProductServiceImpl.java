@@ -32,18 +32,20 @@ public class ProductServiceImpl implements ProductService{
     @Autowired
     private ModelMapper mapper;
 
-
+    @Override
     public Page<ProductDto> findAll(Pageable page){
         Page<Product> products = this.repository.findAll(page);
         List<ProductDto> listProducts = products.getContent().stream().map(product -> mapper.map(product, ProductDto.class)).collect(Collectors.toList());
         return new PageImpl<ProductDto>(listProducts, page, products.getTotalElements());
     }
 
+    @Override
     public ProductDto save(ProductFormDto productFormDto){
         Product product = this.repository.save(mapper.map(productFormDto, Product.class));
         return mapper.map(product, ProductDto.class);
     }
 
+    @Override
     public ProductDto search(Long id) {
         Optional<Product> product = this.repository.findById(id);
         return mapper.map(product, ProductDto.class);
@@ -61,7 +63,8 @@ public class ProductServiceImpl implements ProductService{
         throw new ObjectNotFoundException("Product not found!");
     }
 
-    public ResponseEntity<Object> delete(Long id) {
+    @Override
+    public ResponseEntity<Object> deleteById(Long id) {
         Optional<Product> product = repository.findById(id);
         if(product.isPresent()){
             repository.deleteById(id);
