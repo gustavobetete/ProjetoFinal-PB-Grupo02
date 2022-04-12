@@ -1,4 +1,4 @@
-package com.pb.ProjetoGrupo2.validation;
+package com.pb.ProjetoGrupo2.config.validation;
 
 public class ObjectNotFoundException extends RuntimeException {
 

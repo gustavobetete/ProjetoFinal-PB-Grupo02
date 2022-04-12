@@ -2,7 +2,6 @@ package com.pb.ProjetoGrupo2.controller;
 
 import com.pb.ProjetoGrupo2.dto.ProductDto;
 import com.pb.ProjetoGrupo2.dto.ProductFormDto;
-import com.pb.ProjetoGrupo2.entities.Product;
 import com.pb.ProjetoGrupo2.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +19,8 @@ import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/produtos")
-public class ProdutoController {
+@RequestMapping("/product")
+public class ProductController {
 
     @Autowired
     private ProductService service;
@@ -33,7 +32,7 @@ public class ProdutoController {
         return ResponseEntity.ok(products);
     }
 
-    @GetMapping(path = "/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ProductDto> search(@PathVariable Long id) {
         ProductDto productDto = this.service.search(id);
         return ResponseEntity.ok(productDto);
@@ -46,15 +45,14 @@ public class ProdutoController {
     }
 
 
-    @PutMapping(path = "/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ProductDto> update(@PathVariable Long id, @RequestBody @Valid ProductFormDto productFormDto) {
         ProductDto productDto = this.service.update(id, productFormDto);
         return ResponseEntity.ok(productDto);
     }
 
-    @DeleteMapping(path = "/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id){
-        this.service.delete(id);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id){
+        return service.delete(id);
     }
 }
