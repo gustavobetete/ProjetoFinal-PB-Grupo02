@@ -23,10 +23,5 @@ public class Product {
     private BigDecimal unit_price;
     private Integer quantity;
 
-    public Product(String name, Type type, BigDecimal unit_price, Integer quantity) {
-        this.name = name;
-        this.type = type;
-        this.unit_price = unit_price;
-        this.quantity = quantity;
-    }
+
 }
