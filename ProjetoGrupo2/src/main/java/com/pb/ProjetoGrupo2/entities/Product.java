@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 public class Product {
     // name, type, unit_price, quantity
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String name;
     @Enumerated(EnumType.STRING)
@@ -23,10 +23,4 @@ public class Product {
     private BigDecimal unit_price;
     private Integer quantity;
 
-    public Product(String name, Type type, BigDecimal unit_price, Integer quantity) {
-        this.name = name;
-        this.type = type;
-        this.unit_price = unit_price;
-        this.quantity = quantity;
-    }
 }
