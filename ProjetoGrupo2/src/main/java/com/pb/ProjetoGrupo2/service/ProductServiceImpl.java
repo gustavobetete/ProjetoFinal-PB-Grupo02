@@ -6,36 +6,63 @@ import com.pb.ProjetoGrupo2.dto.ProductDto;
 import com.pb.ProjetoGrupo2.dto.ProductFormDto;
 import com.pb.ProjetoGrupo2.entities.Product;
 import com.pb.ProjetoGrupo2.repository.ProductRepository;
+import com.pb.ProjetoGrupo2.validation.ObjectNotFoundException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
 @Transactional
-public class ProductService {
+public class ProductServiceImpl implements ProductService{
 
     @Autowired
     private ProductRepository repository;
 
-    public ProductDto save (ProductFormDto productFormDto){
-        return repository.save(ProductDto);
+    @Autowired
+    private ModelMapper mapper;
+
+
+    public Page<ProductDto> findAll(Pageable page){
+        Page<Product> products = this.repository.findAll(page);
+        List<ProductDto> listProducts = products.getContent().stream().map(product -> mapper.map(product, ProductDto.class)).collect(Collectors.toList());
+        return new PageImpl<ProductDto>(listProducts, page, products.getTotalElements());
     }
 
-    public List<Product> findAll(){
-        return repository.findAll();
+    public ProductDto save(ProductFormDto productFormDto){
+        Product product = this.repository.save(mapper.map(productFormDto, Product.class));
+        return mapper.map(product, ProductDto.class);
     }
 
-    public Optional<Product> findById(Long id){
-        return repository.findById(id);
+    public ProductDto search(Long id) {
+        Optional<Product> product = this.repository.findById(id);
+        return mapper.map(product, ProductDto.class);
+    }
+
+    @Override
+    public ProductDto update(Long id, ProductFormDto productFormDto) {
+        Optional<Product> product = this.repository.findById(id);
+        if(product.isPresent()) {
+            Product productUpdated = mapper.map(productFormDto, Product.class);
+            productUpdated.setId(id);
+            repository.save(productUpdated);
+            return mapper.map(productUpdated, ProductDto.class);
+        }
+        throw new ObjectNotFoundException("Product not found!");
     }
 
     public void delete(Long id){
-        repository.deleteById(id);
+        Optional<Product> product = this.repository.findById(id);
+        this.repository.delete(product);
     }
 
 }
