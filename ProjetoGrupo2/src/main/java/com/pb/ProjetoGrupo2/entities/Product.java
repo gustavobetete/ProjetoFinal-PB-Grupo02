@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 public class Product {
     // name, type, unit_price, quantity
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     @Enumerated(EnumType.STRING)

@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -31,20 +32,25 @@ public class ProductServiceImpl implements ProductService{
     @Autowired
     private ModelMapper mapper;
 
-
+    @Override
     public Page<ProductDto> findAll(Pageable page){
         Page<Product> products = this.repository.findAll(page);
-        List<ProductDto> listProducts = products.getContent().stream().map(product -> mapper.map(product, ProductDto.class)).collect(Collectors.toList());
+        List<ProductDto> listProducts = products.stream().map(product -> mapper.map(product, ProductDto.class)).collect(Collectors.toList());
         return new PageImpl<ProductDto>(listProducts, page, products.getTotalElements());
     }
 
-    public ProductDto save(ProductFormDto productFormDto){
-        Product product = this.repository.save(mapper.map(productFormDto, Product.class));
-        return mapper.map(product, ProductDto.class);
+    @Override
+    public ProductDto findById(Long id){
+        Optional<Product> product = repository.findById(id);
+        if (product.isPresent()){
+            return mapper.map(product.get(), ProductDto.class);
+        }
+        throw new ObjectNotFoundException("Product not found!");
     }
 
-    public ProductDto search(Long id) {
-        Optional<Product> product = this.repository.findById(id);
+    @Override
+    public ProductDto save(ProductFormDto productFormDto){
+        Product product = this.repository.save(mapper.map(productFormDto, Product.class));
         return mapper.map(product, ProductDto.class);
     }
 
@@ -60,9 +66,14 @@ public class ProductServiceImpl implements ProductService{
         throw new ObjectNotFoundException("Product not found!");
     }
 
-    public void delete(Long id){
-        Optional<Product> product = this.repository.findById(id);
-        this.repository.deleteById(product.get().getId());
+    @Override
+    public ResponseEntity<Object> deleteById(Long id) {
+        Optional<Product> product = repository.findById(id);
+        if(product.isPresent()){
+            repository.deleteById(id);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 
 }

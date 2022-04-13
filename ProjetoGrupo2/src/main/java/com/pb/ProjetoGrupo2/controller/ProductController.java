@@ -36,15 +36,12 @@ public class ProductController {
         return ResponseEntity.ok(products);
     }
 
-    @GetMapping(path = "/{id}")
-    @Cacheable(value = "productList")
-    public ResponseEntity<ProductDto> search(@PathVariable Long id) {
-        ProductDto productDto = this.service.search(id);
-        return ResponseEntity.ok(productDto);
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductDto> findById(@PathVariable Long id){
+        return ResponseEntity.ok().body(service.findById(id));
     }
 
     @PostMapping
-    @Transactional
     @CacheEvict(value = "productList", allEntries = true)
     public ResponseEntity<ProductDto> save(@RequestBody @Valid ProductFormDto productFormDto){
         ProductDto productDto = this.service.save(productFormDto);
@@ -53,18 +50,14 @@ public class ProductController {
 
 
     @PutMapping(path = "/{id}")
-    @Transactional
     @CacheEvict(value = "productList", allEntries = true)
     public ResponseEntity<ProductDto> update(@PathVariable Long id, @RequestBody @Valid ProductFormDto productFormDto) {
         ProductDto productDto = this.service.update(id, productFormDto);
         return ResponseEntity.ok(productDto);
     }
 
-    @DeleteMapping(path = "/{id}")
-    @Transactional
-    @CacheEvict(value = "productList", allEntries = true)
-    public ResponseEntity<Void> delete(@PathVariable Long id){
-        this.service.delete(id);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id){
+        return service.deleteById(id);
     }
 }
