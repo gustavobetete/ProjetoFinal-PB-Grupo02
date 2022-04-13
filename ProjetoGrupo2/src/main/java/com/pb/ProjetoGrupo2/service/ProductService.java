@@ -10,6 +10,8 @@ public interface ProductService {
 
     Page<ProductDto> findAll(Pageable page);
 
+    ProductDto findById(Long id);
+
     ProductDto save(ProductFormDto ProductFormDto);
 
     ProductDto search(Long id);

@@ -33,6 +33,11 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
+    public ResponseEntity<ProductDto> findById(@PathVariable Long id){
+        return ResponseEntity.ok().body(service.findById(id));
+    }
+
+    @GetMapping("/{id}")
     public ResponseEntity<ProductDto> search(@PathVariable Long id) {
         ProductDto productDto = this.service.search(id);
         return ResponseEntity.ok(productDto);

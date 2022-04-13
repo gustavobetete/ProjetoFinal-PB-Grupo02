@@ -40,6 +40,15 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
+    public ProductDto findById(Long id){
+        Optional<Product> product = repository.findById(id);
+        if (product.isPresent()){
+            return mapper.map(product.get(), ProductDto.class);
+        }
+        throw new ObjectNotFoundException("Product not found!");
+    }
+
+    @Override
     public ProductDto save(ProductFormDto productFormDto){
         Product product = this.repository.save(mapper.map(productFormDto, Product.class));
         return mapper.map(product, ProductDto.class);
