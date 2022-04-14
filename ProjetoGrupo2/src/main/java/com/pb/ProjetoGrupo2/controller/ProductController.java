@@ -30,7 +30,6 @@ public class ProductController {
 
 
     @GetMapping
-    @Cacheable(value = "productList")
     public ResponseEntity<Page<ProductDto>> findAll(@PageableDefault(page = 0, size = 10,sort = "id",direction = Sort.Direction.ASC) Pageable page){
         Page<ProductDto> products = this.service.findAll(page);
         return ResponseEntity.ok(products);
@@ -42,7 +41,6 @@ public class ProductController {
     }
 
     @PostMapping
-    @CacheEvict(value = "productList", allEntries = true)
     public ResponseEntity<ProductDto> save(@RequestBody @Valid ProductFormDto productFormDto){
         ProductDto productDto = this.service.save(productFormDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(productDto);
@@ -50,7 +48,6 @@ public class ProductController {
 
 
     @PutMapping(path = "/{id}")
-    @CacheEvict(value = "productList", allEntries = true)
     public ResponseEntity<ProductDto> update(@PathVariable Long id, @RequestBody @Valid ProductFormDto productFormDto) {
         ProductDto productDto = this.service.update(id, productFormDto);
         return ResponseEntity.ok(productDto);
