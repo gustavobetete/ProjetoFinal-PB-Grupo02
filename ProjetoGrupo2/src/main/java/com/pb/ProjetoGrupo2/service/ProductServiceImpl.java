@@ -40,12 +40,12 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public ProductDto findById(Long id){
+    public ResponseEntity<ProductDto> findById(Long id){
         Optional<Product> product = repository.findById(id);
         if (product.isPresent()){
-            return mapper.map(product.get(), ProductDto.class);
+            return ResponseEntity.ok().body(mapper.map(product.get(), ProductDto.class));
         }
-        throw new ObjectNotFoundException("Product not found!");
+        return ResponseEntity.noContent().build();
     }
 
     @Override
