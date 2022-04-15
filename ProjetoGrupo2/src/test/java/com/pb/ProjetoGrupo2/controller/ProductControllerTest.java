@@ -98,7 +98,7 @@ class ProductControllerTest {
     }
 
     @Test
-    void shouldDeleteTutorial() throws Exception {
+    void deleteProduct() throws Exception {
         long id = 1L;
         when(service.deleteById(id)).thenReturn(ResponseEntity.notFound().build());
         mockMvc.perform(delete("/product/{id}", id))
