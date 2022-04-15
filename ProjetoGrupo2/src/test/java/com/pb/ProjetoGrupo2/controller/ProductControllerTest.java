@@ -5,25 +5,23 @@ import com.pb.ProjetoGrupo2.constants.Type;
 import com.pb.ProjetoGrupo2.dto.ProductDto;
 import com.pb.ProjetoGrupo2.dto.ProductFormDto;
 import com.pb.ProjetoGrupo2.service.ProductService;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.provider.EmptySource;
-import org.mockito.stubbing.Answer;
-import org.modelmapper.internal.bytebuddy.pool.TypePool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
 
+import java.awt.print.Pageable;
 import java.math.BigDecimal;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -53,8 +51,21 @@ class ProductControllerTest {
                 .andDo(print());;
     }
 
+//    @Test
+//    void getProducts() throws Exception {
+//        List<ProductDto> productDtoList = new ArrayList<ProductDto>(
+//                Arrays.asList(new ProductDto(1L,"Coxinha", Type.FRITO, BigDecimal.valueOf(7.00), 10),
+//                        new ProductDto(2L,"Calabresa", Type.ASSADO, BigDecimal.valueOf(5.00), 12),
+//                        new ProductDto(3L,"Coca-Cola", Type.BEBIDA, BigDecimal.valueOf(2.50), 20)));
+//        when(service.findAll()).thenReturn((ProductDto) productDtoList);
+//        mockMvc.perform(get("/api/tutorials"))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.size()").value(productDtoList.size()))
+//                .andDo(print());
+//    }
+
     @Test
-    void getProduct() throws Exception {
+    void getByIdProduct() throws Exception {
         long id = 1L;
         ProductDto product = new ProductDto(1L,"Coxinha", Type.FRITO, BigDecimal.valueOf(7.00), 10);
         when(service.findById(id)).thenReturn(product);
