@@ -1,8 +1,11 @@
 package com.pb.ProjetoGrupo2.dto;
 
+import lombok.Data;
+
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 
+@Data
 public class OrderFormDto {
 
     @NotNull(message = "O campo Quantity não pode ser nulo")
