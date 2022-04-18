@@ -73,7 +73,7 @@ class ProductControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(id))
                 .andExpect(jsonPath("$.name").value(product.getName()))
-                //.andExpect(jsonPath("$.type").value(product.getType()))
+                .andExpect(jsonPath("$.type").value(product.getType().name()))
                 .andExpect(jsonPath("$.unit_price").value(product.getUnit_price()))
                 .andExpect(jsonPath("$.quantity").value(product.getQuantity()))
                 .andDo(print());
