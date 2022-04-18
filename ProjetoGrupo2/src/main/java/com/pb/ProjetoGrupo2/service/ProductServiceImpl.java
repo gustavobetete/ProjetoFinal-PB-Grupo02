@@ -7,6 +7,7 @@ import com.pb.ProjetoGrupo2.dto.ProductFormDto;
 import com.pb.ProjetoGrupo2.entities.Product;
 import com.pb.ProjetoGrupo2.repository.ProductRepository;
 import com.pb.ProjetoGrupo2.config.validation.ObjectNotFoundException;
+import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -29,6 +30,10 @@ public class ProductServiceImpl implements ProductService{
 
     @Autowired
     private ModelMapper mapper;
+
+    public ProductServiceImpl(ProductRepository productRepository) {
+        this.repository = productRepository;
+    }
 
     @Override
     public Page<ProductDto> findAll(Pageable page){

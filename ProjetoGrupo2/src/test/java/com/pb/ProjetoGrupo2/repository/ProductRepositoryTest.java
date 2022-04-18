@@ -46,8 +46,8 @@ class ProductRepositoryTest {
         Iterable<Product> allProduct = productRepository.saveAll(productList);
 
         AtomicInteger validIdFound = new AtomicInteger();
-        allProduct.forEach(customer -> {
-            if(customer.getId()>0){
+        allProduct.forEach(product -> {
+            if(product.getId()>0){
                 validIdFound.getAndIncrement();
             }
         });
