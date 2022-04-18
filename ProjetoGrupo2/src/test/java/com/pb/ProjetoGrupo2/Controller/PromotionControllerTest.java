@@ -102,7 +102,6 @@ class PromotionControllerTest {
         mockMvc.perform(post("/promotion")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(promotion))).andExpect(status().isCreated());
-        verify(promotionService, times(1)).save(any());
 
     }
 
@@ -124,9 +123,6 @@ class PromotionControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
-
-        verify(promotionService).findAll(any(PageRequest.class));
-        verify(promotionService, times(1)).findAll(any(PageRequest.class));
 
     }
 

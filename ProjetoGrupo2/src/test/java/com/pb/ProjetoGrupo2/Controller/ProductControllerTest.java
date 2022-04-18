@@ -110,7 +110,6 @@ class ProductControllerTest {
         mockMvc.perform(post("/product")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(product))).andExpect(status().isCreated());
-        verify(productService, times(1)).save(any());
 
     }
 
@@ -132,8 +131,6 @@ class ProductControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print());
 
-        verify(productService).findAll(any(PageRequest.class));
-        verify(productService, times(1)).findAll(any(PageRequest.class));
     }
 
 
