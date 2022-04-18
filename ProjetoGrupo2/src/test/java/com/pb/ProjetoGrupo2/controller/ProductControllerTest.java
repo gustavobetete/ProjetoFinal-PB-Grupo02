@@ -4,29 +4,37 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pb.ProjetoGrupo2.constants.Type;
 import com.pb.ProjetoGrupo2.dto.ProductDto;
 import com.pb.ProjetoGrupo2.dto.ProductFormDto;
+import com.pb.ProjetoGrupo2.entities.Product;
+import com.pb.ProjetoGrupo2.repository.ProductRepository;
 import com.pb.ProjetoGrupo2.service.ProductService;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.awt.print.Pageable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -39,70 +47,129 @@ class ProductControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private ProductService service;
+    private ProductService productService;
 
-    @Test
-    void postProduct() throws Exception {
-        ProductDto product = new ProductDto("Coxinha", Type.FRITO, BigDecimal.valueOf(7.00), 10);
-        mockMvc.perform(post("/product")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(product)))
-                .andExpect(status().isCreated())
-                .andDo(print());;
+    @MockBean
+    private ProductRepository productRepository;
+
+    @MockBean
+    private ModelMapper modelMapper;
+
+    @Mock
+    private Product product;
+    private Product productTwo;
+    private ProductDto productDto;
+    private ProductDto productDtoTwo;
+    private ProductFormDto productFormDto;
+    private ProductFormDto productFormDtoTwo;
+
+    @BeforeEach
+    public void beforeEach(){
+
+        product = Product.builder()
+                .id(1L)
+                .name("Coxinha")
+                .type(Type.FRITO)
+                .unitPrice(BigDecimal.valueOf(7.00))
+                .quantity(10)
+                .build();
+
+        productTwo = Product.builder()
+                .id(2L)
+                .name("Calabresa")
+                .type(Type.FRITO)
+                .unitPrice(BigDecimal.valueOf(7.00))
+                .quantity(10)
+                .build();
+
+        productDto = modelMapper.map(product, ProductDto.class);
+        productFormDto = modelMapper.map(product, ProductFormDto.class);
+
+        productDtoTwo = modelMapper.map(productTwo, ProductDto.class);
+        productFormDtoTwo = modelMapper.map(productTwo, ProductFormDto.class);
+
     }
 
-//    @Test
-//    void getProducts() throws Exception {
-//        List<ProductDto> productDtoList = new ArrayList<ProductDto>(
-//                Arrays.asList(new ProductDto(1L,"Coxinha", Type.FRITO, BigDecimal.valueOf(7.00), 10),
-//                        new ProductDto(2L,"Calabresa", Type.ASSADO, BigDecimal.valueOf(5.00), 12),
-//                        new ProductDto(3L,"Coca-Cola", Type.BEBIDA, BigDecimal.valueOf(2.50), 20)));
-//        when(service.findAll()).thenReturn((ProductDto) productDtoList);
-//        mockMvc.perform(get("/api/tutorials"))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.size()").value(productDtoList.size()))
-//                .andDo(print());
-//    }
+    @AfterEach
+    public void afterEach(){
+
+        product = null;
+        productTwo = null;
+
+        productDto = null;
+        productFormDto = null;
+
+        productDtoTwo = null;
+        productFormDtoTwo = null;
+
+    }
 
     @Test
-    void getByIdProduct() throws Exception {
-        long id = 1L;
-        ProductDto product = new ProductDto(1L,"Coxinha", Type.FRITO, BigDecimal.valueOf(7.00), 10);
-        when(service.findById(id)).thenReturn(product);
+    void postProduct() throws Exception{
+
+        when(productService.save(any())).thenReturn(productDto);
+        mockMvc.perform(post("/product")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(product))).andExpect(status().isCreated());
+        verify(productService, times(1)).save(any());
+
+    }
+
+    @Test
+    void getProducts() throws Exception{
+
+        List<ProductDto> productDtoList = new ArrayList<>(
+                Arrays.asList(productDto, productDtoTwo)
+        );
+
+        PageRequest pageRequest = PageRequest.of(0, 5);
+
+        Page<ProductDto> productDtoPage = new PageImpl<>(productDtoList, pageRequest, productDtoList.size());
+
+        when(productService.findAll(any(PageRequest.class))).thenReturn(productDtoPage);
+
+        mockMvc.perform(get("/product")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print());
+
+        verify(productService).findAll(any(PageRequest.class));
+        verify(productService, times(1)).findAll(any(PageRequest.class));
+    }
+
+
+    @Test
+    void getProductById() throws Exception{
+
+        ProductDto productDto = ProductDto.builder()
+                .id(1L)
+                .name("Coxinha")
+                .type(Type.FRITO)
+                .unitPrice(BigDecimal.valueOf(7.00))
+                .quantity(10)
+                .build();
+
+        when(productService.findById(product.getId())).thenReturn(ResponseEntity.of(Optional.of(productDto)));
+
+        long id = 1;
+
         mockMvc.perform(get("/product/{id}", id))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(id))
-                .andExpect(jsonPath("$.name").value(product.getName()))
-                .andExpect(jsonPath("$.type").value(product.getType().name()))
-                .andExpect(jsonPath("$.unit_price").value(product.getUnit_price()))
-                .andExpect(jsonPath("$.quantity").value(product.getQuantity()))
-                .andDo(print());
+                .andExpect(jsonPath("$.name").value(product.getName())).andDo(print());
+
     }
 
-    @Test
-    void  putProduct() throws Exception{
-        long id = 1L;
-        ProductDto product = new ProductDto(1L,"Coxinha", Type.FRITO, BigDecimal.valueOf(7.00), 10);
-        ProductDto updatedProduct = new ProductDto(1L,"Calabresa", Type.FRITO, BigDecimal.valueOf(7.00), 10);
-        when(service.findById(id)).thenReturn(product);
-        when(service.save(any(ProductFormDto.class))).thenReturn(updatedProduct);
-        mockMvc.perform(put("/product/{id}", id)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(updatedProduct)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value(updatedProduct.getName()))
-                .andExpect(jsonPath("$.type").value(product.getType()))
-                .andExpect(jsonPath("$.unit_price").value(updatedProduct.getUnit_price()))
-                .andExpect(jsonPath("$.quantity").value(updatedProduct.getQuantity()))
-                .andDo(print());
-    }
+//*****************FAZER TESTE DO PUT*****************
 
     @Test
-    void deleteProduct() throws Exception {
-        long id = 1L;
-        when(service.deleteById(id)).thenReturn(ResponseEntity.notFound().build());
-        mockMvc.perform(delete("/product/{id}", id))
-                .andExpect(status().isNotFound())
-                .andDo(print());
+    void deleteProduct() throws Exception{
+
+        when(productService.deleteById(product.getId())).thenReturn(ResponseEntity.ok().build());
+
+        mockMvc.perform(MockMvcRequestBuilders.delete("/product/1")
+                        .contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(productDto)))
+                .andExpect(status().isOk()).andDo(print());
     }
 }
+
+
