@@ -20,10 +20,10 @@ public class ProductDto {
     private BigDecimal unitPrice;
     private Integer quantity;
 
-    public ProductDto(String name, Type type, BigDecimal unit_price, Integer quantity) {
+    public ProductDto(String name, Type type, BigDecimal unitPrice, Integer quantity) {
         this.name = name;
         this.type = type;
-        this.unit_price = unit_price;
+        this.unitPrice = unitPrice;
         this.quantity = quantity;
     }
 }
