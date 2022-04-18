@@ -2,6 +2,7 @@ package com.pb.ProjetoGrupo2.entities;
 
 import com.pb.ProjetoGrupo2.constants.Type;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 public class Product {
     // name, type, unit_price, quantity
     @Id
