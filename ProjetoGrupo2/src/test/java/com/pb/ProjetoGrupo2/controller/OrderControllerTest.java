@@ -1,6 +1,7 @@
 package com.pb.ProjetoGrupo2.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pb.ProjetoGrupo2.builder.OrderBuilder;
 import com.pb.ProjetoGrupo2.dto.OrderDto;
 import com.pb.ProjetoGrupo2.dto.OrderFormDto;
 import com.pb.ProjetoGrupo2.entities.Order;
@@ -55,53 +56,11 @@ class OrderControllerTest {
     @MockBean
     private ModelMapper modelMapper;
 
-    @Mock
-    private Order.OrderBuilder order;
-    private Order.OrderBuilder orderTwo;
-    private OrderDto orderDto;
-    private OrderDto orderDtoTwo;
-    private OrderFormDto orderFormDto;
-    private OrderFormDto orderFormDtoTwo;
-
-    @BeforeEach
-    public void beforeEach(){
-
-        order = Order.builder()
-                .id(1L)
-                .quantity(1)
-                .purchase_date(Timestamp.valueOf("2022-05-23 12:41:00"))
-                .delivery_date(Timestamp.valueOf("2022-05-23 22:00:00"));
-
-        orderTwo =  Order.builder()
-                .id(2L)
-                .quantity(2)
-                .purchase_date(Timestamp.valueOf("2022-05-01 16:23:00"))
-                .delivery_date(Timestamp.valueOf("2022-05-01 22:00:00"));
-
-        orderDto = modelMapper.map(order, OrderDto.class);
-        orderFormDto = modelMapper.map(order, OrderFormDto.class);
-
-        orderDtoTwo = modelMapper.map(orderDtoTwo, OrderDto.class);
-        orderFormDtoTwo = modelMapper.map(orderFormDtoTwo, OrderFormDto.class);
-
-    }
-
-    @AfterEach
-    public void afterEach(){
-
-        order = null;
-        orderTwo = null;
-
-        orderDto = null;
-        orderFormDto = null;
-
-        orderDtoTwo = null;
-        orderFormDtoTwo = null;
-
-    }
-
     @Test
     void postOrder() throws Exception{
+
+        Order order = OrderBuilder.getOrder();
+        OrderDto orderDto = OrderBuilder.getOrderDto();
 
         when(orderService.save(any())).thenReturn(orderDto);
         mockMvc.perform(post("/order")
@@ -113,6 +72,9 @@ class OrderControllerTest {
 
     @Test
     void getOrder() throws Exception{
+
+        OrderDto orderDto = OrderBuilder.getOrderDto();
+        OrderDto orderDtoTwo = OrderBuilder.getOrderDtoTwo();
 
         List<OrderDto> orderDtoList = new ArrayList<>(
                 Arrays.asList(orderDto, orderDtoTwo)
@@ -137,19 +99,16 @@ class OrderControllerTest {
     @Test
     void getOrderById() throws Exception{
 
-        OrderDto.OrderDtoBuilder orderDtoBuilder = OrderDto.builder()
-                .id(1L)
-                .quantity(1)
-                .purchase_date(Timestamp.valueOf("2022-05-23 12:41:00"))
-                .delivery_date(Timestamp.valueOf("2022-05-23 22:00:00"));
+        Order order = OrderBuilder.getOrder();
+        OrderDto orderDto = OrderBuilder.getOrderDto();
 
-        when(orderService.findById(order.build().getId())).thenReturn(ResponseEntity.of(Optional.of(orderDto)));
+        when(orderService.findById(order.getId())).thenReturn(ResponseEntity.of(Optional.of(orderDto)));
 
         long id = 1;
 
         mockMvc.perform(get("/order/{id}", id))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value(order.getClass())).andDo(print());
+                .andExpect(jsonPath("$.id").value(order.getClass())).andDo(print());
 
     }
 
@@ -158,7 +117,9 @@ class OrderControllerTest {
     @Test
     void deleteOrder() throws Exception{
 
-        when(orderService.deleteById(order.build().getId())).thenReturn(ResponseEntity.ok().build());
+        Order order = OrderBuilder.getOrder();
+
+        when(orderService.deleteById(order.getId())).thenReturn(ResponseEntity.ok().build());
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/order/1")
                         .contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(order)))
