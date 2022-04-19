@@ -8,12 +8,13 @@ import com.pb.ProjetoGrupo2.entities.Product;
 import java.math.BigDecimal;
 
 public class ProductBuilder {
+
     public static Product getProduct() {
         Product product = new Product();
         product.setId(1L);
         product.setName("Coxinha");
         product.setType(Type.FRITO);
-        product.setUnit_price(BigDecimal.valueOf(7.00));
+        product.setUnitPrice(BigDecimal.valueOf(7.00));
         product.setQuantity(10);
         return product;
     }
@@ -23,7 +24,7 @@ public class ProductBuilder {
         productDto.setId(1L);
         productDto.setName("Coxinha");
         productDto.setType(Type.FRITO);
-        productDto.setUnit_price(BigDecimal.valueOf(7.00));
+        productDto.setUnitPrice(BigDecimal.valueOf(7.00));
         productDto.setQuantity(10);
         return productDto;
     }
@@ -33,7 +34,7 @@ public class ProductBuilder {
         productDtoTwo.setId(2L);
         productDtoTwo.setName("Calabresa");
         productDtoTwo.setType(Type.ASSADO);
-        productDtoTwo.setUnit_price(BigDecimal.valueOf(5.00));
+        productDtoTwo.setUnitPrice(BigDecimal.valueOf(5.00));
         productDtoTwo.setQuantity(12);
         return productDtoTwo;
     }
@@ -42,7 +43,7 @@ public class ProductBuilder {
         ProductFormDto productFormDto = new ProductFormDto();
         productFormDto.setName("Coxinha");
         productFormDto.setType(Type.FRITO);
-        productFormDto.setUnit_price(BigDecimal.valueOf(7.00));
+        productFormDto.setUnitPrice(BigDecimal.valueOf(7.00));
         productFormDto.setQuantity(10);
         return productFormDto;
     }
@@ -51,9 +52,8 @@ public class ProductBuilder {
         product.setId(2L);
         product.setName("Calabresa");
         product.setType(Type.ASSADO);
-        product.setUnit_price(BigDecimal.valueOf(5.00));
+        product.setUnitPrice(BigDecimal.valueOf(5.00));
         product.setQuantity(12);
         return product;
     }
-
 }

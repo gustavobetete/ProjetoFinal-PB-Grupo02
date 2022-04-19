@@ -5,7 +5,6 @@ import com.pb.ProjetoGrupo2.dto.PromotionFormDto;
 import com.pb.ProjetoGrupo2.service.PromotionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;

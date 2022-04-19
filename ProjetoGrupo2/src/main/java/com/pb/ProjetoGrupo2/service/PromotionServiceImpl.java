@@ -21,49 +21,50 @@ import java.util.stream.Collectors;
 public class PromotionServiceImpl implements PromotionService{
 
     @Autowired
-    private PromotionRepository repository;
+    private PromotionRepository promotionRepository;
     @Autowired
-    private ModelMapper mapper;
+    private ModelMapper modelMapper;
 
     @Override
     public Page<PromotionDto> findAll(Pageable page){
-        Page<Promotion> promotion = this.repository.findAll(page);
-        List<PromotionDto> listPromotion = promotion.getContent().stream().map(p -> mapper.map(p, PromotionDto.class)).collect(Collectors.toList());
-        return new PageImpl<PromotionDto>(listPromotion, page, promotion.getTotalElements());
+        Page<Promotion> promotions = this.promotionRepository.findAll(page);
+        List<PromotionDto> listPromotion = promotions.getContent().stream().map(promotion ->
+                modelMapper.map(promotion, PromotionDto.class)).collect(Collectors.toList());
+        return new PageImpl<PromotionDto>(listPromotion, page, promotions.getTotalElements());
     }
 
     @Override
     public PromotionDto findById(Long id){
-        Optional<Promotion> promotion = repository.findById(id);
+        Optional<Promotion> promotion = promotionRepository.findById(id);
         if (promotion.isPresent()){
-            return mapper.map(promotion.get(), PromotionDto.class);
+            return modelMapper.map(promotion.get(), PromotionDto.class);
         }
         throw new ObjectNotFoundException("Promotion not found!");
     }
 
     @Override
     public PromotionDto save(PromotionFormDto promotionFormDto){
-        Promotion promotion = this.repository.save(mapper.map(promotionFormDto, Promotion.class));
-        return mapper.map(promotion, PromotionDto.class);
+        Promotion promotion = this.promotionRepository.save(modelMapper.map(promotionFormDto, Promotion.class));
+        return modelMapper.map(promotion, PromotionDto.class);
     }
 
     @Override
     public PromotionDto update(Long id, PromotionFormDto promotionFormDto) {
-        Optional<Promotion> promotion = this.repository.findById(id);
+        Optional<Promotion> promotion = this.promotionRepository.findById(id);
         if(promotion.isPresent()) {
-            Promotion promotionUpdated = mapper.map(promotionFormDto, Promotion.class);
+            Promotion promotionUpdated = modelMapper.map(promotionFormDto, Promotion.class);
             promotionUpdated.setId(id);
-            repository.save(promotionUpdated);
-            return mapper.map(promotionUpdated, PromotionDto.class);
+            promotionRepository.save(promotionUpdated);
+            return modelMapper.map(promotionUpdated, PromotionDto.class);
         }
         throw new ObjectNotFoundException("Promotion not found!");
     }
 
     @Override
     public Object deleteById(Long id) {
-        Optional<Promotion> promo = repository.findById(id);
+        Optional<Promotion> promo = promotionRepository.findById(id);
         if(promo.isPresent()){
-            repository.deleteById(id);
+            promotionRepository.deleteById(id);
             return ResponseEntity.ok().build();
         }
         throw new ObjectNotFoundException("Promotion not found!");

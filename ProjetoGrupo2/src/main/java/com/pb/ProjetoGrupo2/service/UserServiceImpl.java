@@ -1,10 +1,8 @@
 package com.pb.ProjetoGrupo2.service;
 
 import com.pb.ProjetoGrupo2.config.validation.ObjectNotFoundException;
-import com.pb.ProjetoGrupo2.dto.PromotionDto;
 import com.pb.ProjetoGrupo2.dto.UserDto;
 import com.pb.ProjetoGrupo2.dto.UserFormDto;
-import com.pb.ProjetoGrupo2.entities.Promotion;
 import com.pb.ProjetoGrupo2.entities.User;
 import com.pb.ProjetoGrupo2.repository.UserRepository;
 import org.modelmapper.ModelMapper;
@@ -25,54 +23,53 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private UserRepository repository;
+    private UserRepository userRepository;
 
     @Autowired
-    private ModelMapper mapper;
+    private ModelMapper modelMapper;
 
     @Override
     public Page<UserDto> findAll(Pageable page) {
-        Page<User> users = this.repository.findAll(page);
-        List<UserDto> usersList = users.stream().map(product -> mapper.map(product, UserDto.class)).collect(Collectors.toList());
+        Page<User> users = this.userRepository.findAll(page);
+        List<UserDto> usersList = users.stream().map(product ->
+                modelMapper.map(product, UserDto.class)).collect(Collectors.toList());
         return new PageImpl<UserDto>(usersList, page, users.getTotalElements());
     }
 
     @Override
     public UserDto findById(Long id) {
-        Optional<User> user = repository.findById(id);
+        Optional<User> user = userRepository.findById(id);
         if (user.isPresent()){
-            return mapper.map(user.get(), UserDto.class);
+            return modelMapper.map(user.get(), UserDto.class);
         }
         throw new ObjectNotFoundException("User not found!");
     }
 
-
     @Override
     public UserDto save(UserFormDto userFormDto) {
-            User user = this.repository.save(mapper.map(userFormDto, User.class));
-            return mapper.map(user, UserDto.class);
+            User user = this.userRepository.save(modelMapper.map(userFormDto, User.class));
+            return modelMapper.map(user, UserDto.class);
     }
 
     @Override
     public UserDto update(Long id, UserFormDto userFormDto) {
-        Optional<User> user = this.repository.findById(id);
+        Optional<User> user = this.userRepository.findById(id);
         if(user.isPresent()) {
-            User userUpdated = mapper.map(userFormDto, User.class);
+            User userUpdated = modelMapper.map(userFormDto, User.class);
             userUpdated.setId(id);
-            repository.save(userUpdated);
-            return mapper.map(userUpdated, UserDto.class);
+            userRepository.save(userUpdated);
+            return modelMapper.map(userUpdated, UserDto.class);
         }
         throw new ObjectNotFoundException("User not found!");
     }
 
     @Override
     public Object deleteById(Long id) {
-        Optional<User> user = repository.findById(id);
+        Optional<User> user = userRepository.findById(id);
         if(user.isPresent()){
-            repository.deleteById(id);
+            userRepository.deleteById(id);
             return ResponseEntity.ok().build();
         }
         throw new ObjectNotFoundException("User not found!");
     }
-
 }

@@ -1,13 +1,8 @@
 package com.pb.ProjetoGrupo2.builder;
 
-import com.pb.ProjetoGrupo2.dto.PromotionDto;
-import com.pb.ProjetoGrupo2.dto.PromotionFormDto;
 import com.pb.ProjetoGrupo2.dto.UserDto;
 import com.pb.ProjetoGrupo2.dto.UserFormDto;
-import com.pb.ProjetoGrupo2.entities.Promotion;
 import com.pb.ProjetoGrupo2.entities.User;
-
-import java.math.BigDecimal;
 
 public class UserBuilder {
 
