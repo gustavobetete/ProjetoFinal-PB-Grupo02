@@ -28,12 +28,6 @@ public class UserFormDto {
     @Email
     private String email;
 
-    @NotNull(message = "O campo Cpf não pode ser nulo")
-    @NotEmpty(message = "O campo Cpf não pode ser vazio")
-    @NotBlank(message = "O campo Cpf não pode estar em branco")
-    @CPF
-    private String cpf;
-
     @NotNull(message = "O campo Password não pode ser nulo")
     @NotEmpty(message = "O campo Password não pode ser vazio")
     @NotBlank(message = "O campo Password não pode estar em branco")
