@@ -1,6 +1,7 @@
 package com.pb.ProjetoGrupo2.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pb.ProjetoGrupo2.builder.PromotionBuilder;
 import com.pb.ProjetoGrupo2.dto.PromotionDto;
 import com.pb.ProjetoGrupo2.dto.PromotionFormDto;
 import com.pb.ProjetoGrupo2.entities.Promotion;
@@ -50,53 +51,11 @@ class PromotionControllerTest {
     @MockBean
     private ModelMapper modelMapper;
 
-    @Mock
-    private Promotion promotion;
-    private Promotion promotionTwo;
-    private PromotionDto promotionDto;
-    private PromotionDto promotionDtoTwo;
-    private PromotionFormDto promotionFormDto;
-    private PromotionFormDto promotionFormDtoTwo;
-
-    @BeforeEach
-    public void beforeEach(){
-
-        promotion = Promotion.builder()
-                .id(1L)
-                .description("-50% Salgado")
-                .promotion_price(BigDecimal.valueOf(0.5))
-                .build();
-
-        promotionTwo = Promotion.builder()
-                .id(2L)
-                .description("-40% Doce")
-                .promotion_price(BigDecimal.valueOf(0.4))
-                .build();
-
-        promotionDto = modelMapper.map(promotion, PromotionDto.class);
-        promotionFormDto = modelMapper.map(promotion, PromotionFormDto.class);
-
-        promotionDtoTwo = modelMapper.map(promotion, PromotionDto.class);
-        promotionFormDtoTwo = modelMapper.map(promotion, PromotionFormDto.class);
-
-    }
-
-    @AfterEach
-    public void afterEach(){
-
-        promotion = null;
-        promotionTwo = null;
-
-        promotionDto = null;
-        promotionFormDto = null;
-
-        promotionDtoTwo = null;
-        promotionFormDtoTwo = null;
-
-    }
-
     @Test
     void postPromotion() throws Exception{
+
+        Promotion promotion = PromotionBuilder.getPromotion();
+        PromotionDto promotionDto = PromotionBuilder.getPromotionDto();
 
         when(promotionService.save(any())).thenReturn(promotionDto);
         mockMvc.perform(post("/promotion")
@@ -107,6 +66,9 @@ class PromotionControllerTest {
 
     @Test
     void getPromotions() throws Exception{
+
+        PromotionDto promotionDto = PromotionBuilder.getPromotionDto();
+        PromotionDto promotionDtoTwo = PromotionBuilder.getPromotionDtoTwo();
 
         List<PromotionDto> promotionDtoList = new ArrayList<>(
                 Arrays.asList(promotionDto, promotionDtoTwo)
@@ -129,11 +91,8 @@ class PromotionControllerTest {
     @Test
     void getPromotionById() throws Exception{
 
-        PromotionDto promotionDto = PromotionDto.builder()
-                .id(1L)
-                .description("-50% Salgado")
-                .promotion_price(BigDecimal.valueOf(0.5))
-                .build();
+        Promotion promotion = PromotionBuilder.getPromotion();
+        PromotionDto promotionDto = PromotionBuilder.getPromotionDto();
 
         when(promotionService.findById(promotion.getId())).thenReturn(promotionDto);
 
@@ -150,6 +109,9 @@ class PromotionControllerTest {
 
     @Test
     void deletePromotion() throws Exception{
+
+        Promotion promotion = PromotionBuilder.getPromotion();
+        PromotionDto promotionDto = PromotionBuilder.getPromotionDto();
 
         when(promotionService.deleteById(promotion.getId())).thenReturn(ResponseEntity.ok().build());
 
