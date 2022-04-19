@@ -64,13 +64,13 @@ class PromotionControllerTest {
         promotion = Promotion.builder()
                 .id(1L)
                 .description("-50% Salgado")
-                .promotionPrice(BigDecimal.valueOf(0.5))
+                .promotion_price(BigDecimal.valueOf(0.5))
                 .build();
 
         promotionTwo = Promotion.builder()
                 .id(2L)
                 .description("-40% Doce")
-                .promotionPrice(BigDecimal.valueOf(0.4))
+                .promotion_price(BigDecimal.valueOf(0.4))
                 .build();
 
         promotionDto = modelMapper.map(promotion, PromotionDto.class);
@@ -102,7 +102,6 @@ class PromotionControllerTest {
         mockMvc.perform(post("/promotion")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(promotion))).andExpect(status().isCreated());
-        verify(promotionService, times(1)).save(any());
 
     }
 
@@ -125,9 +124,6 @@ class PromotionControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print());
 
-        verify(promotionService).findAll(any(PageRequest.class));
-        verify(promotionService, times(1)).findAll(any(PageRequest.class));
-
     }
 
     @Test
@@ -136,7 +132,7 @@ class PromotionControllerTest {
         PromotionDto promotionDto = PromotionDto.builder()
                 .id(1L)
                 .description("-50% Salgado")
-                .promotionPrice(BigDecimal.valueOf(0.5))
+                .promotion_price(BigDecimal.valueOf(0.5))
                 .build();
 
         when(promotionService.findById(promotion.getId())).thenReturn(promotionDto);

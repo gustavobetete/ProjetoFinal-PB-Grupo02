@@ -24,5 +24,5 @@ public class PromotionFormDto {
     private String description;
 
     @NotNull(message = "O campo promotion_price não pode ser nulo")
-    private BigDecimal promotionPrice;
+    private BigDecimal promotion_price;
 }

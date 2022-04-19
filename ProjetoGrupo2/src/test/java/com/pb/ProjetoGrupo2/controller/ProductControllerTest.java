@@ -1,6 +1,7 @@
 package com.pb.ProjetoGrupo2.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pb.ProjetoGrupo2.builder.ProductBuilder;
 import com.pb.ProjetoGrupo2.constants.Type;
 import com.pb.ProjetoGrupo2.dto.ProductDto;
 import com.pb.ProjetoGrupo2.dto.ProductFormDto;
@@ -28,7 +29,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -55,63 +55,16 @@ class ProductControllerTest {
     @MockBean
     private ModelMapper modelMapper;
 
-    @Mock
-    private Product product;
-    private Product productTwo;
-    private ProductDto productDto;
-    private ProductDto productDtoTwo;
-    private ProductFormDto productFormDto;
-    private ProductFormDto productFormDtoTwo;
-
-    @BeforeEach
-    public void beforeEach(){
-
-        product = Product.builder()
-                .id(1L)
-                .name("Coxinha")
-                .type(Type.FRITO)
-                .unitPrice(BigDecimal.valueOf(7.00))
-                .quantity(10)
-                .build();
-
-        productTwo = Product.builder()
-                .id(2L)
-                .name("Calabresa")
-                .type(Type.FRITO)
-                .unitPrice(BigDecimal.valueOf(7.00))
-                .quantity(10)
-                .build();
-
-        productDto = modelMapper.map(product, ProductDto.class);
-        productFormDto = modelMapper.map(product, ProductFormDto.class);
-
-        productDtoTwo = modelMapper.map(productTwo, ProductDto.class);
-        productFormDtoTwo = modelMapper.map(productTwo, ProductFormDto.class);
-
-    }
-
-    @AfterEach
-    public void afterEach(){
-
-        product = null;
-        productTwo = null;
-
-        productDto = null;
-        productFormDto = null;
-
-        productDtoTwo = null;
-        productFormDtoTwo = null;
-
-    }
-
     @Test
     void postProduct() throws Exception{
+
+        Product product = ProductBuilder.getProduct();
+        ProductDto productDto = ProductBuilder.getProductDto();
 
         when(productService.save(any())).thenReturn(productDto);
         mockMvc.perform(post("/product")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(product))).andExpect(status().isCreated());
-        verify(productService, times(1)).save(any());
 
     }
 
@@ -119,7 +72,7 @@ class ProductControllerTest {
     void getProducts() throws Exception{
 
         List<ProductDto> productDtoList = new ArrayList<>(
-                Arrays.asList(productDto, productDtoTwo)
+                Arrays.asList(ProductBuilder.getProductDto(), ProductBuilder.getProductDtoTwo())
         );
 
         PageRequest pageRequest = PageRequest.of(0, 5);
@@ -133,23 +86,16 @@ class ProductControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print());
 
-        verify(productService).findAll(any(PageRequest.class));
-        verify(productService, times(1)).findAll(any(PageRequest.class));
     }
 
 
     @Test
     void getProductById() throws Exception{
 
-        ProductDto productDto = ProductDto.builder()
-                .id(1L)
-                .name("Coxinha")
-                .type(Type.FRITO)
-                .unitPrice(BigDecimal.valueOf(7.00))
-                .quantity(10)
-                .build();
+        Product product = ProductBuilder.getProduct();
+        ProductDto productDto = ProductBuilder.getProductDto();
 
-        when(productService.findById(product.getId())).thenReturn(ResponseEntity.of(Optional.of(productDto)));
+        when(productService.findById(product.getId())).thenReturn(ResponseEntity.ok(productDto));
 
         long id = 1;
 
@@ -164,6 +110,9 @@ class ProductControllerTest {
     @Test
     void deleteProduct() throws Exception{
 
+        Product product = ProductBuilder.getProduct();
+        ProductDto productDto = ProductBuilder.getProductDto();
+
         when(productService.deleteById(product.getId())).thenReturn(ResponseEntity.ok().build());
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/product/1")
@@ -171,5 +120,3 @@ class ProductControllerTest {
                 .andExpect(status().isOk()).andDo(print());
     }
 }
-
-

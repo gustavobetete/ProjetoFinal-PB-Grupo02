@@ -17,13 +17,13 @@ public class ProductDto {
     private Long id;
     private String name;
     private Type type;
-    private BigDecimal unitPrice;
+    private BigDecimal unit_price;
     private Integer quantity;
 
-    public ProductDto(String name, Type type, BigDecimal unitPrice, Integer quantity) {
+    public ProductDto(String name, Type type, BigDecimal unit_price, Integer quantity) {
         this.name = name;
         this.type = type;
-        this.unitPrice = unitPrice;
+        this.unit_price = unit_price;
         this.quantity = quantity;
     }
 }

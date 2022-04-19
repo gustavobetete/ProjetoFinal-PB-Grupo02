@@ -22,7 +22,7 @@ public class Product {
     private String name;
     @Enumerated(EnumType.STRING)
     private Type type;
-    private BigDecimal unitPrice;
+    private BigDecimal unit_price;
     private Integer quantity;
 
 }

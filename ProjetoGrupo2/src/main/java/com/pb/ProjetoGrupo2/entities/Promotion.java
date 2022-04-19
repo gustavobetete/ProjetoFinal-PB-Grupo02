@@ -23,6 +23,6 @@ public class Promotion {
     private Long id;
 //    private List<Product> productList;
     private String description;
-    private BigDecimal promotionPrice;
+    private BigDecimal promotion_price;
 
 }
