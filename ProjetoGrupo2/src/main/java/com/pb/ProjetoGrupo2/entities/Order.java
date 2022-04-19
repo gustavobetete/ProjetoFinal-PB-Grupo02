@@ -1,6 +1,7 @@
 package com.pb.ProjetoGrupo2.entities;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 @Table(name = "ORDERS")
 public class Order {
     // quantity, purchase_date, delivery_date

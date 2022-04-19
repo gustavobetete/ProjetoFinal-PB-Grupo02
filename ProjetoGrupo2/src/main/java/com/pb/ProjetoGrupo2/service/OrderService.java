@@ -10,11 +10,11 @@ public interface OrderService {
 
     Page<OrderDto> findAll(Pageable page);
 
-    ResponseEntity<OrderDto> findById(Long id);
+    OrderDto findById(Long id);
 
     OrderDto save(OrderFormDto orderFormDto);
 
     OrderDto update(Long id, OrderFormDto orderFormDto);
 
-    ResponseEntity<Object> deleteById(Long id);
+    Object deleteById(Long id);
 }

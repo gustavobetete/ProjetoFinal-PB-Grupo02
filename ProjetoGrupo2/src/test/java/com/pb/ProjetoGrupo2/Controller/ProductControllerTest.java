@@ -1,16 +1,12 @@
 package com.pb.ProjetoGrupo2.Controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pb.ProjetoGrupo2.constants.Type;
+import com.pb.ProjetoGrupo2.builder.ProductBuilder;
 import com.pb.ProjetoGrupo2.dto.ProductDto;
-import com.pb.ProjetoGrupo2.dto.ProductFormDto;
 import com.pb.ProjetoGrupo2.entities.Product;
 import com.pb.ProjetoGrupo2.repository.ProductRepository;
 import com.pb.ProjetoGrupo2.service.ProductService;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -24,16 +20,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -54,57 +51,11 @@ class ProductControllerTest {
     @MockBean
     private ModelMapper modelMapper;
 
-    @Mock
-    private Product product;
-    private Product productTwo;
-    private ProductDto productDto;
-    private ProductDto productDtoTwo;
-    private ProductFormDto productFormDto;
-    private ProductFormDto productFormDtoTwo;
-
-    @BeforeEach
-    public void beforeEach(){
-
-        product = Product.builder()
-                .id(1L)
-                .name("Coxinha")
-                .type(Type.FRITO)
-                .unit_price(BigDecimal.valueOf(7.00))
-                .quantity(10)
-                .build();
-
-        productTwo = Product.builder()
-                .id(2L)
-                .name("Calabresa")
-                .type(Type.FRITO)
-                .unit_price(BigDecimal.valueOf(7.00))
-                .quantity(10)
-                .build();
-
-        productDto = modelMapper.map(product, ProductDto.class);
-        productFormDto = modelMapper.map(product, ProductFormDto.class);
-
-        productDtoTwo = modelMapper.map(productTwo, ProductDto.class);
-        productFormDtoTwo = modelMapper.map(productTwo, ProductFormDto.class);
-
-    }
-
-    @AfterEach
-    public void afterEach(){
-
-        product = null;
-        productTwo = null;
-
-        productDto = null;
-        productFormDto = null;
-
-        productDtoTwo = null;
-        productFormDtoTwo = null;
-
-    }
-
     @Test
     void postProduct() throws Exception{
+
+        Product product = ProductBuilder.getProduct();
+        ProductDto productDto = ProductBuilder.getProductDto();
 
         when(productService.save(any())).thenReturn(productDto);
         mockMvc.perform(post("/product")
@@ -117,7 +68,7 @@ class ProductControllerTest {
     void getProducts() throws Exception{
 
         List<ProductDto> productDtoList = new ArrayList<>(
-                Arrays.asList(productDto, productDtoTwo)
+                Arrays.asList(ProductBuilder.getProductDto(), ProductBuilder.getProductDtoTwo())
         );
 
         PageRequest pageRequest = PageRequest.of(0, 5);
@@ -137,15 +88,10 @@ class ProductControllerTest {
     @Test
     void getProductById() throws Exception{
 
-        ProductDto productDto = ProductDto.builder()
-                .id(1L)
-                .name("Coxinha")
-                .type(Type.FRITO)
-                .unit_price(BigDecimal.valueOf(7.00))
-                .quantity(10)
-                .build();
+        Product product = ProductBuilder.getProduct();
+        ProductDto productDto = ProductBuilder.getProductDto();
 
-        when(productService.findById(product.getId())).thenReturn(ResponseEntity.ok(productDto));
+        when(productService.findById(product.getId())).thenReturn(productDto);
 
         long id = 1;
 
@@ -159,6 +105,9 @@ class ProductControllerTest {
 
     @Test
     void deleteProduct() throws Exception{
+
+        Product product = ProductBuilder.getProduct();
+        ProductDto productDto = ProductBuilder.getProductDto();
 
         when(productService.deleteById(product.getId())).thenReturn(ResponseEntity.ok().build());
 

@@ -2,6 +2,7 @@ package com.pb.ProjetoGrupo2.controller;
 
 import com.pb.ProjetoGrupo2.dto.OrderDto;
 import com.pb.ProjetoGrupo2.dto.OrderFormDto;
+import com.pb.ProjetoGrupo2.dto.ProductDto;
 import com.pb.ProjetoGrupo2.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class OrderController {
 
     @GetMapping("/{id}")
     public ResponseEntity<OrderDto> findById(@PathVariable Long id){
-        return service.findById(id);
+        return ResponseEntity.ok().body(service.findById(id));
     }
 
     @PostMapping
@@ -48,8 +49,9 @@ public class OrderController {
         return ResponseEntity.ok(orderDto);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id){
-        return service.deleteById(id);
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        this.service.deleteById(id);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }
