@@ -35,11 +35,11 @@ public class PromotionBuilder {
         return promotionDto;
     }
 
-    public static PromotionDto getPromotionDtoTwo() {
+    public static PromotionDto getPromotionDtoTwo(){
         PromotionDto promotionDtoTwo = new PromotionDto();
         promotionDtoTwo.setId(2L);
-        promotionDtoTwo.setDescription("-40% Doce");
-        promotionDtoTwo.setPromotion_price(BigDecimal.valueOf(0.4));
+        promotionDtoTwo.setDescription("-50% Assados");
+        promotionDtoTwo.setPromotion_price(BigDecimal.valueOf(0.50));
         return promotionDtoTwo;
     }
 

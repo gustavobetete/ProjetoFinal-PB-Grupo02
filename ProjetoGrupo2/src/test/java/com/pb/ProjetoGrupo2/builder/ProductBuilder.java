@@ -46,5 +46,14 @@ public class ProductBuilder {
         productFormDto.setQuantity(10);
         return productFormDto;
     }
+    public static Product getProductTwo() {
+        Product product = new Product();
+        product.setId(2L);
+        product.setName("Calabresa");
+        product.setType(Type.ASSADO);
+        product.setUnit_price(BigDecimal.valueOf(5.00));
+        product.setQuantity(12);
+        return product;
+    }
 
 }
