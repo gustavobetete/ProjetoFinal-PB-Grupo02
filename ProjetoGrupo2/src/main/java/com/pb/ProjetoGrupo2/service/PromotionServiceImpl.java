@@ -60,12 +60,12 @@ public class PromotionServiceImpl implements PromotionService{
     }
 
     @Override
-    public ResponseEntity<Object> deleteById(Long id) {
+    public Object deleteById(Long id) {
         Optional<Promotion> promo = repository.findById(id);
         if(promo.isPresent()){
             repository.deleteById(id);
             return ResponseEntity.ok().build();
         }
-        return ResponseEntity.notFound().build();
+        throw new ObjectNotFoundException("Promotion not found!");
     }
 }

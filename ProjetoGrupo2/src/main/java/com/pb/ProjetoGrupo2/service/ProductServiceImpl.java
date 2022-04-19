@@ -40,12 +40,12 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public ResponseEntity<ProductDto> findById(Long id){
+    public ProductDto findById(Long id){
         Optional<Product> product = repository.findById(id);
         if (product.isPresent()){
-            return ResponseEntity.ok().body(mapper.map(product.get(), ProductDto.class));
+            return mapper.map(product.get(), ProductDto.class);
         }
-        return ResponseEntity.noContent().build();
+        throw new ObjectNotFoundException("Product not found!");
     }
 
     @Override
@@ -67,13 +67,13 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public ResponseEntity<Object> deleteById(Long id) {
+    public Object deleteById(Long id) {
         Optional<Product> product = repository.findById(id);
         if(product.isPresent()){
             repository.deleteById(id);
             return ResponseEntity.ok().build();
         }
-        return ResponseEntity.notFound().build();
+        throw new ObjectNotFoundException("Product not found!");
     }
 
 }

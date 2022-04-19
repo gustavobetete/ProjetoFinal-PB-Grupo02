@@ -34,12 +34,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public ResponseEntity<OrderDto> findById(Long id){
+    public OrderDto findById(Long id){
         Optional<Order> orders = repository.findById(id);
         if (orders.isPresent()){
-            return ResponseEntity.ok().body(mapper.map(orders.get(), OrderDto.class));
+            return mapper.map(orders.get(), OrderDto.class);
         }
-        return ResponseEntity.noContent().build();
+        throw new ObjectNotFoundException("Order not found!");
     }
 
     @Override
@@ -61,12 +61,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public ResponseEntity<Object> deleteById(Long id) {
+    public Object deleteById(Long id) {
         Optional<Order> order = repository.findById(id);
         if(order.isPresent()){
             repository.deleteById(id);
             return ResponseEntity.ok().build();
         }
-        return ResponseEntity.notFound().build();
+        throw new ObjectNotFoundException("Order not found!");
     }
 }

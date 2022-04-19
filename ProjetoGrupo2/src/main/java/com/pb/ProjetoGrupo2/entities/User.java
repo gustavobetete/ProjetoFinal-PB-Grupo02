@@ -21,8 +21,6 @@ public class User {
     @Column
     private String email;
     @Column
-    private String cpf;
-    @Column
     private String password;
 
 }

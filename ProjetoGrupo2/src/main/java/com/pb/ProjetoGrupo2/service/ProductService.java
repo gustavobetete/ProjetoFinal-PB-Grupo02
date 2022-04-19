@@ -10,11 +10,11 @@ public interface ProductService {
 
     Page<ProductDto> findAll(Pageable page);
 
-    ResponseEntity<ProductDto> findById(Long id);
+    ProductDto findById(Long id);
 
     ProductDto save(ProductFormDto ProductFormDto);
 
     ProductDto update(Long id, ProductFormDto productFormDto);
 
-    ResponseEntity<Object> deleteById(Long id);
+    Object deleteById(Long id);
 }

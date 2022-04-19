@@ -16,5 +16,5 @@ public interface PromotionService {
 
     PromotionDto update(Long id, PromotionFormDto promotionFormDto);
 
-    ResponseEntity<Object> deleteById(Long id);
+    Object deleteById(Long id);
 }
