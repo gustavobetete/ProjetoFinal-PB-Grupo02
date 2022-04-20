@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = InstitutionalEmailValidation.class)
 public @interface InstitutionalEmail {
 
-    String message() default "invalid e-mail";
+    String message() default "e-mail invalido, deve seguir o padrão @fatec.sp.gov.br";
     Class<?>[] groups() default {};
 
     public abstract Class<? extends Payload>[] payload() default {};

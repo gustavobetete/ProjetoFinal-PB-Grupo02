@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
@@ -13,6 +15,8 @@ import java.math.BigDecimal;
 public class PromotionFormDto {
 
     @NotNull(message = "O campo description não pode ser nulo")
+    @NotEmpty(message = "O campo Name não pode ser vazio")
+    @NotBlank(message = "O campo Name não pode estar em branco")
     private String description;
 
     @NotNull(message = "O campo promotion_price não pode ser nulo")
