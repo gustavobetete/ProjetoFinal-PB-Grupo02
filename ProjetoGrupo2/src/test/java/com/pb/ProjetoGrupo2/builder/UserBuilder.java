@@ -11,7 +11,8 @@ public class UserBuilder {
         User user = new User();
         user.setId(1L);
         user.setName("Aluno");
-        user.setEmail("Aluno@fatec.sp.gov.br");
+        user.setEmail("aluno@fatec.sp.gov.br");
+        user.setPassword("aluno");
         return user;
     }
 
@@ -20,6 +21,7 @@ public class UserBuilder {
         userTwo.setId(2L);
         userTwo.setName("Adm");
         userTwo.setEmail("adm@fatec.sp.gov.br");
+        userTwo.setPassword("adm");
         return userTwo;
     }
 
@@ -44,6 +46,7 @@ public class UserBuilder {
         UserFormDto UserFormDto = new UserFormDto();
         UserFormDto.setName("Aluno");
         UserFormDto.setEmail("aluno@fatec.sp.gov.br");
+        UserFormDto.setPassword("aluno");
         return UserFormDto;
     }
 }

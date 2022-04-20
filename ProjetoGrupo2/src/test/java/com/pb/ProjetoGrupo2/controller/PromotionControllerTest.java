@@ -116,10 +116,12 @@ class PromotionControllerTest {
 
         when(promotionService.update(anyLong(), any(PromotionFormDto.class))).thenReturn(promotionDto);
 
-        mockMvc.perform(put("/promotion/1").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(put("/promotion/1")
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(promotionFormDto)))
-                .andExpect(status().isOk()).andExpect(jsonPath("$.description")
-                        .value(promotionFormDto.getDescription())).andDo(print());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.description").value(promotionFormDto.getDescription()))
+                .andDo(print());
     }
 
     @Test
