@@ -2,10 +2,7 @@ package com.pb.ProjetoGrupo2.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pb.ProjetoGrupo2.builder.ProductBuilder;
-<<<<<<< HEAD
 import com.pb.ProjetoGrupo2.constants.Type;
-=======
->>>>>>> 526880b939453bd0d8fb7cbee8fa7716c580f370
 import com.pb.ProjetoGrupo2.dto.ProductDto;
 import com.pb.ProjetoGrupo2.dto.ProductFormDto;
 import com.pb.ProjetoGrupo2.entities.Product;
@@ -56,13 +53,8 @@ class ProductControllerTest {
     @Test
     void postProduct() throws Exception{
 
-<<<<<<< HEAD
         Product product = ProductBuilder.getProduct();
         ProductDto productDto = ProductBuilder.getProductDto();
-=======
-        Product product = ProductBuilder.getProductTwo();
-        ProductDto productDto = ProductBuilder.getProductDtoTwo();
->>>>>>> 526880b939453bd0d8fb7cbee8fa7716c580f370
 
         when(productService.save(any())).thenReturn(productDto);
 
@@ -138,10 +130,7 @@ class ProductControllerTest {
     void deleteProduct() throws Exception{
 
         Product product = ProductBuilder.getProduct();
-<<<<<<< HEAD
         ProductDto productDto = ProductBuilder.getProductDto();
-=======
->>>>>>> 526880b939453bd0d8fb7cbee8fa7716c580f370
 
         when(productService.deleteById(product.getId())).thenReturn(ResponseEntity.ok().build());
         mockMvc.perform(delete("/product/1")).andExpect(status().isOk()).andDo(print());
