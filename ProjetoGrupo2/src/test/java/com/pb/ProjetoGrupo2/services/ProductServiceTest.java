@@ -50,7 +50,7 @@ public class ProductServiceTest {
         assertThat(productDTO.getName()).isEqualTo(product.getName());
         assertThat(productDTO.getType()).isEqualTo(product.getType());
         assertThat(productDTO.getQuantity()).isEqualTo(product.getQuantity());
-        assertThat(productDTO.getUnit_price()).isEqualTo(product.getUnit_price());
+        assertThat(productDTO.getUnitPrice()).isEqualTo(product.getUnitPrice());
     }
 
     @Test
@@ -84,7 +84,7 @@ public class ProductServiceTest {
         assertThat(productDTO.getName()).isEqualTo(product.getName());
         assertThat(productDTO.getType()).isEqualTo(product.getType());
         assertThat(productDTO.getQuantity()).isEqualTo(product.getQuantity());
-        assertThat(productDTO.getUnit_price()).isEqualTo(product.getUnit_price());
+        assertThat(productDTO.getUnitPrice()).isEqualTo(product.getUnitPrice());
     }
 
     @Test
@@ -115,7 +115,7 @@ public class ProductServiceTest {
         assertThat(productDTO.getName()).isEqualTo(productFormDTO.getName());
         assertThat(productDTO.getType()).isEqualTo(productFormDTO.getType());
         assertThat(productDTO.getQuantity()).isEqualTo(productFormDTO.getQuantity());
-        assertThat(productDTO.getUnit_price()).isEqualTo(productFormDTO.getUnit_price());
+        assertThat(productDTO.getUnitPrice()).isEqualTo(productFormDTO.getUnitPrice());
     }
 
     @Test
@@ -140,7 +140,6 @@ public class ProductServiceTest {
 
         verify(this.repository, times(1)).deleteById(1L);
     }
-
 
     @Test
     @DisplayName("Delete Product not found")

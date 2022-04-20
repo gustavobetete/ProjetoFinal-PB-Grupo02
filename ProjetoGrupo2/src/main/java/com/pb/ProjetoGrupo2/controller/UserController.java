@@ -35,7 +35,6 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-
     @PostMapping
     public ResponseEntity<UserDto> save(@RequestBody @Valid UserFormDto userFormDto) {
         UserDto userDto = this.service.save(userFormDto);

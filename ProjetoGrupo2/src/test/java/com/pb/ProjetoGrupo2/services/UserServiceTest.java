@@ -1,17 +1,11 @@
 package com.pb.ProjetoGrupo2.services;
 
-import com.pb.ProjetoGrupo2.builder.PromotionBuilder;
 import com.pb.ProjetoGrupo2.builder.UserBuilder;
 import com.pb.ProjetoGrupo2.config.validation.ObjectNotFoundException;
-import com.pb.ProjetoGrupo2.dto.PromotionDto;
-import com.pb.ProjetoGrupo2.dto.PromotionFormDto;
 import com.pb.ProjetoGrupo2.dto.UserDto;
 import com.pb.ProjetoGrupo2.dto.UserFormDto;
-import com.pb.ProjetoGrupo2.entities.Promotion;
 import com.pb.ProjetoGrupo2.entities.User;
-import com.pb.ProjetoGrupo2.repository.PromotionRepository;
 import com.pb.ProjetoGrupo2.repository.UserRepository;
-import com.pb.ProjetoGrupo2.service.PromotionServiceImpl;
 import com.pb.ProjetoGrupo2.service.UserServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,7 +18,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -106,7 +99,6 @@ public class UserServiceTest {
                 .isThrownBy(() -> this.userService.findById(user.getId()));
     }
 
-
     @Test
     @DisplayName("Update user")
     public void updateUser() {
@@ -147,7 +139,6 @@ public class UserServiceTest {
 
         verify(this.repository, times(1)).deleteById(1L);
     }
-
 
     @Test
     @DisplayName("Delete user not found")

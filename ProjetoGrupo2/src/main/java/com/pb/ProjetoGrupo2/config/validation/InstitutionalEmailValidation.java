@@ -1,6 +1,5 @@
 package com.pb.ProjetoGrupo2.config.validation;
 
-
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 

@@ -49,9 +49,9 @@ public class OrderServiceTest {
         OrderDto orderDTO = this.orderService.save(OrderBuilder.getOrderFormDto());
 
         assertThat(orderDTO.getId()).isNotNull();
-        assertThat(orderDTO.getDelivery_date()).isEqualTo(order.getDelivery_date());
+        assertThat(orderDTO.getDeliveryDate()).isEqualTo(order.getDeliveryDate());
         assertThat(orderDTO.getQuantity()).isEqualTo(order.getQuantity());
-        assertThat(orderDTO.getPurchase_date()).isEqualTo(order.getPurchase_date());
+        assertThat(orderDTO.getPurchaseDate()).isEqualTo(order.getPurchaseDate());
     }
 
     @Test
@@ -82,8 +82,8 @@ public class OrderServiceTest {
         OrderDto orderDTO = this.orderService.findById(order.getId());
 
         assertThat(orderDTO.getId()).isNotNull();
-        assertThat(orderDTO.getDelivery_date()).isEqualTo(order.getDelivery_date());
-        assertThat(orderDTO.getPurchase_date()).isEqualTo(order.getPurchase_date());
+        assertThat(orderDTO.getDeliveryDate()).isEqualTo(order.getDeliveryDate());
+        assertThat(orderDTO.getPurchaseDate()).isEqualTo(order.getPurchaseDate());
         assertThat(orderDTO.getQuantity()).isEqualTo(order.getQuantity());
 
     }
@@ -113,8 +113,8 @@ public class OrderServiceTest {
         OrderDto orderDTO = this.orderService.update(order.getId(), orderFormDTO);
 
         assertThat(orderDTO.getId()).isNotNull();
-        assertThat(orderDTO.getDelivery_date()).isEqualTo(orderFormDTO.getDelivery_date());
-        assertThat(orderDTO.getPurchase_date()).isEqualTo(orderFormDTO.getPurchase_date());
+        assertThat(orderDTO.getDeliveryDate()).isEqualTo(orderFormDTO.getDeliveryDate());
+        assertThat(orderDTO.getPurchaseDate()).isEqualTo(orderFormDTO.getPurchaseDate());
         assertThat(orderDTO.getQuantity()).isEqualTo(orderFormDTO.getQuantity());
 
     }
@@ -141,7 +141,6 @@ public class OrderServiceTest {
 
         verify(this.repository, times(1)).deleteById(1L);
     }
-
 
     @Test
     @DisplayName("Delete order not found")
