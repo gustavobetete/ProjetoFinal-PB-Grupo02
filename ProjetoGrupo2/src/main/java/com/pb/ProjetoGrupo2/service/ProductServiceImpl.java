@@ -29,7 +29,7 @@ public class ProductServiceImpl implements ProductService{
     private ModelMapper modelMapper;
 
     public ProductServiceImpl(ProductRepository productRepository) {
-        this.repository = productRepository;
+        this.productRepository = productRepository;
     }
 
     @Override
