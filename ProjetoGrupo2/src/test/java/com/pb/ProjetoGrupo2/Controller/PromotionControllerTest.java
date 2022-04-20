@@ -6,10 +6,7 @@ import com.pb.ProjetoGrupo2.dto.PromotionDto;
 import com.pb.ProjetoGrupo2.dto.PromotionFormDto;
 import com.pb.ProjetoGrupo2.entities.Promotion;
 import com.pb.ProjetoGrupo2.service.PromotionService;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -21,9 +18,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -58,9 +53,14 @@ class PromotionControllerTest {
         PromotionDto promotionDto = PromotionBuilder.getPromotionDto();
 
         when(promotionService.save(any())).thenReturn(promotionDto);
+
         mockMvc.perform(post("/promotion")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(promotion))).andExpect(status().isCreated());
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(promotion)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.description").value(promotion.getDescription()))
+                .andDo(print());
 
     }
 
@@ -71,7 +71,7 @@ class PromotionControllerTest {
         PromotionDto promotionDtoTwo = PromotionBuilder.getPromotionDtoTwo();
 
         List<PromotionDto> promotionDtoList = new ArrayList<>(
-                Arrays.asList(promotionDto, promotionDtoTwo)
+                Arrays.asList(PromotionBuilder.getPromotionDto(), PromotionBuilder.getPromotionDtoTwo())
         );
 
         PageRequest pageRequest = PageRequest.of(0, 5);
@@ -84,6 +84,8 @@ class PromotionControllerTest {
         mockMvc.perform(get("/promotion")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content.[0].description").value("-50% Salgado"))
+                .andExpect(jsonPath("$.content.[1].description").value("-50% Assados"))
                 .andDo(print());
 
     }
@@ -102,10 +104,26 @@ class PromotionControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.description").value(promotionDto.getDescription()))
                 .andDo(print());
-
     }
 
-    //*****************FAZER TESTE DO PUT*****************
+    @Test
+    void updatePromotion() throws Exception{
+
+        Promotion promotion = PromotionBuilder.getPromotion();
+        PromotionFormDto promotionFormDto = PromotionBuilder.getPromotionFormDto();
+        PromotionDto promotionDto = PromotionBuilder.getPromotionDto();
+
+        promotion.setDescription("-50% Doces");
+        promotionFormDto.setDescription("-50% Doces");
+        promotionDto.setDescription("-50% Doces");
+
+        when(promotionService.update(anyLong(), any(PromotionFormDto.class))).thenReturn(promotionDto);
+
+        mockMvc.perform(put("/promotion/1").contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(promotionFormDto)))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.description")
+                        .value(promotionFormDto.getDescription())).andDo(print());
+    }
 
     @Test
     void deletePromotion() throws Exception{
@@ -114,9 +132,8 @@ class PromotionControllerTest {
         PromotionDto promotionDto = PromotionBuilder.getPromotionDto();
 
         when(promotionService.deleteById(promotion.getId())).thenReturn(ResponseEntity.ok().build());
+        mockMvc.perform(delete("/promotion/1")).andExpect(status().isOk()).andDo(print());
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/promotion/1")
-                        .contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(promotionDto)))
-                .andExpect(status().isOk()).andDo(print());
     }
 }
+

@@ -2,16 +2,16 @@ package com.pb.ProjetoGrupo2.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pb.ProjetoGrupo2.builder.ProductBuilder;
+<<<<<<< HEAD
 import com.pb.ProjetoGrupo2.constants.Type;
+=======
+>>>>>>> 526880b939453bd0d8fb7cbee8fa7716c580f370
 import com.pb.ProjetoGrupo2.dto.ProductDto;
 import com.pb.ProjetoGrupo2.dto.ProductFormDto;
 import com.pb.ProjetoGrupo2.entities.Product;
 import com.pb.ProjetoGrupo2.repository.ProductRepository;
 import com.pb.ProjetoGrupo2.service.ProductService;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -23,9 +23,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -58,14 +56,23 @@ class ProductControllerTest {
     @Test
     void postProduct() throws Exception{
 
+<<<<<<< HEAD
         Product product = ProductBuilder.getProduct();
         ProductDto productDto = ProductBuilder.getProductDto();
+=======
+        Product product = ProductBuilder.getProductTwo();
+        ProductDto productDto = ProductBuilder.getProductDtoTwo();
+>>>>>>> 526880b939453bd0d8fb7cbee8fa7716c580f370
 
         when(productService.save(any())).thenReturn(productDto);
-        mockMvc.perform(post("/product")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(product))).andExpect(status().isCreated());
 
+        mockMvc.perform(post("/product")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(product)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.name").value(product.getName()))
+                .andDo(print());
     }
 
     @Test
@@ -84,10 +91,11 @@ class ProductControllerTest {
         mockMvc.perform(get("/product")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content.[0].name").value("Coxinha"))
+                .andExpect(jsonPath("$.content.[1].name").value("Calabresa"))
                 .andDo(print());
 
     }
-
 
     @Test
     void getProductById() throws Exception{
@@ -95,28 +103,48 @@ class ProductControllerTest {
         Product product = ProductBuilder.getProduct();
         ProductDto productDto = ProductBuilder.getProductDto();
 
-        when(productService.findById(product.getId())).thenReturn(ResponseEntity.ok(productDto));
+        when(productService.findById(product.getId())).thenReturn(productDto);
 
         long id = 1;
 
         mockMvc.perform(get("/product/{id}", id))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value(product.getName())).andDo(print());
+                .andExpect(jsonPath("$.name")
+                        .value(product.getName())).andDo(print());
 
     }
 
-//*****************FAZER TESTE DO PUT*****************
+    @Test
+    void updateProduct() throws Exception{
+
+        Product product = ProductBuilder.getProduct();
+        ProductFormDto productFormDto = ProductBuilder.getProductFormDto();
+        ProductDto productDto = ProductBuilder.getProductDto();
+
+        product.setName("Calabresa");
+        productFormDto.setName("Calabresa");
+        productDto.setName("Calabresa");
+
+        when(productService.update(anyLong(), any(ProductFormDto.class))).thenReturn(productDto);
+
+        mockMvc.perform(put("/product/1").contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(productFormDto)))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.name")
+                        .value(productFormDto.getName())).andDo(print());
+
+    }
 
     @Test
     void deleteProduct() throws Exception{
 
         Product product = ProductBuilder.getProduct();
+<<<<<<< HEAD
         ProductDto productDto = ProductBuilder.getProductDto();
+=======
+>>>>>>> 526880b939453bd0d8fb7cbee8fa7716c580f370
 
         when(productService.deleteById(product.getId())).thenReturn(ResponseEntity.ok().build());
+        mockMvc.perform(delete("/product/1")).andExpect(status().isOk()).andDo(print());
 
-        mockMvc.perform(MockMvcRequestBuilders.delete("/product/1")
-                        .contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(productDto)))
-                .andExpect(status().isOk()).andDo(print());
     }
 }

@@ -1,11 +1,13 @@
 package com.pb.ProjetoGrupo2.builder;
 
 import com.pb.ProjetoGrupo2.dto.PromotionDto;
+import com.pb.ProjetoGrupo2.dto.PromotionFormDto;
 import com.pb.ProjetoGrupo2.entities.Promotion;
 
 import java.math.BigDecimal;
 
 public class PromotionBuilder {
+
 
     public static Promotion getPromotion() {
 
@@ -33,11 +35,18 @@ public class PromotionBuilder {
         return promotionDto;
     }
 
-    public static PromotionDto getPromotionDtoTwo() {
+    public static PromotionDto getPromotionDtoTwo(){
         PromotionDto promotionDtoTwo = new PromotionDto();
         promotionDtoTwo.setId(2L);
-        promotionDtoTwo.setDescription("-40% Doce");
-        promotionDtoTwo.setPromotion_price(BigDecimal.valueOf(0.4));
+        promotionDtoTwo.setDescription("-50% Assados");
+        promotionDtoTwo.setPromotion_price(BigDecimal.valueOf(0.50));
         return promotionDtoTwo;
+    }
+
+    public static PromotionFormDto getPromotionFormDto() {
+        PromotionFormDto promotionFormDto = new PromotionFormDto();
+        promotionFormDto.setPromotion_price(BigDecimal.valueOf(0.4));
+        promotionFormDto.setDescription("-40% Doce");
+        return promotionFormDto;
     }
 }

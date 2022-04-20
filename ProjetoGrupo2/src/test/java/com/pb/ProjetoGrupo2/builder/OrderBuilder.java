@@ -1,11 +1,13 @@
 package com.pb.ProjetoGrupo2.builder;
 
 import com.pb.ProjetoGrupo2.dto.OrderDto;
+import com.pb.ProjetoGrupo2.dto.OrderFormDto;
 import com.pb.ProjetoGrupo2.entities.Order;
 
 import java.sql.Timestamp;
 
 public class OrderBuilder {
+
     public static Order getOrder() {
         Order order = new Order();
         order.setId(1L);
@@ -31,5 +33,13 @@ public class OrderBuilder {
         orderDtoTwo.setPurchase_date(Timestamp.valueOf("2022-05-01 16:23:00"));
         orderDtoTwo.setDelivery_date(Timestamp.valueOf("2022-05-01 22:00:00"));
         return orderDtoTwo;
+    }
+
+    public static OrderFormDto getOrderFormDto() {
+        OrderFormDto orderFormDto = new OrderFormDto();
+        orderFormDto.setDelivery_date(Timestamp.valueOf("2022-05-01 22:00:00"));
+        orderFormDto.setPurchase_date(Timestamp.valueOf("2022-05-01 16:23:00"));
+        orderFormDto.setQuantity(10);
+        return orderFormDto;
     }
 }
