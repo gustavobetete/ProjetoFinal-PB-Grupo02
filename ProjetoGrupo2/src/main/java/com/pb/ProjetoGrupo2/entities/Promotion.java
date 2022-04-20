@@ -1,7 +1,6 @@
 package com.pb.ProjetoGrupo2.entities;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,14 +14,12 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Builder
 public class Promotion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-//    private List<Product> productList;
     private String description;
-    private BigDecimal promotion_price;
+    private BigDecimal promotionPrice;
 
 }

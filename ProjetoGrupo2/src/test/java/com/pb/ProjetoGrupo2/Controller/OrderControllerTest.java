@@ -35,6 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class OrderControllerTest {
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -90,7 +91,6 @@ class OrderControllerTest {
 
     }
 
-
     @Test
     void getOrderById() throws Exception{
 
@@ -121,10 +121,12 @@ class OrderControllerTest {
 
         when(orderService.update(anyLong(), any(OrderFormDto.class))).thenReturn(orderDto);
 
-        mockMvc.perform(put("/order/1").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(put("/order/1")
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(orderFormDto)))
-                .andExpect(status().isOk()).andExpect(jsonPath("$.quantity")
-                        .value(orderFormDto.getQuantity())).andDo(print());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.quantity").value(orderFormDto.getQuantity()))
+                .andDo(print());
     }
 
     @Test

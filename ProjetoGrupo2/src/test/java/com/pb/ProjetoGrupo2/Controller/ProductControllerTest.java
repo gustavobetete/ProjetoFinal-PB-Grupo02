@@ -101,8 +101,8 @@ class ProductControllerTest {
 
         mockMvc.perform(get("/product/{id}", id))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name")
-                        .value(product.getName())).andDo(print());
+                .andExpect(jsonPath("$.name").value(product.getName()))
+                .andDo(print());
 
     }
 
@@ -119,10 +119,12 @@ class ProductControllerTest {
 
         when(productService.update(anyLong(), any(ProductFormDto.class))).thenReturn(productDto);
 
-        mockMvc.perform(put("/product/1").contentType(MediaType.APPLICATION_JSON)
+        mockMvc.perform(put("/product/1")
+                        .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(productFormDto)))
-                .andExpect(status().isOk()).andExpect(jsonPath("$.name")
-                        .value(productFormDto.getName())).andDo(print());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value(productFormDto.getName()))
+                .andDo(print());
 
     }
 

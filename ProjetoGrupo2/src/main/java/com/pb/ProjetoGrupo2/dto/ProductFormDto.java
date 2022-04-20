@@ -2,7 +2,6 @@ package com.pb.ProjetoGrupo2.dto;
 
 import com.pb.ProjetoGrupo2.constants.Type;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,7 +13,6 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class ProductFormDto {
 
     @NotNull(message = "O campo Name não pode ser nulo")
@@ -26,8 +24,9 @@ public class ProductFormDto {
     private Type type;
 
     @NotNull(message = "O campo unitPrice não pode ser nulo")
-    private BigDecimal unit_price;
+    private BigDecimal unitPrice;
 
     @NotNull(message = "O campo quantity não pode ser nulo")
     private Integer quantity;
+
 }

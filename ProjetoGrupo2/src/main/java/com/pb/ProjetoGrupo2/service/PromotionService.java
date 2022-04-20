@@ -4,7 +4,6 @@ import com.pb.ProjetoGrupo2.dto.PromotionDto;
 import com.pb.ProjetoGrupo2.dto.PromotionFormDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 
 public interface PromotionService {
 

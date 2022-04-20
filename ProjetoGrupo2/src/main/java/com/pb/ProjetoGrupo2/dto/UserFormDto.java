@@ -4,7 +4,6 @@ import com.pb.ProjetoGrupo2.config.validation.InstitutionalEmail;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.br.CPF;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -32,4 +31,5 @@ public class UserFormDto {
     @NotEmpty(message = "O campo Password não pode ser vazio")
     @NotBlank(message = "O campo Password não pode estar em branco")
     private String password;
+
 }

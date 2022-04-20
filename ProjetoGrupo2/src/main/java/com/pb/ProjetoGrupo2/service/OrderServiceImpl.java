@@ -21,50 +21,51 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService {
 
     @Autowired
-    private OrderRepository repository;
+    private OrderRepository orderRepository;
 
     @Autowired
-    private ModelMapper mapper;
+    private ModelMapper modelMapper;
 
     @Override
     public Page<OrderDto> findAll(Pageable page){
-        Page<Order> orders = this.repository.findAll(page);
-        List<OrderDto> listOrders = orders.stream().map(order -> mapper.map(order, OrderDto.class)).collect(Collectors.toList());
+        Page<Order> orders = this.orderRepository.findAll(page);
+        List<OrderDto> listOrders = orders.stream().map(order ->
+                modelMapper.map(order, OrderDto.class)).collect(Collectors.toList());
         return new PageImpl<OrderDto>(listOrders, page, orders.getTotalElements());
     }
 
     @Override
     public OrderDto findById(Long id){
-        Optional<Order> orders = repository.findById(id);
+        Optional<Order> orders = orderRepository.findById(id);
         if (orders.isPresent()){
-            return mapper.map(orders.get(), OrderDto.class);
+            return modelMapper.map(orders.get(), OrderDto.class);
         }
         throw new ObjectNotFoundException("Order not found!");
     }
 
     @Override
     public OrderDto save(OrderFormDto orderFormDto){
-        Order order = this.repository.save(mapper.map(orderFormDto, Order.class));
-        return mapper.map(order, OrderDto.class);
+        Order order = this.orderRepository.save(modelMapper.map(orderFormDto, Order.class));
+        return modelMapper.map(order, OrderDto.class);
     }
 
     @Override
     public OrderDto update(Long id, OrderFormDto orderFormDto) {
-        Optional<Order> order = this.repository.findById(id);
+        Optional<Order> order = this.orderRepository.findById(id);
         if(order.isPresent()) {
-            Order orderUpdated = mapper.map(orderFormDto, Order.class);
+            Order orderUpdated = modelMapper.map(orderFormDto, Order.class);
             orderUpdated.setId(id);
-            repository.save(orderUpdated);
-            return mapper.map(orderUpdated, OrderDto.class);
+            orderRepository.save(orderUpdated);
+            return modelMapper.map(orderUpdated, OrderDto.class);
         }
         throw new ObjectNotFoundException("Order not found!");
     }
 
     @Override
     public Object deleteById(Long id) {
-        Optional<Order> order = repository.findById(id);
+        Optional<Order> order = orderRepository.findById(id);
         if(order.isPresent()){
-            repository.deleteById(id);
+            orderRepository.deleteById(id);
             return ResponseEntity.ok().build();
         }
         throw new ObjectNotFoundException("Order not found!");

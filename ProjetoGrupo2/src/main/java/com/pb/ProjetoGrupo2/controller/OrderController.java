@@ -2,7 +2,6 @@ package com.pb.ProjetoGrupo2.controller;
 
 import com.pb.ProjetoGrupo2.dto.OrderDto;
 import com.pb.ProjetoGrupo2.dto.OrderFormDto;
-import com.pb.ProjetoGrupo2.dto.ProductDto;
 import com.pb.ProjetoGrupo2.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +22,6 @@ public class OrderController {
 
     @Autowired
     private OrderService service;
-
 
     @GetMapping
     public ResponseEntity<Page<OrderDto>> findAll(@PageableDefault(page = 0, size = 10,sort = "id",direction = Sort.Direction.ASC) Pageable page){

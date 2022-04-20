@@ -57,7 +57,7 @@ public class PromotionServiceTest {
         PromotionDto promotionDTO = this.promotionService.save(PromotionBuilder.getPromotionFormDto());
 
         assertThat(promotionDTO.getId()).isNotNull();
-        assertThat(promotionDTO.getPromotion_price()).isEqualTo(promotion.getPromotion_price());
+        assertThat(promotionDTO.getPromotionPrice()).isEqualTo(promotion.getPromotionPrice());
         assertThat(promotionDTO.getDescription()).isEqualTo(promotion.getDescription());
 
     }
@@ -90,7 +90,7 @@ public class PromotionServiceTest {
         PromotionDto promotionDTO = this.promotionService.findById(promotion.getId());
 
         assertThat(promotionDTO.getId()).isNotNull();
-        assertThat(promotionDTO.getPromotion_price()).isEqualTo(promotion.getPromotion_price());
+        assertThat(promotionDTO.getPromotionPrice()).isEqualTo(promotion.getPromotionPrice());
         assertThat(promotionDTO.getDescription()).isEqualTo(promotion.getDescription());
 
     }
@@ -112,7 +112,7 @@ public class PromotionServiceTest {
     public void updatePromotion() {
         Promotion promotion = PromotionBuilder.getPromotion();
         PromotionFormDto promotionFormDTO = PromotionBuilder.getPromotionFormDto();
-        promotionFormDTO.setPromotion_price(BigDecimal.valueOf(0.4));
+        promotionFormDTO.setPromotionPrice(BigDecimal.valueOf(0.4));
 
         when(this.repository.findById(anyLong())).thenReturn(Optional.of(promotion));
         when(this.repository.save(any(Promotion.class))).thenReturn(promotion);
@@ -120,7 +120,7 @@ public class PromotionServiceTest {
         PromotionDto promotionDTO = this.promotionService.update(promotion.getId(), promotionFormDTO);
 
         assertThat(promotionDTO.getId()).isNotNull();
-        assertThat(promotionDTO.getPromotion_price()).isEqualTo(promotionFormDTO.getPromotion_price());
+        assertThat(promotionDTO.getPromotionPrice()).isEqualTo(promotionFormDTO.getPromotionPrice());
         assertThat(promotionDTO.getDescription()).isEqualTo(promotionFormDTO.getDescription());
 
     }
@@ -147,7 +147,6 @@ public class PromotionServiceTest {
 
         verify(this.repository, times(1)).deleteById(1L);
     }
-
 
     @Test
     @DisplayName("Delete promotion not found")
