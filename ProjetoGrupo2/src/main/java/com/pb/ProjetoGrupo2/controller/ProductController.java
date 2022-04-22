@@ -62,4 +62,12 @@ public class ProductController {
         ResponseEntity productOrder = service.createProductOrder(productOrderFormDto);
         return productOrder;
     }
+
+    @DeleteMapping("/{productId}/orders/{orderId}")
+    @Transactional
+    public ResponseEntity<?> removeProductOrder(@PathVariable Long productId, @PathVariable Long orderId){
+
+        ResponseEntity<?> product = service.removeProductOrder(productId, orderId);
+        return product;
+    }
 }

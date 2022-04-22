@@ -20,4 +20,6 @@ public interface ProductService {
     Object deleteById(Long id);
 
     ResponseEntity createProductOrder(ProductOrderFormDto productOrderFormDto);
+
+    ResponseEntity removeProductOrder(Long productId, Long orderId);
 }

@@ -87,12 +87,26 @@ public class ProductServiceImpl implements ProductService{
         if(product.isPresent() && order.isPresent()){
 
             order.get().getProducts().add(product.get());
-            // order.get().setProducts(product.get());
             orderRepository.save(order.get());
 
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.noContent().build();
+    }
+
+    public ResponseEntity<?> removeProductOrder(Long productId, Long orderId) {
+
+        Optional<Product> product = productRepository.findById(productId);
+        Optional<Order> order = orderRepository.findById(orderId);
+
+        if(product.isPresent() && order.isPresent()){
+            order.get().getProducts().remove(product.get());
+            orderRepository.save(order.get());
+
+            return ResponseEntity.ok().build();
+        }else {
+            return ResponseEntity.noContent().build();
+        }
     }
 
 }
