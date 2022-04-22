@@ -13,6 +13,8 @@ import java.math.BigDecimal;
 public class PromotionFormDto {
 
     @NotNull(message = "O campo description não pode ser nulo")
+    @NotEmpty(message = "O campo Name não pode ser vazio")
+    @NotBlank(message = "O campo Name não pode estar em branco")
     private String description;
 
     @NotNull(message = "O campo promotion_price não pode ser nulo")

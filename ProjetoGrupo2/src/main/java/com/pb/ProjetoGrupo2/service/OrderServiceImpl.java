@@ -3,8 +3,12 @@ package com.pb.ProjetoGrupo2.service;
 import com.pb.ProjetoGrupo2.config.validation.ObjectNotFoundException;
 import com.pb.ProjetoGrupo2.dto.OrderDto;
 import com.pb.ProjetoGrupo2.dto.OrderFormDto;
+import com.pb.ProjetoGrupo2.dto.ProductDto;
+import com.pb.ProjetoGrupo2.dto.ProductOrderFormDto;
 import com.pb.ProjetoGrupo2.entities.Order;
+import com.pb.ProjetoGrupo2.entities.Product;
 import com.pb.ProjetoGrupo2.repository.OrderRepository;
+import com.pb.ProjetoGrupo2.repository.ProductRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,6 +28,12 @@ public class OrderServiceImpl implements OrderService {
     private OrderRepository orderRepository;
 
     @Autowired
+<<<<<<< HEAD
+=======
+    private ProductRepository productRepository;
+
+    @Autowired
+>>>>>>> e291120593c8544b18e2f5559920660ccbe2383b
     private ModelMapper modelMapper;
 
     @Override
@@ -69,5 +79,12 @@ public class OrderServiceImpl implements OrderService {
             return ResponseEntity.ok().build();
         }
         throw new ObjectNotFoundException("Order not found!");
+    }
+
+    @Override
+    public List<ProductDto> listAllProduct(Long id){
+        List<Product> products = productRepository.findByOrdersId(id);
+        List<ProductDto> productDto = products.stream().map(i -> modelMapper.map(i, ProductDto.class)).collect(Collectors.toList());
+        return productDto;
     }
 }

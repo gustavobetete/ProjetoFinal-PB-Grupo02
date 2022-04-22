@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -20,4 +21,7 @@ public class User {
     private String email;
     private String password;
 
+    @OneToMany//(mappedBy = "user")
+    @JoinTable(name = "users_id", joinColumns = @JoinColumn(name = "users_orders"), inverseJoinColumns = @JoinColumn(name = "orders_id"))
+    private List<Order> orders;
 }

@@ -2,7 +2,10 @@ package com.pb.ProjetoGrupo2.service;
 
 import com.pb.ProjetoGrupo2.dto.ProductDto;
 import com.pb.ProjetoGrupo2.dto.ProductFormDto;
+import com.pb.ProjetoGrupo2.dto.ProductOrderFormDto;
+import com.pb.ProjetoGrupo2.entities.Order;
 import com.pb.ProjetoGrupo2.entities.Product;
+import com.pb.ProjetoGrupo2.repository.OrderRepository;
 import com.pb.ProjetoGrupo2.repository.ProductRepository;
 import com.pb.ProjetoGrupo2.config.validation.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
@@ -25,6 +28,12 @@ public class ProductServiceImpl implements ProductService{
     private ProductRepository productRepository;
 
     @Autowired
+<<<<<<< HEAD
+=======
+    private OrderRepository orderRepository;
+
+    @Autowired
+>>>>>>> e291120593c8544b18e2f5559920660ccbe2383b
     private ModelMapper modelMapper;
 
     @Override
@@ -70,6 +79,37 @@ public class ProductServiceImpl implements ProductService{
             return ResponseEntity.ok().build();
         }
         throw new ObjectNotFoundException("Product not found!");
+    }
+
+    @Override
+    public ResponseEntity createProductOrder(ProductOrderFormDto productOrderFormDto) {
+
+        Optional<Product> product = productRepository.findById(productOrderFormDto.getProductId());
+        Optional<Order> order = orderRepository.findById(productOrderFormDto.getOrderId());
+
+        if(product.isPresent() && order.isPresent()){
+
+            order.get().getProducts().add(product.get());
+            orderRepository.save(order.get());
+
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.noContent().build();
+    }
+
+    public ResponseEntity<?> removeProductOrder(Long productId, Long orderId) {
+
+        Optional<Product> product = productRepository.findById(productId);
+        Optional<Order> order = orderRepository.findById(orderId);
+
+        if(product.isPresent() && order.isPresent()){
+            order.get().getProducts().remove(product.get());
+            orderRepository.save(order.get());
+
+            return ResponseEntity.ok().build();
+        }else {
+            return ResponseEntity.noContent().build();
+        }
     }
 
 }

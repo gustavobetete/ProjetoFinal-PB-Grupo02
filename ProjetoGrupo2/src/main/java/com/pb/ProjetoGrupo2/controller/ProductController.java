@@ -2,6 +2,8 @@ package com.pb.ProjetoGrupo2.controller;
 
 import com.pb.ProjetoGrupo2.dto.ProductDto;
 import com.pb.ProjetoGrupo2.dto.ProductFormDto;
+
+import com.pb.ProjetoGrupo2.dto.ProductOrderFormDto;
 import com.pb.ProjetoGrupo2.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 @RequiredArgsConstructor
@@ -52,5 +55,20 @@ public class ProductController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         this.service.deleteById(id);
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/orders")
+    @Transactional
+    public ResponseEntity<?> createProductOrder(@RequestBody @Valid ProductOrderFormDto productOrderFormDto){
+        ResponseEntity productOrder = service.createProductOrder(productOrderFormDto);
+        return productOrder;
+    }
+
+    @DeleteMapping("/{productId}/orders/{orderId}")
+    @Transactional
+    public ResponseEntity<?> removeProductOrder(@PathVariable Long productId, @PathVariable Long orderId){
+
+        ResponseEntity<?> product = service.removeProductOrder(productId, orderId);
+        return product;
     }
 }

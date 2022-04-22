@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -51,5 +52,16 @@ public class OrderController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         this.service.deleteById(id);
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/product")
+    public ResponseEntity<List<ProductDto>> listAllProduct(@PathVariable Long id){
+        List<ProductDto> product = service.listAllProduct(id);
+
+        if(product.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }else {
+            return ResponseEntity.ok().body(product);
+        }
     }
 }
