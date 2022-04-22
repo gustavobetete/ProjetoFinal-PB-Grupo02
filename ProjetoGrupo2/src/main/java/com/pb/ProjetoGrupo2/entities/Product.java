@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -22,5 +23,11 @@ public class Product {
     private Type type;
     private BigDecimal unitPrice;
     private Integer quantity;
+
+    @ManyToMany(mappedBy = "products")
+    private List<Order> orders;
+
+    @ManyToMany(mappedBy = "product")
+    private List<Promotion> promotion;
 
 }
