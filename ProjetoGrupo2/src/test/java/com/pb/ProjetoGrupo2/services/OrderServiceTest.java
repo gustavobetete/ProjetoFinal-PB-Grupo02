@@ -6,7 +6,9 @@ import com.pb.ProjetoGrupo2.dto.OrderDto;
 import com.pb.ProjetoGrupo2.dto.OrderFormDto;
 import com.pb.ProjetoGrupo2.entities.Order;
 import com.pb.ProjetoGrupo2.repository.OrderRepository;
+import com.pb.ProjetoGrupo2.repository.UserRepository;
 import com.pb.ProjetoGrupo2.service.OrderServiceImpl;
+import com.pb.ProjetoGrupo2.service.UserServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,6 +41,12 @@ public class OrderServiceTest {
     @MockBean
     private OrderRepository repository;
 
+    @MockBean
+    private UserServiceImpl users;
+
+    @MockBean
+    private UserRepository userRepository;
+
     @Test
     @DisplayName("Save order")
     public void saveOrder() {
@@ -48,10 +56,10 @@ public class OrderServiceTest {
 
         OrderDto orderDTO = this.orderService.save(OrderBuilder.getOrderFormDto());
 
-        assertThat(orderDTO.getId()).isNotNull();
         assertThat(orderDTO.getDeliveryDate()).isEqualTo(order.getDeliveryDate());
         assertThat(orderDTO.getQuantity()).isEqualTo(order.getQuantity());
         assertThat(orderDTO.getPurchaseDate()).isEqualTo(order.getPurchaseDate());
+        assertThat(orderDTO.getIdUser()).isEqualTo(order.getUser().getId());
     }
 
     @Test
