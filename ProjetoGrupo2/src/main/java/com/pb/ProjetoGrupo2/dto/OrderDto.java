@@ -22,4 +22,5 @@ public class OrderDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy hh:mm:ss a", locale = "pt-BR")
     private Timestamp deliveryDate;
     private Long idUser;
+    private List<Product> products;
 }
