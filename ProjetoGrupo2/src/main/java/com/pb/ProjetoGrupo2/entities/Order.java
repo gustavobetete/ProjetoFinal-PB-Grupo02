@@ -24,10 +24,10 @@ public class Order {
     private Timestamp deliveryDate;
 
     @ManyToMany//(mappedBy = "orders")
-    @JoinTable(name = "orders_id", joinColumns = @JoinColumn(name = "orders_product"), inverseJoinColumns = @JoinColumn(name = "product_id"))
+    @JoinTable(name = "orders_product", joinColumns = @JoinColumn(name = "orders_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> products;
 
     @ManyToOne
-    @JoinColumn(name = "orders")
+    @JoinColumn(name = "user_id")
     private User user;
 }

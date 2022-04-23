@@ -1,5 +1,7 @@
 package com.pb.ProjetoGrupo2.controller;
 
+import com.pb.ProjetoGrupo2.dto.OrderDto;
+import com.pb.ProjetoGrupo2.dto.ProductDto;
 import com.pb.ProjetoGrupo2.dto.UserDto;
 import com.pb.ProjetoGrupo2.dto.UserFormDto;
 import com.pb.ProjetoGrupo2.service.UserService;
@@ -14,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -51,5 +54,16 @@ public class UserController {
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         this.service.deleteById(id);
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/orders")
+    public ResponseEntity<List<OrderDto>> listAllOrders(@PathVariable Long id){
+        List<OrderDto> orderDto = service.listAllOrders(id);
+
+        if(orderDto.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }else {
+            return ResponseEntity.ok().body(orderDto);
+        }
     }
 }

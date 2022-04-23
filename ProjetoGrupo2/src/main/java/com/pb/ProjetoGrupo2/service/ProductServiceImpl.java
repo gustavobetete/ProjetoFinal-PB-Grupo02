@@ -5,9 +5,11 @@ import com.pb.ProjetoGrupo2.dto.ProductFormDto;
 import com.pb.ProjetoGrupo2.dto.ProductOrderFormDto;
 import com.pb.ProjetoGrupo2.entities.Order;
 import com.pb.ProjetoGrupo2.entities.Product;
+import com.pb.ProjetoGrupo2.entities.User;
 import com.pb.ProjetoGrupo2.repository.OrderRepository;
 import com.pb.ProjetoGrupo2.repository.ProductRepository;
 import com.pb.ProjetoGrupo2.config.validation.ObjectNotFoundException;
+import com.pb.ProjetoGrupo2.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -29,6 +31,9 @@ public class ProductServiceImpl implements ProductService{
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -84,7 +89,7 @@ public class ProductServiceImpl implements ProductService{
         Optional<Product> product = productRepository.findById(productOrderFormDto.getProductId());
         Optional<Order> order = orderRepository.findById(productOrderFormDto.getOrderId());
 
-        if(product.isPresent() && order.isPresent()){
+        if(product.isPresent() && order.isPresent()) {
 
             order.get().getProducts().add(product.get());
             orderRepository.save(order.get());
