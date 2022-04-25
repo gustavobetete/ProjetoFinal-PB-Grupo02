@@ -1,9 +1,9 @@
 package com.pb.ProjetoGrupo2.controller;
 
-import com.pb.ProjetoGrupo2.dto.OrderDto;
-import com.pb.ProjetoGrupo2.dto.OrderFormDto;
+import com.pb.ProjetoGrupo2.dto.CartDto;
+import com.pb.ProjetoGrupo2.dto.CartFormDto;
 import com.pb.ProjetoGrupo2.dto.ProductDto;
-import com.pb.ProjetoGrupo2.service.OrderService;
+import com.pb.ProjetoGrupo2.service.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,34 +19,34 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/order")
-public class OrderController {
+@RequestMapping("/cart")
+public class CartController {
 
     @Autowired
-    private OrderService service;
+    private CartService service;
 
     @GetMapping
-    public ResponseEntity<Page<OrderDto>> findAll(@PageableDefault(page = 0, size = 10,sort = "id",direction = Sort.Direction.ASC) Pageable page){
-        Page<OrderDto> orders = this.service.findAll(page);
-        return ResponseEntity.ok(orders);
+    public ResponseEntity<Page<CartDto>> findAll(@PageableDefault(page = 0, size = 10,sort = "id",direction = Sort.Direction.ASC) Pageable page){
+        Page<CartDto> cart = this.service.findAll(page);
+        return ResponseEntity.ok(cart);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderDto> findById(@PathVariable Long id){
+    public ResponseEntity<CartDto> findById(@PathVariable Long id){
         return ResponseEntity.ok().body(service.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<OrderDto> save(@RequestBody @Valid OrderFormDto orderFormDto){
-        OrderDto orderDto = this.service.save(orderFormDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(orderDto);
+    public ResponseEntity<CartDto> save(@RequestBody @Valid CartFormDto cartFormDto){
+        CartDto cartDto = this.service.save(cartFormDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(cartDto);
     }
 
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<OrderDto> update(@PathVariable Long id, @RequestBody @Valid OrderFormDto orderFormDto) {
-        OrderDto orderDto = this.service.update(id, orderFormDto);
-        return ResponseEntity.ok(orderDto);
+    public ResponseEntity<CartDto> update(@PathVariable Long id, @RequestBody @Valid CartFormDto cartFormDto) {
+        CartDto cartDto = this.service.update(id, cartFormDto);
+        return ResponseEntity.ok(cartDto);
     }
 
     @DeleteMapping(path = "/{id}")

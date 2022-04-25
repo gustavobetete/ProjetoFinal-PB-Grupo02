@@ -55,20 +55,20 @@ public class UserController {
     }
 
     @GetMapping("/{id}/orders")
-    public ResponseEntity<List<OrderDto>> listAllOrders(@PathVariable Long id){
-        List<OrderDto> orderDto = service.listAllOrders(id);
+    public ResponseEntity<List<CartDto>> listAllOrders(@PathVariable Long id){
+        List<CartDto> cartDto = service.listAllOrders(id);
 
-        if(orderDto.isEmpty()){
+        if(cartDto.isEmpty()){
             return ResponseEntity.noContent().build();
         }else {
-            return ResponseEntity.ok().body(orderDto);
+            return ResponseEntity.ok().body(cartDto);
         }
     }
 
     @PostMapping(path = "/orders")
     @Transactional
-    public ResponseEntity<?> createProductOrder(@RequestBody @Valid ProductOrderFormDto productOrderFormDto){
-        ResponseEntity productOrder = service.createProductOrder(productOrderFormDto);
+    public ResponseEntity<?> createProductOrder(@RequestBody @Valid ProductCartFormDto productCartFormDto){
+        ResponseEntity productOrder = service.createProductOrder(productCartFormDto);
         return productOrder;
     }
 

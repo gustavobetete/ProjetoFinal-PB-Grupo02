@@ -2,11 +2,8 @@ package com.pb.ProjetoGrupo2.service;
 
 import com.pb.ProjetoGrupo2.dto.ProductDto;
 import com.pb.ProjetoGrupo2.dto.ProductFormDto;
-import com.pb.ProjetoGrupo2.dto.ProductOrderFormDto;
-import com.pb.ProjetoGrupo2.entities.Order;
 import com.pb.ProjetoGrupo2.entities.Product;
-import com.pb.ProjetoGrupo2.entities.User;
-import com.pb.ProjetoGrupo2.repository.OrderRepository;
+import com.pb.ProjetoGrupo2.repository.CartRepository;
 import com.pb.ProjetoGrupo2.repository.ProductRepository;
 import com.pb.ProjetoGrupo2.config.validation.ObjectNotFoundException;
 import com.pb.ProjetoGrupo2.repository.UserRepository;
@@ -30,7 +27,7 @@ public class ProductServiceImpl implements ProductService{
     private ProductRepository productRepository;
 
     @Autowired
-    private OrderRepository orderRepository;
+    private CartRepository cartRepository;
 
     @Autowired
     private UserRepository userRepository;

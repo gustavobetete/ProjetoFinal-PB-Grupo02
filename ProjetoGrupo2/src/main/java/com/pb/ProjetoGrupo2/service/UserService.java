@@ -1,7 +1,7 @@
 package com.pb.ProjetoGrupo2.service;
 
-import com.pb.ProjetoGrupo2.dto.OrderDto;
-import com.pb.ProjetoGrupo2.dto.ProductOrderFormDto;
+import com.pb.ProjetoGrupo2.dto.CartDto;
+import com.pb.ProjetoGrupo2.dto.ProductCartFormDto;
 import com.pb.ProjetoGrupo2.dto.UserDto;
 import com.pb.ProjetoGrupo2.dto.UserFormDto;
 import org.springframework.data.domain.Page;
@@ -21,9 +21,9 @@ public interface UserService {
 
     Object deleteById(Long id);
 
-    List<OrderDto> listAllOrders(Long id);
+    List<CartDto> listAllOrders(Long id);
 
-    ResponseEntity createProductOrder(ProductOrderFormDto productOrderFormDto);
+    ResponseEntity createProductOrder(ProductCartFormDto productCartFormDto);
 
     ResponseEntity removeProductOrder(Long productId, Long orderId);
 }

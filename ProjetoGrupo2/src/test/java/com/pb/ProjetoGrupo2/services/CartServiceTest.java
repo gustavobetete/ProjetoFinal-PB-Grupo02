@@ -1,13 +1,13 @@
 package com.pb.ProjetoGrupo2.services;
 
-import com.pb.ProjetoGrupo2.builder.OrderBuilder;
+import com.pb.ProjetoGrupo2.builder.CartBuilder;
 import com.pb.ProjetoGrupo2.config.validation.ObjectNotFoundException;
-import com.pb.ProjetoGrupo2.dto.OrderDto;
-import com.pb.ProjetoGrupo2.dto.OrderFormDto;
-import com.pb.ProjetoGrupo2.entities.Order;
-import com.pb.ProjetoGrupo2.repository.OrderRepository;
+import com.pb.ProjetoGrupo2.dto.CartDto;
+import com.pb.ProjetoGrupo2.dto.CartFormDto;
+import com.pb.ProjetoGrupo2.entities.Cart;
+import com.pb.ProjetoGrupo2.repository.CartRepository;
 import com.pb.ProjetoGrupo2.repository.UserRepository;
-import com.pb.ProjetoGrupo2.service.OrderServiceImpl;
+import com.pb.ProjetoGrupo2.service.CartServiceImpl;
 import com.pb.ProjetoGrupo2.service.UserServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,13 +33,13 @@ import static org.mockito.Mockito.*;
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 @DisplayName("Tests for Order Service")
-public class OrderServiceTest {
+public class CartServiceTest {
 
     @Autowired
-    private OrderServiceImpl orderService;
+    private CartServiceImpl orderService;
 
     @MockBean
-    private OrderRepository repository;
+    private CartRepository repository;
 
     @MockBean
     private UserServiceImpl users;
@@ -50,30 +50,30 @@ public class OrderServiceTest {
     @Test
     @DisplayName("Save order")
     public void saveOrder() {
-        Order order = OrderBuilder.getOrder();
+        Cart cart = CartBuilder.getOrder();
 
-        when(this.repository.save(any(Order.class))).thenReturn(order);
+        when(this.repository.save(any(Cart.class))).thenReturn(cart);
 
-        OrderDto orderDTO = this.orderService.save(OrderBuilder.getOrderFormDto());
+        CartDto cartDTO = this.orderService.save(CartBuilder.getOrderFormDto());
 
-        assertThat(orderDTO.getDeliveryDate()).isEqualTo(order.getDeliveryDate());
-        assertThat(orderDTO.getQuantity()).isEqualTo(order.getQuantity());
-        assertThat(orderDTO.getPurchaseDate()).isEqualTo(order.getPurchaseDate());
-        assertThat(orderDTO.getIdUser()).isEqualTo(order.getUser().getId());
+        assertThat(cartDTO.getDeliveryDate()).isEqualTo(cart.getDeliveryDate());
+        assertThat(cartDTO.getQuantity()).isEqualTo(cart.getQuantity());
+        assertThat(cartDTO.getPurchaseDate()).isEqualTo(cart.getPurchaseDate());
+        assertThat(cartDTO.getIdUser()).isEqualTo(cart.getUser().getId());
     }
 
     @Test
     @DisplayName("List all orders")
     public void listOrders() {
-        Order order = OrderBuilder.getOrder();
+        Cart cart = CartBuilder.getOrder();
 
         PageRequest pageRequest = PageRequest.of(0, 10);
-        List<Order> orders = Arrays.asList(order);
-        Page<Order> page = new PageImpl<>(orders, pageRequest, 1);
+        List<Cart> carts = Arrays.asList(cart);
+        Page<Cart> page = new PageImpl<>(carts, pageRequest, 1);
 
         when(this.repository.findAll(any(PageRequest.class))).thenReturn(page);
 
-        Page<OrderDto> pageOrderDTO = this.orderService.findAll(pageRequest);
+        Page<CartDto> pageOrderDTO = this.orderService.findAll(pageRequest);
 
         assertThat(pageOrderDTO.getContent()).hasSize(1);
         assertThat(pageOrderDTO.getTotalPages()).isEqualTo(1);
@@ -83,67 +83,67 @@ public class OrderServiceTest {
     @Test
     @DisplayName("FindById orders")
     public void findByIdOrder() {
-        Order order = OrderBuilder.getOrder();
+        Cart cart = CartBuilder.getOrder();
 
-        when(this.repository.findById(anyLong())).thenReturn(Optional.of(order));
+        when(this.repository.findById(anyLong())).thenReturn(Optional.of(cart));
 
-        OrderDto orderDTO = this.orderService.findById(order.getId());
+        CartDto cartDTO = this.orderService.findById(cart.getId());
 
-        assertThat(orderDTO.getId()).isNotNull();
-        assertThat(orderDTO.getDeliveryDate()).isEqualTo(order.getDeliveryDate());
-        assertThat(orderDTO.getPurchaseDate()).isEqualTo(order.getPurchaseDate());
-        assertThat(orderDTO.getQuantity()).isEqualTo(order.getQuantity());
+        assertThat(cartDTO.getId()).isNotNull();
+        assertThat(cartDTO.getDeliveryDate()).isEqualTo(cart.getDeliveryDate());
+        assertThat(cartDTO.getPurchaseDate()).isEqualTo(cart.getPurchaseDate());
+        assertThat(cartDTO.getQuantity()).isEqualTo(cart.getQuantity());
 
     }
 
     @Test
     @DisplayName("findById Order not found")
     public void findByIdOrder_NotFound() {
-        Order order = OrderBuilder.getOrder();
+        Cart cart = CartBuilder.getOrder();
 
         when(this.repository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThatExceptionOfType(ObjectNotFoundException.class)
-                .isThrownBy(() -> this.orderService.findById(order.getId()));
+                .isThrownBy(() -> this.orderService.findById(cart.getId()));
     }
 
 
     @Test
     @DisplayName("Update order")
     public void updateOrder() {
-        Order order = OrderBuilder.getOrder();
-        OrderFormDto orderFormDTO = OrderBuilder.getOrderFormDto();
-        orderFormDTO.setQuantity(2);
+        Cart cart = CartBuilder.getOrder();
+        CartFormDto cartFormDTO = CartBuilder.getOrderFormDto();
+        cartFormDTO.setQuantity(2);
 
-        when(this.repository.findById(anyLong())).thenReturn(Optional.of(order));
-        when(this.repository.save(any(Order.class))).thenReturn(order);
+        when(this.repository.findById(anyLong())).thenReturn(Optional.of(cart));
+        when(this.repository.save(any(Cart.class))).thenReturn(cart);
 
-        OrderDto orderDTO = this.orderService.update(order.getId(), orderFormDTO);
+        CartDto cartDTO = this.orderService.update(cart.getId(), cartFormDTO);
 
-        assertThat(orderDTO.getId()).isNotNull();
-        assertThat(orderDTO.getDeliveryDate()).isEqualTo(orderFormDTO.getDeliveryDate());
-        assertThat(orderDTO.getPurchaseDate()).isEqualTo(orderFormDTO.getPurchaseDate());
-        assertThat(orderDTO.getQuantity()).isEqualTo(orderFormDTO.getQuantity());
+        assertThat(cartDTO.getId()).isNotNull();
+        assertThat(cartDTO.getDeliveryDate()).isEqualTo(cartFormDTO.getDeliveryDate());
+        assertThat(cartDTO.getPurchaseDate()).isEqualTo(cartFormDTO.getPurchaseDate());
+        assertThat(cartDTO.getQuantity()).isEqualTo(cartFormDTO.getQuantity());
 
     }
 
     @Test
     @DisplayName("Update order not found")
     public void updateOrder_NotFound() {
-        Order order = OrderBuilder.getOrder();
+        Cart cart = CartBuilder.getOrder();
 
         when(this.repository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThatExceptionOfType(ObjectNotFoundException.class)
-                .isThrownBy(() -> this.orderService.update(order.getId(), OrderBuilder.getOrderFormDto()));
+                .isThrownBy(() -> this.orderService.update(cart.getId(), CartBuilder.getOrderFormDto()));
     }
 
     @Test
     @DisplayName("Delete order")
     public void deleteOrder() {
-        Order order = OrderBuilder.getOrder();
+        Cart cart = CartBuilder.getOrder();
 
-        when(this.repository.findById(anyLong())).thenReturn(Optional.of(order));
+        when(this.repository.findById(anyLong())).thenReturn(Optional.of(cart));
 
         this.orderService.deleteById(1L);
 
