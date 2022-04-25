@@ -33,8 +33,12 @@ public class Product {
     @JsonIgnore
     private List<Order> orders;
 
-    @ManyToMany(mappedBy = "product")
-    //@JoinTable(name = "promotion_product", joinColumns = @JoinColumn(name = "promotion_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            }, mappedBy = "product")
+    @JsonIgnore
     private List<Promotion> promotion;
 
 }
