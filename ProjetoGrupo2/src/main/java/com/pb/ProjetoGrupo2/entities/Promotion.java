@@ -21,7 +21,6 @@ public class Promotion {
     private String description;
     private BigDecimal promotionPrice;
 
-    @ManyToMany//(mappedBy = "promotion")
-    @JoinTable(name = "promotion_id", joinColumns = @JoinColumn(name = "promotion_product"), inverseJoinColumns = @JoinColumn(name = "product_id"))
+    @OneToMany(mappedBy = "promotion")
     private List<Product> product;
 }

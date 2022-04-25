@@ -28,12 +28,10 @@ public class ProductServiceImpl implements ProductService{
     private ProductRepository productRepository;
 
     @Autowired
-<<<<<<< HEAD
-=======
+
     private OrderRepository orderRepository;
 
     @Autowired
->>>>>>> e291120593c8544b18e2f5559920660ccbe2383b
     private ModelMapper modelMapper;
 
     @Override

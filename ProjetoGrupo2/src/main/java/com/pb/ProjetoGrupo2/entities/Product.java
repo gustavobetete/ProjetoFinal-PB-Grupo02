@@ -24,10 +24,10 @@ public class Product {
     private BigDecimal unitPrice;
     private Integer quantity;
 
-    @ManyToMany(mappedBy = "products")
-    private List<Order> orders;
+    @ManyToOne
+    private Order order;
 
-    @ManyToMany(mappedBy = "product")
-    private List<Promotion> promotion;
+    @ManyToOne
+    private Promotion promotion;
 
 }

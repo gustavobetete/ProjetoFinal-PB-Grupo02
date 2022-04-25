@@ -28,12 +28,11 @@ public class OrderServiceImpl implements OrderService {
     private OrderRepository orderRepository;
 
     @Autowired
-<<<<<<< HEAD
-=======
+
     private ProductRepository productRepository;
 
     @Autowired
->>>>>>> e291120593c8544b18e2f5559920660ccbe2383b
+
     private ModelMapper modelMapper;
 
     @Override
@@ -83,7 +82,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<ProductDto> listAllProduct(Long id){
-        List<Product> products = productRepository.findByOrdersId(id);
+        List<Product> products = productRepository.findByOrderId(id);
         List<ProductDto> productDto = products.stream().map(i -> modelMapper.map(i, ProductDto.class)).collect(Collectors.toList());
         return productDto;
     }
