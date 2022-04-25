@@ -15,7 +15,7 @@ public class ProductDto {
     private Long id;
     private String name;
     private Type type;
-    private BigDecimal unitPrice;
+    private Double unitPrice;
     private Integer quantity;
 
 }

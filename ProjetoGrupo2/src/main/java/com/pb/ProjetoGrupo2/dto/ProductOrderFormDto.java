@@ -16,5 +16,5 @@ public class ProductOrderFormDto {
    private Long productId;
 
    @NotNull(message = "O campo Name não pode ser nulo")
-   private Long orderId;
+   private Integer quantity;
 }

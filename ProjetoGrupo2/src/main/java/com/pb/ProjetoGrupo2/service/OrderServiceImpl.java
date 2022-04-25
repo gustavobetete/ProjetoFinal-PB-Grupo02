@@ -4,7 +4,6 @@ import com.pb.ProjetoGrupo2.config.validation.ObjectNotFoundException;
 import com.pb.ProjetoGrupo2.dto.OrderDto;
 import com.pb.ProjetoGrupo2.dto.OrderFormDto;
 import com.pb.ProjetoGrupo2.dto.ProductDto;
-import com.pb.ProjetoGrupo2.dto.ProductOrderFormDto;
 import com.pb.ProjetoGrupo2.entities.Order;
 import com.pb.ProjetoGrupo2.entities.Product;
 import com.pb.ProjetoGrupo2.repository.OrderRepository;
@@ -17,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -54,6 +54,24 @@ public class OrderServiceImpl implements OrderService {
     public OrderDto save(OrderFormDto orderFormDto){
         Order order = modelMapper.map(orderFormDto, Order.class);
         order.setId(null);
+
+        Double somaTotal = (double) 0;
+
+        for(int i = 0; i < order.getProducts().size(); i++ ){
+            Optional<Product> product = this.productRepository.findById(orderFormDto.getProducts().get(i).getProductId());
+
+            if(product.isPresent()){
+                order.getProducts().get(i).setOrders(product.get().getOrders());
+                order.getProducts().get(i).setName(product.get().getName());
+                order.getProducts().get(i).setUnitPrice(product.get().getUnitPrice());
+                order.getProducts().get(i).setType(product.get().getType());
+
+                somaTotal += order.getProducts().get(i).getUnitPrice();
+            }
+                //Se esta em promoção... promotion type = FRITO && SalgadoAtual.FRITO = preço salgado atual - promoção
+        }
+        order.setTotal(somaTotal);
+
         this.orderRepository.save(order);
         return modelMapper.map(order, OrderDto.class);
     }

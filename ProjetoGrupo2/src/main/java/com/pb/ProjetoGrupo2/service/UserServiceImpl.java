@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> user = userRepository.findById(id);
         if(user.isPresent()){
             userRepository.deleteById(id);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok().build(); //mudar para void
         }
         throw new ObjectNotFoundException("User not found!");
     }
@@ -87,22 +87,6 @@ public class UserServiceImpl implements UserService {
         List<Order> orders = orderRepository.findByUserId(id);
         List<OrderDto> orderDto = orders.stream().map(i -> modelMapper.map(i, OrderDto.class)).collect(Collectors.toList());
         return orderDto;
-    }
-
-    @Override
-    public ResponseEntity createProductOrder(ProductOrderFormDto productOrderFormDto) {
-
-        Optional<Product> product = productRepository.findById(productOrderFormDto.getProductId());
-        Optional<Order> order = orderRepository.findById(productOrderFormDto.getOrderId());
-
-        if(product.isPresent() && order.isPresent()) {
-
-            order.get().getProducts().add(product.get());
-            orderRepository.save(order.get());
-
-            return ResponseEntity.ok().build();
-        }
-        return ResponseEntity.noContent().build();
     }
 
     public ResponseEntity<?> removeProductOrder(Long productId, Long orderId) {

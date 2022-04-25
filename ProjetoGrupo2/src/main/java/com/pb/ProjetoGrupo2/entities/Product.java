@@ -22,14 +22,10 @@ public class Product {
     private String name;
     @Enumerated(EnumType.STRING)
     private Type type;
-    private BigDecimal unitPrice;
+    private Double unitPrice;
     private Integer quantity;
 
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            }, mappedBy = "products")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "products")
     @JsonIgnore
     private List<Order> orders;
 
