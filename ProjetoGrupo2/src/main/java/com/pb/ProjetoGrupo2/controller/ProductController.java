@@ -55,19 +55,4 @@ public class ProductController {
         this.service.deleteById(id);
         return new ResponseEntity(HttpStatus.OK);
     }
-
-    @PostMapping(path = "/orders")
-    @Transactional
-    public ResponseEntity<?> createProductOrder(@RequestBody @Valid ProductOrderFormDto productOrderFormDto){
-        ResponseEntity productOrder = service.createProductOrder(productOrderFormDto);
-        return productOrder;
-    }
-
-    @DeleteMapping("/{productId}/orders/{orderId}")
-    @Transactional
-    public ResponseEntity<?> removeProductOrder(@PathVariable Long productId, @PathVariable Long orderId){
-
-        ResponseEntity<?> product = service.removeProductOrder(productId, orderId);
-        return product;
-    }
 }

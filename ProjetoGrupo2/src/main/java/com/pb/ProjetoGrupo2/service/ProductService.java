@@ -18,8 +18,4 @@ public interface ProductService {
     ProductDto update(Long id, ProductFormDto productFormDto);
 
     Object deleteById(Long id);
-
-    ResponseEntity createProductOrder(ProductOrderFormDto productOrderFormDto);
-
-    ResponseEntity removeProductOrder(Long productId, Long orderId);
 }
