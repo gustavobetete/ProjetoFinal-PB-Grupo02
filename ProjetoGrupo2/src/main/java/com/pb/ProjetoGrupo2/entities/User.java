@@ -21,7 +21,6 @@ public class User {
     private String email;
     private String password;
 
-    @OneToMany//(mappedBy = "user")
-    @JoinTable(name = "users_id", joinColumns = @JoinColumn(name = "users_orders"), inverseJoinColumns = @JoinColumn(name = "orders_id"))
+    @OneToMany(mappedBy = "user")
     private List<Order> orders;
 }

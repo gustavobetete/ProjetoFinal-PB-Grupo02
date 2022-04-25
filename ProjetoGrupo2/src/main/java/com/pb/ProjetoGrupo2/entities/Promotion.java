@@ -21,6 +21,6 @@ public class Promotion {
     private BigDecimal promotionPrice;
 
     @ManyToMany//(mappedBy = "promotion")
-    @JoinTable(name = "promotion_id", joinColumns = @JoinColumn(name = "promotion_product"), inverseJoinColumns = @JoinColumn(name = "product_id"))
+    @JoinTable(name = "promotion_product", joinColumns = @JoinColumn(name = "promotion_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> product;
 }

@@ -52,7 +52,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto save(OrderFormDto orderFormDto){
-        Order order = this.orderRepository.save(modelMapper.map(orderFormDto, Order.class));
+        Order order = modelMapper.map(orderFormDto, Order.class);
+        order.setId(null);
+        this.orderRepository.save(order);
         return modelMapper.map(order, OrderDto.class);
     }
 
