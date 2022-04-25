@@ -1,5 +1,6 @@
 package com.pb.ProjetoGrupo2.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pb.ProjetoGrupo2.constants.Type;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,10 +25,16 @@ public class Product {
     private BigDecimal unitPrice;
     private Integer quantity;
 
-    @ManyToOne
-    private Order order;
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            }, mappedBy = "products")
+    @JsonIgnore
+    private List<Order> orders;
 
-    @ManyToOne
-    private Promotion promotion;
+    @ManyToMany(mappedBy = "product")
+    //@JoinTable(name = "promotion_product", joinColumns = @JoinColumn(name = "promotion_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
+    private List<Promotion> promotion;
 
 }

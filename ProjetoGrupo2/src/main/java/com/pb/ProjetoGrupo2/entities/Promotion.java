@@ -8,7 +8,6 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,6 +20,7 @@ public class Promotion {
     private String description;
     private BigDecimal promotionPrice;
 
-    @OneToMany(mappedBy = "promotion")
+    @ManyToMany
+    @JoinTable(name = "promotion_product", joinColumns = @JoinColumn(name = "promotion_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> product;
 }

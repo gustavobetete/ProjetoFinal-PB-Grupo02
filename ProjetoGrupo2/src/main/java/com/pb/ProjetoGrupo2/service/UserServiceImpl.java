@@ -1,9 +1,14 @@
 package com.pb.ProjetoGrupo2.service;
 
 import com.pb.ProjetoGrupo2.config.validation.ObjectNotFoundException;
+import com.pb.ProjetoGrupo2.dto.OrderDto;
+import com.pb.ProjetoGrupo2.dto.ProductDto;
 import com.pb.ProjetoGrupo2.dto.UserDto;
 import com.pb.ProjetoGrupo2.dto.UserFormDto;
+import com.pb.ProjetoGrupo2.entities.Order;
+import com.pb.ProjetoGrupo2.entities.Product;
 import com.pb.ProjetoGrupo2.entities.User;
+import com.pb.ProjetoGrupo2.repository.OrderRepository;
 import com.pb.ProjetoGrupo2.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +29,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private OrderRepository orderRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -71,5 +79,12 @@ public class UserServiceImpl implements UserService {
             return ResponseEntity.ok().build();
         }
         throw new ObjectNotFoundException("User not found!");
+    }
+
+    @Override
+    public List<OrderDto> listAllOrders(Long id){
+        List<Order> orders = orderRepository.findByUserId(id);
+        List<OrderDto> orderDto = orders.stream().map(i -> modelMapper.map(i, OrderDto.class)).collect(Collectors.toList());
+        return orderDto;
     }
 }

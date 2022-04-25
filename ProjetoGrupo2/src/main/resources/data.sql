@@ -1,6 +1,8 @@
 -- Tabela usuario
 INSERT INTO USERS(name, email, password) VALUES('Aluno', 'aluno@fatec.sp.gov.br', '$2a$10$.RIdlN0DUSoGwMbpguWaz.rRe15krkr5v4CPRST6sQGjwOeBr5tWy');
+INSERT INTO USERS(name, email, password) VALUES('Aluno 2', 'aluno2@fatec.sp.gov.br', '$2a$10$.RIdlN0DUSoGwMbpguWaz.rRe15krkr5v4CPRST6sQGjwOeBr5tWy');
 INSERT INTO USERS(name, email, password) VALUES('Adm', 'adm@fatec.sp.gov.br', '$2a$10$.RIdlN0DUSoGwMbpguWaz.rRe15krkr5v4CPRST6sQGjwOeBr5tWy');
+
 
 -- Tabela produtos
 INSERT INTO PRODUCT(name, type, unit_price, quantity) VALUES('Coxinha', 'FRITO', 7.00, 10);
@@ -10,10 +12,10 @@ INSERT INTO PRODUCT(name, type, unit_price, quantity) VALUES('Lanche_Natural', '
 INSERT INTO PRODUCT(name, type, unit_price, quantity) VALUES('BomBom', 'DOCE', 2.00, 12);
 
 -- Tabela Pedidos
-INSERT INTO ORDERS(quantity, purchase_date, delivery_date) VALUES( 1, '2022-05-23 12:41:00', '2022-05-23 22:00:00');
-INSERT INTO ORDERS(quantity, purchase_date, delivery_date) VALUES( 1, '2022-05-01 16:23:00', '2022-05-01 22:00:00');
-INSERT INTO ORDERS(quantity, purchase_date, delivery_date) VALUES( 1, '2022-05-13 07:35:00', '2022-05-13 22:00:00');
-INSERT INTO ORDERS(quantity, purchase_date, delivery_date) VALUES( 1, '2022-05-16 21:21:00', '2022-05-21 22:00:00');
+INSERT INTO ORDERS(quantity, purchase_date, delivery_date, user_id) VALUES( 1, '2022-05-23 12:41:00', '2022-05-23 22:00:00', 1);
+INSERT INTO ORDERS(quantity, purchase_date, delivery_date, user_id) VALUES( 1, '2022-05-01 16:23:00', '2022-05-01 22:00:00', 2);
+INSERT INTO ORDERS(quantity, purchase_date, delivery_date, user_id) VALUES( 1, '2022-05-13 07:35:00', '2022-05-13 22:00:00', 1);
+INSERT INTO ORDERS(quantity, purchase_date, delivery_date, user_id) VALUES( 1, '2022-05-16 21:21:00', '2022-05-21 22:00:00', 2);
 
 -- Tabela promoção
 INSERT INTO PROMOTION(description, promotion_price) VALUES('Cupom de salgado', 0.1);
