@@ -1,14 +1,12 @@
 package com.pb.ProjetoGrupo2.service;
 
 import com.pb.ProjetoGrupo2.config.validation.ObjectNotFoundException;
-import com.pb.ProjetoGrupo2.dto.OrderDto;
-import com.pb.ProjetoGrupo2.dto.ProductDto;
-import com.pb.ProjetoGrupo2.dto.UserDto;
-import com.pb.ProjetoGrupo2.dto.UserFormDto;
+import com.pb.ProjetoGrupo2.dto.*;
 import com.pb.ProjetoGrupo2.entities.Order;
 import com.pb.ProjetoGrupo2.entities.Product;
 import com.pb.ProjetoGrupo2.entities.User;
 import com.pb.ProjetoGrupo2.repository.OrderRepository;
+import com.pb.ProjetoGrupo2.repository.ProductRepository;
 import com.pb.ProjetoGrupo2.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +30,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -86,5 +87,36 @@ public class UserServiceImpl implements UserService {
         List<Order> orders = orderRepository.findByUserId(id);
         List<OrderDto> orderDto = orders.stream().map(i -> modelMapper.map(i, OrderDto.class)).collect(Collectors.toList());
         return orderDto;
+    }
+
+    @Override
+    public ResponseEntity createProductOrder(ProductOrderFormDto productOrderFormDto) {
+
+        Optional<Product> product = productRepository.findById(productOrderFormDto.getProductId());
+        Optional<Order> order = orderRepository.findById(productOrderFormDto.getOrderId());
+
+        if(product.isPresent() && order.isPresent()) {
+
+            order.get().getProducts().add(product.get());
+            orderRepository.save(order.get());
+
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.noContent().build();
+    }
+
+    public ResponseEntity<?> removeProductOrder(Long productId, Long orderId) {
+
+        Optional<Product> product = productRepository.findById(productId);
+        Optional<Order> order = orderRepository.findById(orderId);
+
+        if(product.isPresent() && order.isPresent()){
+            order.get().getProducts().remove(product.get());
+            orderRepository.save(order.get());
+
+            return ResponseEntity.ok().build();
+        }else {
+            return ResponseEntity.noContent().build();
+        }
     }
 }
