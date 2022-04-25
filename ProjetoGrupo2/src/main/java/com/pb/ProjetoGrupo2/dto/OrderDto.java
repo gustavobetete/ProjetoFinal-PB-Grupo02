@@ -2,6 +2,7 @@ package com.pb.ProjetoGrupo2.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.pb.ProjetoGrupo2.entities.Product;
+import com.pb.ProjetoGrupo2.entities.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CartDto {
+public class OrderDto {
 
     private Long id;
     private Integer quantity;

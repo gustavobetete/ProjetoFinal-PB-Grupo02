@@ -1,16 +1,18 @@
 package com.pb.ProjetoGrupo2.dto;
 
+import com.pb.ProjetoGrupo2.entities.Product;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CartFormDto {
+public class OrderFormDto {
 
     @NotNull(message = "O campo Quantity não pode ser nulo")
     private Integer quantity;

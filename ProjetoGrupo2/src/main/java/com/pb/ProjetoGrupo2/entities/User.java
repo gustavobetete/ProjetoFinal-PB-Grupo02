@@ -22,5 +22,5 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "user")
-    private List<Cart> carts;
+    private List<Order> orders;
 }

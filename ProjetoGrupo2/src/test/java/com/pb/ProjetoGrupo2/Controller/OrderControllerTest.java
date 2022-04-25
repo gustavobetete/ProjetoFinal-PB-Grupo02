@@ -1,12 +1,12 @@
 package com.pb.ProjetoGrupo2.Controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pb.ProjetoGrupo2.builder.CartBuilder;
-import com.pb.ProjetoGrupo2.dto.CartDto;
-import com.pb.ProjetoGrupo2.dto.CartFormDto;
-import com.pb.ProjetoGrupo2.entities.Cart;
-import com.pb.ProjetoGrupo2.repository.CartRepository;
-import com.pb.ProjetoGrupo2.service.CartService;
+import com.pb.ProjetoGrupo2.builder.OrderBuilder;
+import com.pb.ProjetoGrupo2.dto.OrderDto;
+import com.pb.ProjetoGrupo2.dto.OrderFormDto;
+import com.pb.ProjetoGrupo2.entities.Order;
+import com.pb.ProjetoGrupo2.repository.OrderRepository;
+import com.pb.ProjetoGrupo2.service.OrderService;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class CartControllerTest {
+class OrderControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -43,10 +43,10 @@ class CartControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private CartService cartService;
+    private OrderService orderService;
 
     @MockBean
-    private CartRepository cartRepository;
+    private OrderRepository orderRepository;
 
     @MockBean
     private ModelMapper modelMapper;
@@ -54,17 +54,17 @@ class CartControllerTest {
     @Test
     void postOrder() throws Exception{
 
-        Cart cart = CartBuilder.getOrder();
-        CartDto cartDto = CartBuilder.getOrderDto();
+        Order order = OrderBuilder.getOrder();
+        OrderDto orderDto = OrderBuilder.getOrderDto();
 
-        when(cartService.save(any())).thenReturn(cartDto);
+        when(orderService.save(any())).thenReturn(orderDto);
 
-        mockMvc.perform(post("/cart")
+        mockMvc.perform(post("/order")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(cart)))
+                        .content(objectMapper.writeValueAsString(order)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.quantity").value(cart.getQuantity()))
+                .andExpect(jsonPath("$.quantity").value(order.getQuantity()))
                 .andDo(print());
 
     }
@@ -72,17 +72,17 @@ class CartControllerTest {
     @Test
     void getOrder() throws Exception{
 
-        List<CartDto> cartDtoList = new ArrayList<>(
-                Arrays.asList(CartBuilder.getOrderDto(), CartBuilder.getOrderDtoTwo())
+        List<OrderDto> orderDtoList = new ArrayList<>(
+                Arrays.asList(OrderBuilder.getOrderDto(), OrderBuilder.getOrderDtoTwo())
         );
 
         PageRequest pageRequest = PageRequest.of(0, 5);
 
-        Page<CartDto> productDtoPage = new PageImpl<>(cartDtoList, pageRequest, cartDtoList.size());
+        Page<OrderDto> productDtoPage = new PageImpl<>(orderDtoList, pageRequest, orderDtoList.size());
 
-        when(cartService.findAll(any(PageRequest.class))).thenReturn(productDtoPage);
+        when(orderService.findAll(any(PageRequest.class))).thenReturn(productDtoPage);
 
-        mockMvc.perform(get("/cart")
+        mockMvc.perform(get("/order")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content.[0].quantity").value(1))
@@ -94,16 +94,16 @@ class CartControllerTest {
     @Test
     void getOrderById() throws Exception{
 
-        Cart cart = CartBuilder.getOrder();
-        CartDto cartDto = CartBuilder.getOrderDto();
+        Order order = OrderBuilder.getOrder();
+        OrderDto orderDto = OrderBuilder.getOrderDto();
 
-        when(cartService.findById(cart.getId())).thenReturn(cartDto);
+        when(orderService.findById(order.getId())).thenReturn(orderDto);
 
         long id = 1;
 
-        mockMvc.perform(get("/cart/{id}", id))
+        mockMvc.perform(get("/order/{id}", id))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.quantity").value(cart.getQuantity()))
+                .andExpect(jsonPath("$.quantity").value(order.getQuantity()))
                 .andDo(print());
 
     }
@@ -111,31 +111,31 @@ class CartControllerTest {
     @Test
     void updateOrder() throws Exception{
 
-        Cart cart = CartBuilder.getOrder();
-        CartFormDto cartFormDto = CartBuilder.getOrderFormDto();
-        CartDto cartDto = CartBuilder.getOrderDto();
+        Order order = OrderBuilder.getOrder();
+        OrderFormDto orderFormDto = OrderBuilder.getOrderFormDto();
+        OrderDto orderDto = OrderBuilder.getOrderDto();
 
-        cart.setQuantity(10);
-        cartFormDto.setQuantity(10);
-        cartDto.setQuantity(10);
+        order.setQuantity(10);
+        orderFormDto.setQuantity(10);
+        orderDto.setQuantity(10);
 
-        when(cartService.update(anyLong(), any(CartFormDto.class))).thenReturn(cartDto);
+        when(orderService.update(anyLong(), any(OrderFormDto.class))).thenReturn(orderDto);
 
-        mockMvc.perform(put("/cart/1")
+        mockMvc.perform(put("/order/1")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(cartFormDto)))
+                        .content(objectMapper.writeValueAsString(orderFormDto)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.quantity").value(cartFormDto.getQuantity()))
+                .andExpect(jsonPath("$.quantity").value(orderFormDto.getQuantity()))
                 .andDo(print());
     }
 
     @Test
     void deleteOrder() throws Exception{
 
-        Cart cart = CartBuilder.getOrder();
+        Order order = OrderBuilder.getOrder();
 
-        when(cartService.deleteById(cart.getId())).thenReturn(ResponseEntity.ok().build());
-        mockMvc.perform(delete("/cart/1")).andExpect(status().isOk()).andDo(print());
+        when(orderService.deleteById(order.getId())).thenReturn(ResponseEntity.ok().build());
+        mockMvc.perform(delete("/order/1")).andExpect(status().isOk()).andDo(print());
 
     }
 }

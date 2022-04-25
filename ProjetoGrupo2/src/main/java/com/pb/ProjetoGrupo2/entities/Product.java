@@ -31,7 +31,7 @@ public class Product {
                     CascadeType.MERGE
             }, mappedBy = "products")
     @JsonIgnore
-    private List<Cart> carts;
+    private List<Order> orders;
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {

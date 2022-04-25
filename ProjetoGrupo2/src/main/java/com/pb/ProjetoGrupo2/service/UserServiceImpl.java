@@ -2,10 +2,10 @@ package com.pb.ProjetoGrupo2.service;
 
 import com.pb.ProjetoGrupo2.config.validation.ObjectNotFoundException;
 import com.pb.ProjetoGrupo2.dto.*;
-import com.pb.ProjetoGrupo2.entities.Cart;
+import com.pb.ProjetoGrupo2.entities.Order;
 import com.pb.ProjetoGrupo2.entities.Product;
 import com.pb.ProjetoGrupo2.entities.User;
-import com.pb.ProjetoGrupo2.repository.CartRepository;
+import com.pb.ProjetoGrupo2.repository.OrderRepository;
 import com.pb.ProjetoGrupo2.repository.ProductRepository;
 import com.pb.ProjetoGrupo2.repository.UserRepository;
 import org.modelmapper.ModelMapper;
@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private CartRepository cartRepository;
+    private OrderRepository orderRepository;
 
     @Autowired
     private ProductRepository productRepository;
@@ -83,22 +83,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<CartDto> listAllOrders(Long id){
-        List<Cart> carts = cartRepository.findByUserId(id);
-        List<CartDto> cartDto = carts.stream().map(i -> modelMapper.map(i, CartDto.class)).collect(Collectors.toList());
-        return cartDto;
+    public List<OrderDto> listAllOrders(Long id){
+        List<Order> orders = orderRepository.findByUserId(id);
+        List<OrderDto> orderDto = orders.stream().map(i -> modelMapper.map(i, OrderDto.class)).collect(Collectors.toList());
+        return orderDto;
     }
 
     @Override
-    public ResponseEntity createProductOrder(ProductCartFormDto productCartFormDto) {
+    public ResponseEntity createProductOrder(ProductOrderFormDto productOrderFormDto) {
 
-        Optional<Product> product = productRepository.findById(productCartFormDto.getProductId());
-        Optional<Cart> order = cartRepository.findById(productCartFormDto.getOrderId());
+        Optional<Product> product = productRepository.findById(productOrderFormDto.getProductId());
+        Optional<Order> order = orderRepository.findById(productOrderFormDto.getOrderId());
 
         if(product.isPresent() && order.isPresent()) {
 
             order.get().getProducts().add(product.get());
-            cartRepository.save(order.get());
+            orderRepository.save(order.get());
 
             return ResponseEntity.ok().build();
         }
@@ -108,11 +108,11 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity<?> removeProductOrder(Long productId, Long orderId) {
 
         Optional<Product> product = productRepository.findById(productId);
-        Optional<Cart> order = cartRepository.findById(orderId);
+        Optional<Order> order = orderRepository.findById(orderId);
 
         if(product.isPresent() && order.isPresent()){
             order.get().getProducts().remove(product.get());
-            cartRepository.save(order.get());
+            orderRepository.save(order.get());
 
             return ResponseEntity.ok().build();
         }else {

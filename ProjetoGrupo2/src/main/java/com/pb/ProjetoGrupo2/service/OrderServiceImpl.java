@@ -1,12 +1,13 @@
 package com.pb.ProjetoGrupo2.service;
 
 import com.pb.ProjetoGrupo2.config.validation.ObjectNotFoundException;
-import com.pb.ProjetoGrupo2.dto.CartDto;
-import com.pb.ProjetoGrupo2.dto.CartFormDto;
+import com.pb.ProjetoGrupo2.dto.OrderDto;
+import com.pb.ProjetoGrupo2.dto.OrderFormDto;
 import com.pb.ProjetoGrupo2.dto.ProductDto;
-import com.pb.ProjetoGrupo2.entities.Cart;
+import com.pb.ProjetoGrupo2.dto.ProductOrderFormDto;
+import com.pb.ProjetoGrupo2.entities.Order;
 import com.pb.ProjetoGrupo2.entities.Product;
-import com.pb.ProjetoGrupo2.repository.CartRepository;
+import com.pb.ProjetoGrupo2.repository.OrderRepository;
 import com.pb.ProjetoGrupo2.repository.ProductRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class CartServiceImpl implements CartService {
+public class OrderServiceImpl implements OrderService {
 
     @Autowired
-    private CartRepository cartRepository;
+    private OrderRepository orderRepository;
 
     @Autowired
     private ProductRepository productRepository;
@@ -33,47 +34,47 @@ public class CartServiceImpl implements CartService {
     private ModelMapper modelMapper;
 
     @Override
-    public Page<CartDto> findAll(Pageable page){
-        Page<Cart> orders = this.cartRepository.findAll(page);
-        List<CartDto> listOrders = orders.stream().map(order ->
-                modelMapper.map(order, CartDto.class)).collect(Collectors.toList());
-        return new PageImpl<CartDto>(listOrders, page, orders.getTotalElements());
+    public Page<OrderDto> findAll(Pageable page){
+        Page<Order> orders = this.orderRepository.findAll(page);
+        List<OrderDto> listOrders = orders.stream().map(order ->
+                modelMapper.map(order, OrderDto.class)).collect(Collectors.toList());
+        return new PageImpl<OrderDto>(listOrders, page, orders.getTotalElements());
     }
 
     @Override
-    public CartDto findById(Long id){
-        Optional<Cart> orders = cartRepository.findById(id);
+    public OrderDto findById(Long id){
+        Optional<Order> orders = orderRepository.findById(id);
         if (orders.isPresent()){
-            return modelMapper.map(orders.get(), CartDto.class);
+            return modelMapper.map(orders.get(), OrderDto.class);
         }
         throw new ObjectNotFoundException("Order not found!");
     }
 
     @Override
-    public CartDto save(CartFormDto cartFormDto){
-        Cart cart = modelMapper.map(cartFormDto, Cart.class);
-        cart.setId(null);
-        this.cartRepository.save(cart);
-        return modelMapper.map(cart, CartDto.class);
+    public OrderDto save(OrderFormDto orderFormDto){
+        Order order = modelMapper.map(orderFormDto, Order.class);
+        order.setId(null);
+        this.orderRepository.save(order);
+        return modelMapper.map(order, OrderDto.class);
     }
 
     @Override
-    public CartDto update(Long id, CartFormDto cartFormDto) {
-        Optional<Cart> order = this.cartRepository.findById(id);
+    public OrderDto update(Long id, OrderFormDto orderFormDto) {
+        Optional<Order> order = this.orderRepository.findById(id);
         if(order.isPresent()) {
-            Cart cartUpdated = modelMapper.map(cartFormDto, Cart.class);
-            cartUpdated.setId(id);
-            cartRepository.save(cartUpdated);
-            return modelMapper.map(cartUpdated, CartDto.class);
+            Order orderUpdated = modelMapper.map(orderFormDto, Order.class);
+            orderUpdated.setId(id);
+            orderRepository.save(orderUpdated);
+            return modelMapper.map(orderUpdated, OrderDto.class);
         }
         throw new ObjectNotFoundException("Order not found!");
     }
 
     @Override
     public Object deleteById(Long id) {
-        Optional<Cart> order = cartRepository.findById(id);
+        Optional<Order> order = orderRepository.findById(id);
         if(order.isPresent()){
-            cartRepository.deleteById(id);
+            orderRepository.deleteById(id);
             return ResponseEntity.ok().build();
         }
         throw new ObjectNotFoundException("Order not found!");
