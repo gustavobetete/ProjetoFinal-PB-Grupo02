@@ -83,35 +83,5 @@ public class ProductServiceImpl implements ProductService{
         throw new ObjectNotFoundException("Product not found!");
     }
 
-    @Override
-    public ResponseEntity createProductOrder(ProductOrderFormDto productOrderFormDto) {
-
-        Optional<Product> product = productRepository.findById(productOrderFormDto.getProductId());
-        Optional<Order> order = orderRepository.findById(productOrderFormDto.getOrderId());
-
-        if(product.isPresent() && order.isPresent()) {
-
-            order.get().getProducts().add(product.get());
-            orderRepository.save(order.get());
-
-            return ResponseEntity.ok().build();
-        }
-        return ResponseEntity.noContent().build();
-    }
-
-    public ResponseEntity<?> removeProductOrder(Long productId, Long orderId) {
-
-        Optional<Product> product = productRepository.findById(productId);
-        Optional<Order> order = orderRepository.findById(orderId);
-
-        if(product.isPresent() && order.isPresent()){
-            order.get().getProducts().remove(product.get());
-            orderRepository.save(order.get());
-
-            return ResponseEntity.ok().build();
-        }else {
-            return ResponseEntity.noContent().build();
-        }
-    }
 
 }

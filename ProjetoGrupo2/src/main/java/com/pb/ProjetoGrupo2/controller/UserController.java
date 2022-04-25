@@ -1,9 +1,6 @@
 package com.pb.ProjetoGrupo2.controller;
 
-import com.pb.ProjetoGrupo2.dto.OrderDto;
-import com.pb.ProjetoGrupo2.dto.ProductDto;
-import com.pb.ProjetoGrupo2.dto.UserDto;
-import com.pb.ProjetoGrupo2.dto.UserFormDto;
+import com.pb.ProjetoGrupo2.dto.*;
 import com.pb.ProjetoGrupo2.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -65,5 +63,20 @@ public class UserController {
         }else {
             return ResponseEntity.ok().body(orderDto);
         }
+    }
+
+    @PostMapping(path = "/orders")
+    @Transactional
+    public ResponseEntity<?> createProductOrder(@RequestBody @Valid ProductOrderFormDto productOrderFormDto){
+        ResponseEntity productOrder = service.createProductOrder(productOrderFormDto);
+        return productOrder;
+    }
+
+    @DeleteMapping("/orders/{orderId}/product/{productId}")
+    @Transactional
+    public ResponseEntity<?> removeProductOrder(@PathVariable Long productId, @PathVariable Long orderId){
+
+        ResponseEntity<?> product = service.removeProductOrder(productId, orderId);
+        return product;
     }
 }
