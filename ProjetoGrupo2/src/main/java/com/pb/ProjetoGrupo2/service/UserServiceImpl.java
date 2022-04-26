@@ -85,11 +85,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<OrderDto> listAllOrders(Long id){
         List<Order> orders = orderRepository.findByUserId(id);
-        List<OrderDto> orderDto = orders.stream().map(i -> modelMapper.map(i, OrderDto.class)).collect(Collectors.toList());
+        List<OrderDto> orderDto =
+                orders.stream().map(i -> modelMapper.map(i, OrderDto.class)).collect(Collectors.toList());
         return orderDto;
     }
 
-    public ResponseEntity<?> removeProductOrder(Long productId, Long orderId) {
+    public Object removeProductOrder(Long productId, Long orderId) {
 
         Optional<Product> product = productRepository.findById(productId);
         Optional<Order> order = orderRepository.findById(orderId);
@@ -98,9 +99,9 @@ public class UserServiceImpl implements UserService {
             order.get().getProducts().remove(product.get());
             orderRepository.save(order.get());
 
-            return ResponseEntity.ok().build();
-        }else {
-            return ResponseEntity.noContent().build();
+            return null;
         }
+        throw new ObjectNotFoundException("Product or Order not found!");
     }
 }
+

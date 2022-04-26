@@ -66,12 +66,11 @@ public class UserController {
         }
     }
 
-
     @DeleteMapping("/orders/{orderId}/product/{productId}")
     @Transactional
     public ResponseEntity<?> removeProductOrder(@PathVariable Long productId, @PathVariable Long orderId){
 
-        ResponseEntity<?> product = service.removeProductOrder(productId, orderId);
-        return product;
+        this.service.removeProductOrder(productId, orderId);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }
