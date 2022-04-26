@@ -65,12 +65,6 @@ public class UserController {
         }
     }
 
-    @PostMapping(path = "/orders")
-    @Transactional
-    public ResponseEntity<?> createProductOrder(@RequestBody @Valid ProductOrderFormDto productOrderFormDto){
-        ResponseEntity productOrder = service.createProductOrder(productOrderFormDto);
-        return productOrder;
-    }
 
     @DeleteMapping("/orders/{orderId}/product/{productId}")
     @Transactional

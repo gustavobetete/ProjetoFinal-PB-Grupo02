@@ -1,5 +1,9 @@
 //package com.pb.ProjetoGrupo2.services;
 //
+<<<<<<< HEAD
+=======
+////import com.pb.ProjetoGrupo2.builder.OrderBuilder;
+>>>>>>> 3ec899f514c96f9ef8d37d439bca560be11dd378
 //import com.pb.ProjetoGrupo2.builder.OrderBuilder;
 //import com.pb.ProjetoGrupo2.config.validation.ObjectNotFoundException;
 //import com.pb.ProjetoGrupo2.dto.OrderDto;
@@ -57,8 +61,13 @@
 //        OrderDto orderDTO = this.orderService.save(OrderBuilder.getOrderFormDto());
 //
 //        assertThat(orderDTO.getDeliveryDate()).isEqualTo(order.getDeliveryDate());
+<<<<<<< HEAD
 //        assertThat(orderDTO.getQuantity()).isEqualTo(order.getQuantity());
 //        assertThat(orderDTO.getPurchaseDate()).isEqualTo(order.getPurchaseDate());
+=======
+//        assertThat(orderDTO.getPurchaseDate()).isEqualTo(order.getPurchaseDate());
+//        assertThat(orderDTO.getProducts()).isEqualTo(order.getProducts());
+>>>>>>> 3ec899f514c96f9ef8d37d439bca560be11dd378
 //        assertThat(orderDTO.getIdUser()).isEqualTo(order.getUser().getId());
 //    }
 //
@@ -92,7 +101,10 @@
 //        assertThat(orderDTO.getId()).isNotNull();
 //        assertThat(orderDTO.getDeliveryDate()).isEqualTo(order.getDeliveryDate());
 //        assertThat(orderDTO.getPurchaseDate()).isEqualTo(order.getPurchaseDate());
+<<<<<<< HEAD
 //        assertThat(orderDTO.getQuantity()).isEqualTo(order.getQuantity());
+=======
+>>>>>>> 3ec899f514c96f9ef8d37d439bca560be11dd378
 //
 //    }
 //
@@ -113,7 +125,10 @@
 //    public void updateOrder() {
 //        Order order = OrderBuilder.getOrder();
 //        OrderFormDto orderFormDTO = OrderBuilder.getOrderFormDto();
+<<<<<<< HEAD
 //        orderFormDTO.setQuantity(2);
+=======
+>>>>>>> 3ec899f514c96f9ef8d37d439bca560be11dd378
 //
 //        when(this.repository.findById(anyLong())).thenReturn(Optional.of(order));
 //        when(this.repository.save(any(Order.class))).thenReturn(order);
@@ -121,9 +136,15 @@
 //        OrderDto orderDTO = this.orderService.update(order.getId(), orderFormDTO);
 //
 //        assertThat(orderDTO.getId()).isNotNull();
+<<<<<<< HEAD
 //        assertThat(orderDTO.getDeliveryDate()).isEqualTo(orderFormDTO.getDeliveryDate());
 //        assertThat(orderDTO.getPurchaseDate()).isEqualTo(orderFormDTO.getPurchaseDate());
 //        assertThat(orderDTO.getQuantity()).isEqualTo(orderFormDTO.getQuantity());
+=======
+//        assertThat(orderDTO.getIdUser()).isEqualTo(orderFormDTO.getIdUser());
+//        assertThat(orderDTO.getProducts()).isEqualTo(orderFormDTO.getProducts());
+//
+>>>>>>> 3ec899f514c96f9ef8d37d439bca560be11dd378
 //
 //    }
 //
