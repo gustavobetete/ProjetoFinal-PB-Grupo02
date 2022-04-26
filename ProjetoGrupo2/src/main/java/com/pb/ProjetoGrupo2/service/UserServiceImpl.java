@@ -56,8 +56,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto save(UserFormDto userFormDto) {
-            User user = this.userRepository.save(modelMapper.map(userFormDto, User.class));
-            return modelMapper.map(user, UserDto.class);
+        User user = this.userRepository.save(modelMapper.map(userFormDto, User.class));
+        return modelMapper.map(user, UserDto.class);
     }
 
     @Override
@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> user = userRepository.findById(id);
         if(user.isPresent()){
             userRepository.deleteById(id);
-            return ResponseEntity.ok().build(); //mudar para void
+            return null;
         }
         throw new ObjectNotFoundException("User not found!");
     }
