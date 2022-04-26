@@ -2,10 +2,7 @@ package com.pb.ProjetoGrupo2.service;
 
 import com.pb.ProjetoGrupo2.dto.ProductDto;
 import com.pb.ProjetoGrupo2.dto.ProductFormDto;
-import com.pb.ProjetoGrupo2.dto.ProductOrderFormDto;
-import com.pb.ProjetoGrupo2.entities.Order;
 import com.pb.ProjetoGrupo2.entities.Product;
-import com.pb.ProjetoGrupo2.entities.User;
 import com.pb.ProjetoGrupo2.repository.OrderRepository;
 import com.pb.ProjetoGrupo2.repository.ProductRepository;
 import com.pb.ProjetoGrupo2.config.validation.ObjectNotFoundException;
@@ -16,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -78,10 +74,8 @@ public class ProductServiceImpl implements ProductService{
         Optional<Product> product = productRepository.findById(id);
         if(product.isPresent()){
             productRepository.deleteById(id);
-            return ResponseEntity.ok().build();
+            return null;
         }
         throw new ObjectNotFoundException("Product not found!");
     }
-
-
 }
