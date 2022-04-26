@@ -5,7 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Data
@@ -19,8 +20,8 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer quantity;
-    private Timestamp purchaseDate;
-    private Timestamp deliveryDate;
+    private ZonedDateTime purchaseDate = ZonedDateTime.now(ZoneId.systemDefault());
+    private ZonedDateTime deliveryDate = ZonedDateTime.now().withHour(22).withMinute(0).withSecond(0).withNano(0);
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {

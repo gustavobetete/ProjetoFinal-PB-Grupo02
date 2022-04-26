@@ -77,7 +77,6 @@ public class UserServiceImpl implements UserService {
         Optional<User> user = userRepository.findById(id);
         if(user.isPresent()){
             userRepository.deleteById(id);
-            return ResponseEntity.ok().build();
         }
         throw new ObjectNotFoundException("User not found!");
     }
