@@ -1,13 +1,11 @@
 package com.pb.ProjetoGrupo2.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pb.ProjetoGrupo2.constants.Type;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -24,16 +22,5 @@ public class Product {
     private Double unitPrice;
     private Integer quantity;
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "products")
-    @JsonIgnore
-    private List<Order> orders;
-
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            }, mappedBy = "product")
-    @JsonIgnore
-    private List<Promotion> promotion;
 
 }

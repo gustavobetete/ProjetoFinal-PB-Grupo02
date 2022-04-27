@@ -5,8 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+<<<<<<< HEAD
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+=======
+import java.time.LocalDateTime;
+>>>>>>> b95a1959d3c863e6e71261a32e461ba39ca0af69
 import java.util.List;
 
 @Data
@@ -19,8 +23,10 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer quantity;
-    private ZonedDateTime purchaseDate = ZonedDateTime.now(ZoneId.systemDefault());
-    private ZonedDateTime deliveryDate = ZonedDateTime.now().withHour(22).withMinute(0).withSecond(0);
+
+    private LocalDateTime purchaseDate = LocalDateTime.now();
+    private LocalDateTime deliveryDate = LocalDateTime.now().withHour(22).withMinute(0).withSecond(0).withNano(0);
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "orders_product", joinColumns = @JoinColumn(name = "orders_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> products;
