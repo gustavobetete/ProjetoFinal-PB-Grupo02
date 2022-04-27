@@ -23,6 +23,17 @@ public class Product {
     private Type type;
     private Double unitPrice;
     private Integer quantity;
+<<<<<<< HEAD
     private Integer virtualQuantity = quantity;
+=======
+
+    @ManyToMany(fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            }, mappedBy = "product")
+    @JsonIgnore
+    private List<Promotion> promotion;
+>>>>>>> 7c3c2ae... Arrumando endpoint save do order
 
 }
