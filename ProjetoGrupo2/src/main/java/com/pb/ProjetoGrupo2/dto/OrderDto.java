@@ -21,10 +21,10 @@ import static java.time.ZonedDateTime.now;
 public class OrderDto {
 
     private Long id;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy hh:mm:ss a", locale = "pt-BR")
-    private ZonedDateTime purchaseDate;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy hh:mm:ss a", locale = "pt-BR")
-    private ZonedDateTime deliveryDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss", locale = "pt-BR")
+    private LocalDateTime purchaseDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss", locale = "pt-BR")
+    private LocalDateTime deliveryDate;
     private Long idUser;
     private List<Product> products;
     private Double total;

@@ -3,9 +3,12 @@ package com.pb.ProjetoGrupo2.builder;
 import com.pb.ProjetoGrupo2.constants.Type;
 import com.pb.ProjetoGrupo2.dto.ProductDto;
 import com.pb.ProjetoGrupo2.dto.ProductFormDto;
+import com.pb.ProjetoGrupo2.dto.ProductOrderFormDto;
 import com.pb.ProjetoGrupo2.entities.Product;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProductBuilder {
 
@@ -17,6 +20,14 @@ public class ProductBuilder {
         product.setUnitPrice(Double.valueOf(7.00));
         product.setQuantity(10);
         return product;
+    }
+
+    public static List<Product> getProducts(){
+        List<Product> products = new ArrayList<>();
+
+        products.add(getProduct());
+
+        return products;
     }
 
     public static ProductDto getProductDto() {
@@ -55,5 +66,12 @@ public class ProductBuilder {
         product.setUnitPrice(Double.valueOf(5.00));
         product.setQuantity(12);
         return product;
+    }
+
+    public static ProductOrderFormDto getProductOrderFormDto() {
+        ProductOrderFormDto productOrderFormDto = new ProductOrderFormDto();
+        productOrderFormDto.setProductId(getProduct().getId());
+        productOrderFormDto.setQuantity(getProduct().getQuantity());
+        return productOrderFormDto;
     }
 }

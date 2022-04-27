@@ -16,7 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -55,22 +54,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = modelMapper.map(orderFormDto, Order.class);
         order.setId(null);
 
-        Double somaTotal = (double) 0;
-
-        for(int i = 0; i < order.getProducts().size(); i++ ){
-            Optional<Product> product = this.productRepository.findById(orderFormDto.getProducts().get(i).getProductId());
-
-            if(product.isPresent()){
-                order.getProducts().get(i).setOrders(product.get().getOrders());
-                order.getProducts().get(i).setName(product.get().getName());
-                order.getProducts().get(i).setUnitPrice(product.get().getUnitPrice());
-                order.getProducts().get(i).setType(product.get().getType());
-
-                somaTotal += order.getProducts().get(i).getUnitPrice();
-            }
-                //Se esta em promoção... promotion type = FRITO && SalgadoAtual.FRITO = preço salgado atual - promoção
-        }
-        order.setTotal(somaTotal);
+        createOrder(orderFormDto, order);
 
         this.orderRepository.save(order);
         return modelMapper.map(order, OrderDto.class);
@@ -82,6 +66,8 @@ public class OrderServiceImpl implements OrderService {
         if(order.isPresent()) {
             Order orderUpdated = modelMapper.map(orderFormDto, Order.class);
             orderUpdated.setId(id);
+            createOrder(orderFormDto, orderUpdated);
+
             orderRepository.save(orderUpdated);
             return modelMapper.map(orderUpdated, OrderDto.class);
         }
@@ -100,8 +86,25 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<ProductDto> listAllProduct(Long id){
-        List<Product> products = productRepository.findByOrdersId(id);
-        List<ProductDto> productDto = products.stream().map(i -> modelMapper.map(i, ProductDto.class)).collect(Collectors.toList());
-        return productDto;
+        return null;
+    }
+
+    private void createOrder(OrderFormDto orderFormDto, Order order) {
+        Double TotalValue = (double) 0;
+
+        for(int i = 0; i < order.getProducts().size(); i++ ){
+            Optional<Product> product = this.productRepository.findById(orderFormDto.getProducts().get(i).getProductId());
+
+            if(product.isPresent()){
+                order.getProducts().get(i).setName(product.get().getName());
+                order.getProducts().get(i).setUnitPrice(product.get().getUnitPrice());
+                order.getProducts().get(i).setType(product.get().getType());
+
+                TotalValue += order.getProducts().get(i).getUnitPrice() * order.getProducts().get(i).getQuantity();
+            }
+            //Se esta em promoção... promotion type = FRITO && SalgadoAtual.FRITO = preço salgado atual - promoção
+        }
+        order.setTotal(TotalValue);
+
     }
 }

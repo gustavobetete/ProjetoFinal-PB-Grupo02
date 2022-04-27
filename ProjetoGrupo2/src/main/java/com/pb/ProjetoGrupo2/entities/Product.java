@@ -25,10 +25,6 @@ public class Product {
     private Double unitPrice;
     private Integer quantity;
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "products")
-    @JsonIgnore
-    private List<Order> orders;
-
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
                     CascadeType.PERSIST,
