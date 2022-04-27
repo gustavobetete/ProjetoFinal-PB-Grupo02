@@ -25,8 +25,8 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer quantity;
-    private ZonedDateTime purchaseDate = ZonedDateTime.now(ZoneId.systemDefault());
-    private ZonedDateTime deliveryDate = ZonedDateTime.now().withHour(22).withMinute(0).withSecond(0);
+    private ZonedDateTime purchaseDate = now(ZoneId.systemDefault());
+    private ZonedDateTime deliveryDate = now().withHour(22).withMinute(0).withSecond(0);
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "orders_product", joinColumns = @JoinColumn(name = "orders_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
@@ -37,5 +37,6 @@ public class Order {
     private User user;
 
     private Double total;
+    private BigDecimal productTotal;
 
 }

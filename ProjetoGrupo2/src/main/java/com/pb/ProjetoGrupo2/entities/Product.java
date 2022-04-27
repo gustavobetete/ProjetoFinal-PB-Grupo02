@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.List;
 
 @Data
@@ -24,10 +23,7 @@ public class Product {
     private Type type;
     private Double unitPrice;
     private Integer quantity;
-
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "products")
-    @JsonIgnore
-    private List<Order> orders;
+    private Integer virtualQuantity = quantity;
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {

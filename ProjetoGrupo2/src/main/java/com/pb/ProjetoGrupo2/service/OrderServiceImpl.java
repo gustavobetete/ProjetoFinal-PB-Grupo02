@@ -56,20 +56,23 @@ public class OrderServiceImpl implements OrderService {
         order.setId(null);
 
         Double somaTotal = (double) 0;
+        BigDecimal totalPrice = null;
 
         for(int i = 0; i < order.getProducts().size(); i++ ){
             Optional<Product> product = this.productRepository.findById(orderFormDto.getProducts().get(i).getProductId());
 
             if(product.isPresent()){
-                order.getProducts().get(i).setOrders(product.get().getOrders());
                 order.getProducts().get(i).setName(product.get().getName());
                 order.getProducts().get(i).setUnitPrice(product.get().getUnitPrice());
                 order.getProducts().get(i).setType(product.get().getType());
+                order.getProducts().get(i).setQuantity(product.get().getQuantity());
 
+                totalPrice = BigDecimal.valueOf((order.getProducts().get(i).getQuantity()) * (order.getProducts().get(i).getUnitPrice()));
                 somaTotal += order.getProducts().get(i).getUnitPrice();
             }
                 //Se esta em promoção... promotion type = FRITO && SalgadoAtual.FRITO = preço salgado atual - promoção
         }
+        order.setProductTotal(totalPrice);
         order.setTotal(somaTotal);
 
         this.orderRepository.save(order);
