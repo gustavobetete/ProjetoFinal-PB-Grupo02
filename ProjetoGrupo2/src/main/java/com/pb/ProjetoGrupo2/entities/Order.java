@@ -22,9 +22,9 @@ public class Order {
     private ZonedDateTime purchaseDate = ZonedDateTime.now(ZoneId.systemDefault());
     private ZonedDateTime deliveryDate = ZonedDateTime.now().withHour(22).withMinute(0).withSecond(0);
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "orders_product", joinColumns = @JoinColumn(name = "orders_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id"))
+    @JoinTable(name = "orders_product", joinColumns = @JoinColumn(name = "orders_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> products;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

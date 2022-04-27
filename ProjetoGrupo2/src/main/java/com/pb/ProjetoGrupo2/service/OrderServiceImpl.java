@@ -50,29 +50,46 @@ public class OrderServiceImpl implements OrderService {
         throw new ObjectNotFoundException("Order not found!");
     }
 
+//    @Override
+//    public OrderDto save(OrderFormDto orderFormDto){
+//
+//        Order order = modelMapper.map(orderFormDto, Order.class);
+//
+//        Double totalPrice = (double) 0;
+//        Double promotionalPrice = (double) 0;
+//
+//        for(int i = 0; i < order.getProducts().size(); i++ ){
+//            Optional<Product> product = this.productRepository.findById(orderFormDto.getProducts().get(i).getProductId());
+//            List<Product> productList = this.productRepository.findByOrdersId(orderFormDto.getProducts().get(i).getProductId());
+//
+//
+//            if(product.isPresent()){
+//                order.getProducts().get(i).setOrders(product.get().getOrders());
+//                order.getProducts().get(i).setName(product.get().getName());
+//                order.getProducts().get(i).setUnitPrice(product.get().getUnitPrice());
+//                order.getProducts().get(i).setType(product.get().getType());
+//
+//                totalPrice += order.getProducts().get(i).getUnitPrice();
+//
+//                if(!product.get().getPromotion().isEmpty()){
+//                    promotionalPrice = product.get().getUnitPrice() - product.get().getPromotion().get(product.get().g).getPromotionPrice();
+//                }
+//            }
+//                //Se esta em promoção... promotion type = FRITO && SalgadoAtual.FRITO = preço salgado atual - promoção
+//        }
+//
+//        order.setTotal(totalPrice);
+//
+//        this.orderRepository.save(order);
+//        return modelMapper.map(order, OrderDto.class);
+//    }
+
+
     @Override
-    public OrderDto save(OrderFormDto orderFormDto){
+    public OrderDto save(OrderFormDto orderFormDto) {
+
         Order order = modelMapper.map(orderFormDto, Order.class);
-        order.setId(null);
 
-        Double somaTotal = (double) 0;
-
-        for(int i = 0; i < order.getProducts().size(); i++ ){
-            Optional<Product> product = this.productRepository.findById(orderFormDto.getProducts().get(i).getProductId());
-
-            if(product.isPresent()){
-                order.getProducts().get(i).setOrders(product.get().getOrders());
-                order.getProducts().get(i).setName(product.get().getName());
-                order.getProducts().get(i).setUnitPrice(product.get().getUnitPrice());
-                order.getProducts().get(i).setType(product.get().getType());
-
-                somaTotal += order.getProducts().get(i).getUnitPrice();
-            }
-                //Se esta em promoção... promotion type = FRITO && SalgadoAtual.FRITO = preço salgado atual - promoção
-        }
-        order.setTotal(somaTotal);
-
-        this.orderRepository.save(order);
         return modelMapper.map(order, OrderDto.class);
     }
 

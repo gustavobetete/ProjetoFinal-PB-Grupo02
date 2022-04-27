@@ -1,5 +1,6 @@
 package com.pb.ProjetoGrupo2.entities;
 
+import com.pb.ProjetoGrupo2.constants.Type;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ public class Promotion {
     private Long id;
     private String description;
     private BigDecimal promotionPrice;
+    private Type type;
 
     @ManyToMany(fetch = FetchType.LAZY,
             cascade = {
