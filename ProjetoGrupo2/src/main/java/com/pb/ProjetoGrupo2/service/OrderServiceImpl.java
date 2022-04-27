@@ -3,7 +3,6 @@ package com.pb.ProjetoGrupo2.service;
 import com.pb.ProjetoGrupo2.config.validation.ObjectNotFoundException;
 import com.pb.ProjetoGrupo2.dto.OrderDto;
 import com.pb.ProjetoGrupo2.dto.OrderFormDto;
-import com.pb.ProjetoGrupo2.dto.ProductDto;
 import com.pb.ProjetoGrupo2.entities.Order;
 import com.pb.ProjetoGrupo2.entities.Product;
 import com.pb.ProjetoGrupo2.repository.OrderRepository;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -61,19 +59,6 @@ public class OrderServiceImpl implements OrderService {
         return modelMapper.map(order, OrderDto.class);
     }
 
-    @Override
-    public OrderDto update(Long id, OrderFormDto orderFormDto) {
-        Optional<Order> order = this.orderRepository.findById(id);
-        if(order.isPresent()) {
-            Order orderUpdated = modelMapper.map(orderFormDto, Order.class);
-            orderUpdated.setId(id);
-            createOrder(orderFormDto, orderUpdated);
-
-            orderRepository.save(orderUpdated);
-            return modelMapper.map(orderUpdated, OrderDto.class);
-        }
-        throw new ObjectNotFoundException("Order not found!");
-    }
 
     @Override
     public String deleteById(Long id) {
@@ -100,6 +85,7 @@ public class OrderServiceImpl implements OrderService {
                 order.getProducts().get(i).setType(product.get().getType());
 
                 TotalValue += order.getProducts().get(i).getUnitPrice() * order.getProducts().get(i).getQuantity();
+                product.get().setQuantity(product.get().getQuantity() - order.getProducts().get(i).getQuantity());
             }
         }
         order.setTotal(TotalValue);
