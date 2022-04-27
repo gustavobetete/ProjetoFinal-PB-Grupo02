@@ -25,12 +25,5 @@ public class Product {
     private Double unitPrice;
     private Integer quantity;
 
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            }, mappedBy = "product")
-    @JsonIgnore
-    private List<Promotion> promotion;
 
 }
