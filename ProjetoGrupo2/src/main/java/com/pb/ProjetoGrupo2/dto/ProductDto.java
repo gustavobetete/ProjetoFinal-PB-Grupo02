@@ -16,6 +16,6 @@ public class ProductDto {
     private String name;
     private Type type;
     private Double unitPrice;
-    private Integer quantity;
+    private Integer stock;
 
 }
