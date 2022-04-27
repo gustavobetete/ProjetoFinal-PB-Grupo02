@@ -20,7 +20,6 @@ public interface OrderService {
 
     OrderDto update(Long id, OrderFormDto orderFormDto);
 
-    Object deleteById(Long id);
+    String deleteById(Long id);
 
-    List listAllProduct(Long id);
 }

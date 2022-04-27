@@ -49,9 +49,9 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
-        this.service.deleteById(id);
-        return new ResponseEntity(HttpStatus.OK);
+    public ResponseEntity<String> deleteById(@PathVariable Long id) {
+        String response = this.service.deleteById(id);
+        return ResponseEntity.ok().body(response);
     }
 
     @GetMapping("/{id}/orders")
@@ -68,9 +68,9 @@ public class UserController {
 
     @DeleteMapping("/orders/{orderId}/product/{productId}")
     @Transactional
-    public ResponseEntity<?> removeProductOrder(@PathVariable Long productId, @PathVariable Long orderId){
+    public ResponseEntity<String> removeProductOrder(@PathVariable Long productId, @PathVariable Long orderId){
 
-        ResponseEntity<?> product = service.removeProductOrder(productId, orderId);
-        return product;
+        String response = this.service.removeProductOrder(productId, orderId);
+        return ResponseEntity.ok().body(response);
     }
 }

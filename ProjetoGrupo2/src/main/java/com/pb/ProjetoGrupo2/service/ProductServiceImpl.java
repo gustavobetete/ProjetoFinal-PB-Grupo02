@@ -74,11 +74,13 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public Object deleteById(Long id) {
+    public String deleteById(Long id) {
         Optional<Product> product = productRepository.findById(id);
         if(product.isPresent()){
             productRepository.deleteById(id);
-            return ResponseEntity.ok().build();
+
+            String idProduct = product.get().getId().toString();
+            return "Product " + idProduct + " deleted with success!";
         }
         throw new ObjectNotFoundException("Product not found!");
     }

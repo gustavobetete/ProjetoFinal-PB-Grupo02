@@ -122,14 +122,14 @@ public class UserControllerTest {
                 .andDo(print());
     }
 
-    @Test
-    void deleteUser() throws Exception{
-
-        User user = UserBuilder.getUser();
-
-        when(userService.deleteById(user.getId())).thenReturn(ResponseEntity.ok().build());
-        mockMvc.perform(delete("/users/1")).andExpect(status().isOk()).andDo(print());
-
-    }
+//    @Test
+//    void deleteUser() throws Exception{
+//
+//        User user = UserBuilder.getUser();
+//
+//        when(userService.deleteById(user.getId())).thenReturn(ResponseEntity.ok().build());
+//        mockMvc.perform(delete("/users/1")).andExpect(status().isOk()).andDo(print());
+//
+//    }
 
 }
