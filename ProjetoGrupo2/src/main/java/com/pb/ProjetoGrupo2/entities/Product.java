@@ -23,18 +23,6 @@ public class Product {
     private Type type;
     private Double unitPrice;
     private Integer quantity;
-<<<<<<< HEAD
     private Integer virtualQuantity = quantity;
-
-    @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            }, mappedBy = "product")
-    @JsonIgnore
-    private List<Promotion> promotion;
-=======
-
->>>>>>> dev-gustavo
 
 }

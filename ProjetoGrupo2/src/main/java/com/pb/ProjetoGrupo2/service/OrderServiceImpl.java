@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -55,7 +56,6 @@ public class OrderServiceImpl implements OrderService {
         Order order = modelMapper.map(orderFormDto, Order.class);
         order.setId(null);
 
-<<<<<<< HEAD
         Double somaTotal = (double) 0;
         BigDecimal totalPrice = null;
 
@@ -75,9 +75,7 @@ public class OrderServiceImpl implements OrderService {
         }
         order.setProductTotal(totalPrice);
         order.setTotal(somaTotal);
-=======
         createOrder(orderFormDto, order);
->>>>>>> dev-gustavo
 
         this.orderRepository.save(order);
         return modelMapper.map(order, OrderDto.class);
