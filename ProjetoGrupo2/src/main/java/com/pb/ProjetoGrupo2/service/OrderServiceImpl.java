@@ -67,13 +67,11 @@ public class OrderServiceImpl implements OrderService {
                 order.getProducts().get(i).setUnitPrice(product.get().getUnitPrice());
                 order.getProducts().get(i).setType(product.get().getType());
                 order.getProducts().get(i).setQuantity(product.get().getQuantity());
-
-                totalPrice = BigDecimal.valueOf((order.getProducts().get(i).getQuantity()) * (order.getProducts().get(i).getUnitPrice()));
+                order.setProductTotal(BigDecimal.valueOf((order.getProducts().get(i).getQuantity()) * (order.getProducts().get(i).getUnitPrice())));
                 somaTotal += order.getProducts().get(i).getUnitPrice();
             }
                 //Se esta em promoção... promotion type = FRITO && SalgadoAtual.FRITO = preço salgado atual - promoção
         }
-        order.setProductTotal(totalPrice);
         order.setTotal(somaTotal);
         createOrder(orderFormDto, order);
 
