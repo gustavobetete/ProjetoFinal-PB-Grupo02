@@ -20,6 +20,7 @@
 //import org.springframework.http.ResponseEntity;
 //import org.springframework.test.web.servlet.MockMvc;
 //
+//import java.time.LocalDateTime;
 //import java.time.ZonedDateTime;
 //import java.util.ArrayList;
 //import java.util.Arrays;
@@ -118,7 +119,7 @@
 //
 //        order.setQuantity(10);
 //        orderFormDto.setIdUser(1L);
-//        orderDto.setDeliveryDate(ZonedDateTime.now().withHour(22).withMinute(0).withSecond(0));
+//        orderDto.setDeliveryDate(LocalDateTime.parse("2022-04-26T22:00:00"));
 //
 //        when(orderService.update(anyLong(), any(OrderFormDto.class))).thenReturn(orderDto);
 //
