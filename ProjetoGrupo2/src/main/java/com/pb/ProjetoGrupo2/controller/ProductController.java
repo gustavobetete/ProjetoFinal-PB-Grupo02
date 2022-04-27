@@ -5,8 +5,6 @@ import com.pb.ProjetoGrupo2.dto.ProductFormDto;
 import com.pb.ProjetoGrupo2.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -25,7 +23,6 @@ public class ProductController {
     @Autowired
     private ProductService service;
 
-
     @GetMapping
     public ResponseEntity<Page<ProductDto>> findAll(@PageableDefault(page = 0, size = 10,sort = "id",direction = Sort.Direction.ASC) Pageable page){
         Page<ProductDto> products = this.service.findAll(page);
@@ -37,12 +34,6 @@ public class ProductController {
         return ResponseEntity.ok().body(service.findById(id));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ProductDto> search(@PathVariable Long id) {
-        ProductDto productDto = this.service.search(id);
-        return ResponseEntity.ok(productDto);
-    }
-
     @PostMapping
     public ResponseEntity<ProductDto> save(@RequestBody @Valid ProductFormDto productFormDto){
         ProductDto productDto = this.service.save(productFormDto);
@@ -50,14 +41,16 @@ public class ProductController {
     }
 
 
-    @PutMapping("/{id}")
+    @PutMapping(path = "/{id}")
     public ResponseEntity<ProductDto> update(@PathVariable Long id, @RequestBody @Valid ProductFormDto productFormDto) {
         ProductDto productDto = this.service.update(id, productFormDto);
         return ResponseEntity.ok(productDto);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id){
-        return service.deleteById(id);
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id) {
+        String response = this.service.deleteById(id);
+        return ResponseEntity.ok().body(response);
+
     }
 }

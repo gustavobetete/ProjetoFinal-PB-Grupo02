@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -16,13 +17,10 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column
     private String name;
-    @Column
     private String email;
-    @Column
-    private String cpf;
-    @Column
     private String password;
 
+    @OneToMany(mappedBy = "user")
+    private List<Order> orders;
 }

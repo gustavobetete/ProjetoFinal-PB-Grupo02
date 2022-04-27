@@ -1,21 +1,19 @@
 package com.pb.ProjetoGrupo2.dto;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import com.pb.ProjetoGrupo2.entities.Product;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.util.List;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrderFormDto {
 
-    @NotNull(message = "O campo Quantity não pode ser nulo")
-    @NotEmpty(message = "O campo Quantity não pode ser vazio")
-    @NotBlank(message = "O campo Quantity não pode estar em branco")
-    private Integer quantity;
+    private Long idUser;
 
-    @NotNull(message = "O campo purchase_date não pode ser nulo")
-    private LocalDate purchase_date;
+    private List<ProductOrderFormDto> products;
 
-    @NotNull(message = "O campo delivery_date não pode ser nulo")
-    private LocalDate delivery_date;
 }

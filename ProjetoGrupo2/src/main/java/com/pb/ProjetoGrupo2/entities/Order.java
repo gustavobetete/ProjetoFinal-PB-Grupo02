@@ -5,8 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -14,18 +14,22 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "ORDERS")
 public class Order {
-    // quantity, purchase_date, delivery_date
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer quantity;
-    private Timestamp purchase_date;
-    private Timestamp delivery_date;
+    private LocalDateTime purchaseDate = LocalDateTime.now();
+    private LocalDateTime deliveryDate = LocalDateTime.now().withHour(22).withMinute(0).withSecond(0).withNano(0);
 
-    public Order(Integer quantity, Timestamp purchase_date, Timestamp delivery_date) {
-        this.quantity = quantity;
-        this.purchase_date = purchase_date;
-        this.delivery_date = delivery_date;
-    }
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "orders_product", joinColumns = @JoinColumn(name = "orders_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
+    private List<Product> products;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    private Double total;
+
 }

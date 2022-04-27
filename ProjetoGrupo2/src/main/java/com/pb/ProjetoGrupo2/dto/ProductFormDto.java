@@ -23,9 +23,10 @@ public class ProductFormDto {
     @NotNull(message = "O campo type não pode ser nulo")
     private Type type;
 
-    @NotNull(message = "O campo unit_price não pode ser nulo")
-    private BigDecimal unit_price;
+    @NotNull(message = "O campo unitPrice não pode ser nulo")
+    private Double unitPrice;
 
     @NotNull(message = "O campo quantity não pode ser nulo")
     private Integer quantity;
+
 }
