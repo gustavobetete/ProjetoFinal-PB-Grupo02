@@ -19,11 +19,10 @@ public interface UserService {
 
     UserDto update(Long id, UserFormDto userFormDto);
 
-    Object deleteById(Long id);
+    String deleteById(Long id);
 
     List<OrderDto> listAllOrders(Long id);
 
-//    ResponseEntity createProductOrder(ProductOrderFormDto productOrderFormDto);
+    String removeProductOrder(Long productId, Long orderId);
 
-    Object removeProductOrder(Long productId, Long orderId);
 }

@@ -74,19 +74,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Object deleteById(Long id) {
+    public String deleteById(Long id) {
         Optional<Order> order = orderRepository.findById(id);
         if(order.isPresent()){
             orderRepository.deleteById(id);
-            return ResponseEntity.ok().build();
+
+            String idOrder = order.get().getId().toString();
+            return "Order " + idOrder + " deleted with success!";
         }
         throw new ObjectNotFoundException("Order not found!");
     }
 
-    @Override
-    public List<ProductDto> listAllProduct(Long id){
-        return null;
-    }
 
     private void createOrder(OrderFormDto orderFormDto, Order order) {
         Double TotalValue = (double) 0;
@@ -101,7 +99,6 @@ public class OrderServiceImpl implements OrderService {
 
                 TotalValue += order.getProducts().get(i).getUnitPrice() * order.getProducts().get(i).getQuantity();
             }
-            //Se esta em promoção... promotion type = FRITO && SalgadoAtual.FRITO = preço salgado atual - promoção
         }
         order.setTotal(TotalValue);
 

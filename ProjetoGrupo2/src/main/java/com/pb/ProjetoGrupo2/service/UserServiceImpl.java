@@ -73,11 +73,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Object deleteById(Long id) {
+    public String deleteById(Long id) {
         Optional<User> user = userRepository.findById(id);
         if(user.isPresent()){
             userRepository.deleteById(id);
-            return null;
+
+            String idUser = user.get().getId().toString();
+            return "User " + idUser + " deleted with success";
+
         }
         throw new ObjectNotFoundException("User not found!");
     }
@@ -90,7 +93,8 @@ public class UserServiceImpl implements UserService {
         return orderDto;
     }
 
-    public Object removeProductOrder(Long productId, Long orderId) {
+
+    public String removeProductOrder(Long productId, Long orderId) {
 
         Optional<Product> product = productRepository.findById(productId);
         Optional<Order> order = orderRepository.findById(orderId);
@@ -99,7 +103,10 @@ public class UserServiceImpl implements UserService {
             order.get().getProducts().remove(product.get());
             orderRepository.save(order.get());
 
-            return null;
+            String idProduct = product.get().getId().toString();
+            String idOrder = order.get().getId().toString();
+
+            return "Product " + idProduct + " removed from order " + idOrder + " with success";
         }
         throw new ObjectNotFoundException("Product or Order not found!");
     }
