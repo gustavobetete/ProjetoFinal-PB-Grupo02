@@ -128,6 +128,7 @@ class ProductControllerTest {
 
     }
 
+<<<<<<< HEAD
     @Test
     void deleteProduct() throws Exception{
 
@@ -138,4 +139,15 @@ class ProductControllerTest {
         mockMvc.perform(delete("/product/1")).andExpect(status().isOk()).andDo(print());
 
     }
+=======
+//    @Test
+//    void deleteProduct() throws Exception{
+//
+//        Product product = ProductBuilder.getProduct();
+//
+//        when(productService.deleteById(product.getId())).thenReturn(ResponseEntity.ok().build());
+//        mockMvc.perform(delete("/product/1")).andExpect(status().isOk()).andDo(print());
+//
+//    }
+>>>>>>> 364ca1575484e74f9bc94019847854a84d6f5cba
 }

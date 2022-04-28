@@ -42,27 +42,10 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.CREATED).body(orderDto);
     }
 
-
-    @PutMapping(path = "/{id}")
-    public ResponseEntity<OrderDto> update(@PathVariable Long id, @RequestBody @Valid OrderFormDto orderFormDto) {
-        OrderDto orderDto = this.service.update(id, orderFormDto);
-        return ResponseEntity.ok(orderDto);
-    }
-
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        this.service.deleteById(id);
-        return new ResponseEntity(HttpStatus.OK);
+    public ResponseEntity<String> delete(@PathVariable Long id) {
+        String response = this.service.deleteById(id);
+        return ResponseEntity.ok().body(response);
     }
 
-    @GetMapping("/{id}/product")
-    public ResponseEntity<List<ProductDto>> listAllProduct(@PathVariable Long id){
-        List<ProductDto> product = service.listAllProduct(id);
-
-        if(product.isEmpty()){
-            return ResponseEntity.noContent().build();
-        }else {
-            return ResponseEntity.ok().body(product);
-        }
-    }
 }

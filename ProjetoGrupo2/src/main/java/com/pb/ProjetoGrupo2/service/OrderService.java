@@ -18,9 +18,6 @@ public interface OrderService {
 
     OrderDto save(OrderFormDto orderFormDto);
 
-    OrderDto update(Long id, OrderFormDto orderFormDto);
+    String deleteById(Long id);
 
-    Object deleteById(Long id);
-
-    List listAllProduct(Long id);
 }

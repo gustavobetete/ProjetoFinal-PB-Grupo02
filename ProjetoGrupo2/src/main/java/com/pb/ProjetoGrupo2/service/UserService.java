@@ -19,11 +19,9 @@ public interface UserService {
 
     UserDto update(Long id, UserFormDto userFormDto);
 
-    Object deleteById(Long id);
+    String deleteById(Long id);
 
     List<OrderDto> listAllOrders(Long id);
 
-//    ResponseEntity createProductOrder(ProductOrderFormDto productOrderFormDto);
-
-    ResponseEntity removeProductOrder(Long productId, Long orderId);
+    String removeProductOrder(Long productId, Long orderId);
 }
