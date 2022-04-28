@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
 
 @Data
 @AllArgsConstructor
@@ -27,6 +26,6 @@ public class ProductFormDto {
     private Double unitPrice;
 
     @NotNull(message = "O campo quantity não pode ser nulo")
-    private Integer quantity;
+    private Integer quantityInStock;
 
 }

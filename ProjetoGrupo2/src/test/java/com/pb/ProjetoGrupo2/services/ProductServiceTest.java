@@ -49,7 +49,7 @@ public class ProductServiceTest {
         assertThat(productDTO.getId()).isNotNull();
         assertThat(productDTO.getName()).isEqualTo(product.getName());
         assertThat(productDTO.getType()).isEqualTo(product.getType());
-        assertThat(productDTO.getQuantity()).isEqualTo(product.getQuantity());
+        assertThat(productDTO.getQuantityInStock()).isEqualTo(product.getQuantityInStock());
         assertThat(productDTO.getUnitPrice()).isEqualTo(product.getUnitPrice());
     }
 
@@ -83,7 +83,7 @@ public class ProductServiceTest {
         assertThat(productDTO.getId()).isNotNull();
         assertThat(productDTO.getName()).isEqualTo(product.getName());
         assertThat(productDTO.getType()).isEqualTo(product.getType());
-        assertThat(productDTO.getQuantity()).isEqualTo(product.getQuantity());
+        assertThat(productDTO.getQuantityInStock()).isEqualTo(product.getQuantityInStock());
         assertThat(productDTO.getUnitPrice()).isEqualTo(product.getUnitPrice());
     }
 
@@ -114,7 +114,7 @@ public class ProductServiceTest {
         assertThat(productDTO.getId()).isNotNull();
         assertThat(productDTO.getName()).isEqualTo(productFormDTO.getName());
         assertThat(productDTO.getType()).isEqualTo(productFormDTO.getType());
-        assertThat(productDTO.getQuantity()).isEqualTo(productFormDTO.getQuantity());
+        assertThat(productDTO.getQuantityInStock()).isEqualTo(productFormDTO.getQuantityInStock());
         assertThat(productDTO.getUnitPrice()).isEqualTo(productFormDTO.getUnitPrice());
     }
 

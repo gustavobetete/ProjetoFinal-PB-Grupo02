@@ -6,7 +6,6 @@ import com.pb.ProjetoGrupo2.dto.ProductFormDto;
 import com.pb.ProjetoGrupo2.dto.ProductOrderFormDto;
 import com.pb.ProjetoGrupo2.entities.Product;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +17,7 @@ public class ProductBuilder {
         product.setName("Coxinha");
         product.setType(Type.FRITO);
         product.setUnitPrice(Double.valueOf(7.00));
-        product.setQuantity(10);
+        product.setQuantityInStock(10);
         return product;
     }
 
@@ -36,7 +35,7 @@ public class ProductBuilder {
         productDto.setName("Coxinha");
         productDto.setType(Type.FRITO);
         productDto.setUnitPrice(Double.valueOf(7.00));
-        productDto.setQuantity(10);
+        productDto.setQuantityInStock(10);
         return productDto;
     }
 
@@ -46,7 +45,7 @@ public class ProductBuilder {
         productDtoTwo.setName("Calabresa");
         productDtoTwo.setType(Type.ASSADO);
         productDtoTwo.setUnitPrice(Double.valueOf(5.00));
-        productDtoTwo.setQuantity(12);
+        productDtoTwo.setQuantityInStock(12);
         return productDtoTwo;
     }
 
@@ -55,7 +54,7 @@ public class ProductBuilder {
         productFormDto.setName("Coxinha");
         productFormDto.setType(Type.FRITO);
         productFormDto.setUnitPrice(Double.valueOf(7.00));
-        productFormDto.setQuantity(10);
+        productFormDto.setQuantityInStock(10);
         return productFormDto;
     }
     public static Product getProductTwo() {
@@ -64,14 +63,14 @@ public class ProductBuilder {
         product.setName("Calabresa");
         product.setType(Type.ASSADO);
         product.setUnitPrice(Double.valueOf(5.00));
-        product.setQuantity(12);
+        product.setQuantityInStock(12);
         return product;
     }
 
     public static ProductOrderFormDto getProductOrderFormDto() {
         ProductOrderFormDto productOrderFormDto = new ProductOrderFormDto();
         productOrderFormDto.setProductId(getProduct().getId());
-        productOrderFormDto.setQuantity(getProduct().getQuantity());
+        productOrderFormDto.setQuantity(getProduct().getQuantityInStock());
         return productOrderFormDto;
     }
 }
