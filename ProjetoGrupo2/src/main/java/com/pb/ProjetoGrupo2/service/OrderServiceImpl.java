@@ -14,7 +14,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -50,32 +49,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDto save(OrderFormDto orderFormDto){
+    public OrderDto save(OrderFormDto orderFormDto) throws Exception{
         Order order = modelMapper.map(orderFormDto, Order.class);
         order.setId(null);
 
-        Double somaTotal = (double) 0;
-        BigDecimal totalPrice = null;
+        Order orderCreated = createOrder(orderFormDto, order);
 
-        for(int i = 0; i < order.getProducts().size(); i++ ){
-            Optional<Product> product = this.productRepository.findById(orderFormDto.getProducts().get(i).getProductId());
-
-            if(product.isPresent()){
-                order.getProducts().get(i).setName(product.get().getName());
-                order.getProducts().get(i).setUnitPrice(product.get().getUnitPrice());
-                order.getProducts().get(i).setType(product.get().getType());
-                order.getProducts().get(i).setQuantity(product.get().getQuantity());
-
-                somaTotal += order.getProducts().get(i).getUnitPrice();
-            }
-        }
-        order.setTotal(somaTotal);
-        createOrder(orderFormDto, order);
-
-        this.orderRepository.save(order);
-        return modelMapper.map(order, OrderDto.class);
+        this.orderRepository.save(orderCreated);
+        return modelMapper.map(orderCreated, OrderDto.class);
     }
-
 
     @Override
     public String deleteById(Long id) {
@@ -90,22 +72,30 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
-    private void createOrder(OrderFormDto orderFormDto, Order order) {
+    private Order createOrder(OrderFormDto orderFormDto, Order order) throws Exception {
         Double TotalValue = (double) 0;
 
         for(int i = 0; i < order.getProducts().size(); i++ ){
-            Optional<Product> product = this.productRepository.findById(orderFormDto.getProducts().get(i).getProductId());
+            Optional<Product> optionalProduct = this.productRepository.findById(orderFormDto.getProducts().get(i).getProductId());
 
-            if(product.isPresent()){
-                order.getProducts().get(i).setName(product.get().getName());
-                order.getProducts().get(i).setUnitPrice(product.get().getUnitPrice());
-                order.getProducts().get(i).setType(product.get().getType());
+            if(optionalProduct.isPresent()){
+                Product product = optionalProduct.get();
+                if(product.getQuantity() < orderFormDto.getProducts().get(i).getQuantity())throw new Exception("Quantidade insuficiente");
+
+                order.getProducts().get(i).setName(product.getName());
+                order.getProducts().get(i).setUnitPrice(product.getUnitPrice());
+                order.getProducts().get(i).setType(product.getType());
+                order.getProducts().get(i).setQuantity(orderFormDto.getProducts().get(i).getQuantity());
+
+                product.setQuantity(product.getQuantity() - orderFormDto.getProducts().get(i).getQuantity());
+                this.productRepository.save(product);
 
                 TotalValue += order.getProducts().get(i).getUnitPrice() * order.getProducts().get(i).getQuantity();
-                product.get().setQuantity(product.get().getQuantity() - order.getProducts().get(i).getQuantity());
+
             }
+//            throw new Exception("Produto não encontrado");
         }
         order.setTotal(TotalValue);
-
+        return order;
     }
 }

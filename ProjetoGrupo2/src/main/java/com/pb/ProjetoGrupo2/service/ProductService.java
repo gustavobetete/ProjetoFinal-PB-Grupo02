@@ -2,10 +2,8 @@ package com.pb.ProjetoGrupo2.service;
 
 import com.pb.ProjetoGrupo2.dto.ProductDto;
 import com.pb.ProjetoGrupo2.dto.ProductFormDto;
-import com.pb.ProjetoGrupo2.dto.ProductOrderFormDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 
 public interface ProductService {
 
@@ -18,4 +16,5 @@ public interface ProductService {
     ProductDto update(Long id, ProductFormDto productFormDto);
 
     String deleteById(Long id);
+
 }
