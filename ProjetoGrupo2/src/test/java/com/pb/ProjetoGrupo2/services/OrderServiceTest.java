@@ -2,6 +2,8 @@
 //
 ////import com.pb.ProjetoGrupo2.builder.OrderBuilder;
 //import com.pb.ProjetoGrupo2.builder.OrderBuilder;
+
+//import com.pb.ProjetoGrupo2.builder.OrderBuilder;
 //import com.pb.ProjetoGrupo2.builder.ProductBuilder;
 //import com.pb.ProjetoGrupo2.config.validation.ObjectNotFoundException;
 //import com.pb.ProjetoGrupo2.dto.OrderDto;
@@ -53,7 +55,7 @@
 //
 //    @MockBean
 //    private ProductRepository productRepository;
-//
+
 //    @Test
 //    @DisplayName("Save order")
 //    public void saveOrder() {
@@ -71,7 +73,7 @@
 //        assertThat(orderDTO.getProducts()).isEqualTo(order.getProducts());
 //        assertThat(orderDTO.getIdUser()).isEqualTo(order.getUser().getId());
 //    }
-//
+
 //    @Test
 //    @DisplayName("List all orders")
 //    public void listOrders() {
@@ -115,8 +117,7 @@
 //        assertThatExceptionOfType(ObjectNotFoundException.class)
 //                .isThrownBy(() -> this.orderService.findById(order.getId()));
 //    }
-//
-//
+
 //    @Test
 //    @DisplayName("Update order")
 //    public void updateOrder() {
@@ -134,7 +135,7 @@
 //
 //
 //    }
-//
+
 //    @Test
 //    @DisplayName("Update order not found")
 //    public void updateOrder_NotFound() {
@@ -167,3 +168,4 @@
 //                .isThrownBy(() -> this.orderService.deleteById(1L));
 //    }
 //}
+

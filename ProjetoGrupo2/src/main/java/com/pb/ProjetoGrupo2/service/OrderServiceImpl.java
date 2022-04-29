@@ -3,7 +3,6 @@ package com.pb.ProjetoGrupo2.service;
 import com.pb.ProjetoGrupo2.config.validation.ObjectNotFoundException;
 import com.pb.ProjetoGrupo2.dto.OrderDto;
 import com.pb.ProjetoGrupo2.dto.OrderFormDto;
-import com.pb.ProjetoGrupo2.dto.ProductDto;
 import com.pb.ProjetoGrupo2.entities.Order;
 import com.pb.ProjetoGrupo2.entities.Product;
 import com.pb.ProjetoGrupo2.repository.OrderRepository;
@@ -50,27 +49,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDto save(OrderFormDto orderFormDto) {
-
+    public OrderDto save(OrderFormDto orderFormDto) throws Exception{
         Order order = modelMapper.map(orderFormDto, Order.class);
         order.setId(null);
-        createOrder(orderFormDto, order);
-        this.orderRepository.save(order);
-        return modelMapper.map(order, OrderDto.class);
-    }
 
-    @Override
-    public OrderDto update(Long id, OrderFormDto orderFormDto) {
-        Optional<Order> order = this.orderRepository.findById(id);
-        if(order.isPresent()) {
-            Order orderUpdated = modelMapper.map(orderFormDto, Order.class);
-            orderUpdated.setId(id);
-            createOrder(orderFormDto, orderUpdated);
+        Order orderCreated = createOrder(orderFormDto, order);
 
-            orderRepository.save(orderUpdated);
-            return modelMapper.map(orderUpdated, OrderDto.class);
-        }
-        throw new ObjectNotFoundException("Order not found!");
+        this.orderRepository.save(orderCreated);
+        return modelMapper.map(orderCreated, OrderDto.class);
+
     }
 
     @Override
@@ -86,24 +73,31 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
-    private void createOrder(OrderFormDto orderFormDto, Order order) {
 
+    private Order createOrder(OrderFormDto orderFormDto, Order order) throws Exception {
         Double TotalValue = (double) 0;
 
-        for(int i = 0; i < orderFormDto.getProducts().size(); i++ ){
+        for(int i = 0; i < order.getProducts().size(); i++ ){
+            Optional<Product> optionalProduct = this.productRepository.findById(orderFormDto.getProducts().get(i).getProductId());
 
-            Optional<Product> product = this.productRepository.findById(orderFormDto.getProducts().get(i).getProductId());
+            if(optionalProduct.isPresent()){
+                Product product = optionalProduct.get();
+                if(product.getQuantity() < orderFormDto.getProducts().get(i).getQuantity())throw new Exception("Quantidade insuficiente");
 
-            if(product.isPresent()){
-                order.getProducts().get(i).setName(product.get().getName());
-                order.getProducts().get(i).setUnitPrice(product.get().getUnitPrice());
-                order.getProducts().get(i).setType(product.get().getType());
+                order.getProducts().get(i).setName(product.getName());
+                order.getProducts().get(i).setUnitPrice(product.getUnitPrice());
+                order.getProducts().get(i).setType(product.getType());
+                order.getProducts().get(i).setQuantity(orderFormDto.getProducts().get(i).getQuantity());
+
+                product.setQuantity(product.getQuantity() - orderFormDto.getProducts().get(i).getQuantity());
+                this.productRepository.save(product);
 
                 TotalValue += order.getProducts().get(i).getUnitPrice() * order.getProducts().get(i).getQuantity();
-                product.get().setQuantity(product.get().getQuantity() - order.getProducts().get(i).getQuantity());
+
             }
+//            throw new Exception("Produto não encontrado");
         }
         order.setTotal(TotalValue);
-
+        return order;
     }
 }

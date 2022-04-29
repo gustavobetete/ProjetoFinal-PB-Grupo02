@@ -22,9 +22,9 @@ public class Order {
     private LocalDateTime purchaseDate = LocalDateTime.now();
     private LocalDateTime deliveryDate = LocalDateTime.now().withHour(22).withMinute(0).withSecond(0).withNano(0);
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "orders_product", joinColumns = @JoinColumn(name = "orders_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id"))
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "orders_product", joinColumns = @JoinColumn(name = "orders_id"), inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> products;
 
     @ManyToOne

@@ -1,6 +1,7 @@
 package com.pb.ProjetoGrupo2.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.pb.ProjetoGrupo2.entities.Order;
 import com.pb.ProjetoGrupo2.entities.Product;
 import com.pb.ProjetoGrupo2.entities.User;
 import lombok.AllArgsConstructor;

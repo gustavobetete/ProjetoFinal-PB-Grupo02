@@ -12,9 +12,7 @@ public interface OrderService {
 
     OrderDto findById(Long id);
 
-    OrderDto save(OrderFormDto orderFormDto);
-
-    OrderDto update(Long id, OrderFormDto orderFormDto);
+    OrderDto save(OrderFormDto orderFormDto) throws Exception;
 
     String deleteById(Long id);
 
