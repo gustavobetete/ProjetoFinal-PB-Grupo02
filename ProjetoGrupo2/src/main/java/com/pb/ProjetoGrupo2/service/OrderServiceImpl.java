@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -56,6 +55,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = modelMapper.map(orderFormDto, Order.class);
         order.setId(null);
         createOrder(orderFormDto, order);
+        this.orderRepository.save(order);
         return modelMapper.map(order, OrderDto.class);
     }
 
@@ -87,9 +87,11 @@ public class OrderServiceImpl implements OrderService {
 
 
     private void createOrder(OrderFormDto orderFormDto, Order order) {
+
         Double TotalValue = (double) 0;
 
-        for(int i = 0; i < order.getProducts().size(); i++ ){
+        for(int i = 0; i < orderFormDto.getProducts().size(); i++ ){
+
             Optional<Product> product = this.productRepository.findById(orderFormDto.getProducts().get(i).getProductId());
 
             if(product.isPresent()){
@@ -98,6 +100,7 @@ public class OrderServiceImpl implements OrderService {
                 order.getProducts().get(i).setType(product.get().getType());
 
                 TotalValue += order.getProducts().get(i).getUnitPrice() * order.getProducts().get(i).getQuantity();
+                product.get().setQuantity(product.get().getQuantity() - order.getProducts().get(i).getQuantity());
             }
         }
         order.setTotal(TotalValue);

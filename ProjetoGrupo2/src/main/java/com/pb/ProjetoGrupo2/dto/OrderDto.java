@@ -26,6 +26,7 @@ public class OrderDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss", locale = "pt-BR")
     private LocalDateTime deliveryDate;
     private Long idUser;
-    private List<Product> products;
+    private List<ProductOrderFormDto> products;
     private Double total;
+
 }

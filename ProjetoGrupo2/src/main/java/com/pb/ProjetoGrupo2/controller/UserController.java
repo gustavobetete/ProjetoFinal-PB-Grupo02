@@ -70,12 +70,8 @@ public class UserController {
     @Transactional
     public ResponseEntity<String> removeProductOrder(@PathVariable Long productId, @PathVariable Long orderId){
 
-<<<<<<< HEAD
-        this.service.removeProductOrder(productId, orderId);
-        return new ResponseEntity(HttpStatus.OK);
-=======
         String response = this.service.removeProductOrder(productId, orderId);
         return ResponseEntity.ok().body(response);
->>>>>>> 921c1c8f1b648c81f16fbd5a2648b8bdbb4ac684
+
     }
 }
