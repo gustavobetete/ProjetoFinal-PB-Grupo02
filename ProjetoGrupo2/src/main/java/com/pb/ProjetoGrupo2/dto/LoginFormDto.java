@@ -9,7 +9,7 @@ public class LoginFormDto {
     private String email;
     private String password;
 
-    public UsernamePasswordAuthenticationToken converter() {
+    public UsernamePasswordAuthenticationToken convert() {
         return new UsernamePasswordAuthenticationToken (email, password);
     }
 }

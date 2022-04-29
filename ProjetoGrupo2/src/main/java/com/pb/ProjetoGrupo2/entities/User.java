@@ -26,11 +26,11 @@ public class User implements UserDetails {
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private List<Perfil> perfis = new ArrayList<>();
+    private List<Profile> profiles = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities () {
-        return this.perfis;
+        return this.profiles;
     }
 
     //
