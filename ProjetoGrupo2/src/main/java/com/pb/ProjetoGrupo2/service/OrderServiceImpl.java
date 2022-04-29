@@ -38,10 +38,12 @@ public class OrderServiceImpl implements OrderService {
         List<OrderDto> listOrders = orders.stream().map(order ->
                 modelMapper.map(order, OrderDto.class)).collect(Collectors.toList());
 
-//        for(int i = 0; i < listOrders.size(); i++){
-//            OrderDto orderAtual = listOrders.get(i);
-//            listOrders.get(i).getProducts().get(i).setQuantityInStock(idUsuarioEQuantidadePedida.get(orderAtual.getIdUser()).get(i));
-//        }
+        for(int i = 0; i < listOrders.size(); i++){
+            OrderDto orderAtual = listOrders.get(i);
+//            listOrders.get(i).getProducts().get(i).setQuantity(orderAtual.getProducts().get(i).getQuantity());
+
+//            listOrders.get(i).getProducts().get(i).setQuantity(idUsuarioEQuantidadePedida.get(orderAtual.getIdUser()).get(i));
+        }
 
         return new PageImpl<OrderDto>(listOrders, page, orders.getTotalElements());
 
@@ -65,10 +67,10 @@ public class OrderServiceImpl implements OrderService {
         Order order = modelMapper.map(orderFormDto, Order.class);
         order.setId(null);
 
-        createOrder(orderFormDto, order);
+        Order orderCreated = createOrder(orderFormDto, order);
 
-        this.orderRepository.save(order);
-        return modelMapper.map(order, OrderDto.class);
+        this.orderRepository.save(orderCreated);
+        return modelMapper.map(orderCreated, OrderDto.class);
     }
 
 
@@ -85,42 +87,47 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
-    private String createOrder(OrderFormDto orderFormDto, Order order) {
+    private Order createOrder(OrderFormDto orderFormDto, Order order) {
         Double TotalValue = (double) 0;
-        OrderDto orderDto = new OrderDto();
+        //OrderDto orderDto = new OrderDto();
 
 
         for(int i = 0; i < order.getProducts().size(); i++ ){
-            Optional<Product> product = this.productRepository.findById(orderFormDto.getProducts().get(i).getProductId());
+            Optional<Product> optionalProduct = this.productRepository.findById(orderFormDto.getProducts().get(i).getProductId());
 
-            if(product.isPresent()){
+            if(optionalProduct.isPresent()){
                 //Recupera a quantidade em estoque
-                order.getProducts().get(i).setQuantityInStock(product.get().getQuantityInStock());
-                order.getProducts().get(i).setName(product.get().getName());
-                order.getProducts().get(i).setUnitPrice(product.get().getUnitPrice());
-                order.getProducts().get(i).setType(product.get().getType());
-                order.setQuantity(orderFormDto.getProducts().get(i).getQuantity());
-                //orderDto.getProducts().get(i).setQuantity();
+                Product product = optionalProduct.get();
+                if(product.getQuantityInStock() < orderFormDto.getProducts().get(i).getQuantity())
+                //order.getProducts().get(i).setQuantityInStock(product.get().getQuantityInStock());
+                order.getProducts().get(i).setName(product.getName());
+                order.getProducts().get(i).setUnitPrice(product.getUnitPrice());
+                order.getProducts().get(i).setType(product.getType());
+                order.getProducts().get(i).setQuantityInStock(orderFormDto.getProducts().get(i).getQuantity());
 
+                product.setQuantityInStock(product.getQuantityInStock() - orderFormDto.getProducts().get(i).getQuantity());
+                this.productRepository.save(product);
+                //order.setQuantity(orderFormDto.getProducts().get(i).getQuantity());
+                //orderDto.getProducts().get(i).setQuantity().;
                 TotalValue += order.getProducts().get(i).getUnitPrice() * order.getProducts().get(i).getQuantityInStock();
-                Integer inStock = product.get().getQuantityInStock() - orderFormDto.getProducts().get(i).getQuantity();
+//                Integer inStock = product.getQuantityInStock() - orderFormDto.getProducts().get(i).getQuantity();
 
-                if(inStock >= 0){
-                    //Atualiza o valor depois de descontar do pedido
-                    product.get().setQuantityInStock(inStock);
+//                if(inStock >= 0){
+//                    //Atualiza o valor depois de descontar do pedido
+//                    product.get().setQuantityInStock(inStock);
+//
+////                    idsDosPedidos.add(order.getProducts().get(i).getQuantityInStock());
+////                    idUsuarioEQuantidadePedida.put(orderFormDto.getIdUser(), idsDosPedidos);
+//
+//                    // productRepository.save(product.get());
+//                }else {
+//                    String productNotFound = product.get().getName();
+//                    String.format("Product %s not found!", productNotFound);
 
-//                    idsDosPedidos.add(order.getProducts().get(i).getQuantityInStock());
-//                    idUsuarioEQuantidadePedida.put(orderFormDto.getIdUser(), idsDosPedidos);
-
-                    // productRepository.save(product.get());
-                }else {
-                    String productNotFound = product.get().getName();
-                    String.format("Product %s not found!", productNotFound);
-                    throw new RuntimeException("Produto fora de estoque!");
                 }
+            throw new RuntimeException("Produto fora de estoque!");
             }
-        }
         order.setTotal(TotalValue);
-        return "Order create with success!";
+        return order;
     }
 }
