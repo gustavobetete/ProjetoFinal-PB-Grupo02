@@ -37,16 +37,13 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderDto> save(@RequestBody @Valid OrderFormDto orderFormDto){
-        OrderDto orderDto = this.service.save(orderFormDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(orderDto);
-    }
-
-
-    @PutMapping(path = "/{id}")
-    public ResponseEntity<OrderDto> update(@PathVariable Long id, @RequestBody @Valid OrderFormDto orderFormDto) {
-        OrderDto orderDto = this.service.update(id, orderFormDto);
-        return ResponseEntity.ok(orderDto);
+    public ResponseEntity<?> save(@RequestBody @Valid OrderFormDto orderFormDto){
+        try{
+            OrderDto orderDto = this.service.save(orderFormDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(orderDto);
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
+        }
     }
 
     @DeleteMapping(path = "/{id}")

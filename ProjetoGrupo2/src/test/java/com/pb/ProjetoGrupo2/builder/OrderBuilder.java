@@ -20,25 +20,25 @@ public class OrderBuilder {
         return order;
     }
 
-    public static OrderDto getOrderDto() {
-        OrderDto orderDto = new OrderDto();
-        orderDto.setId(1L);
-        orderDto.setPurchaseDate(LocalDateTime.parse("2022-04-26T12:00:00"));
-        orderDto.setDeliveryDate(LocalDateTime.parse("2022-04-26T22:00:00"));
-        orderDto.setIdUser(UserBuilder.getUser().getId());
-        orderDto.setProducts(ProductBuilder.getProducts());
-        return orderDto;
-    }
-
-    public static OrderDto getOrderDtoTwo() {
-        OrderDto orderDtoTwo = new OrderDto();
-        orderDtoTwo.setId(2L);
-        orderDtoTwo.setPurchaseDate(LocalDateTime.parse("2022-04-26T12:00:00"));
-        orderDtoTwo.setDeliveryDate(LocalDateTime.parse("2022-04-26T22:00:00"));
-        orderDtoTwo.setIdUser(UserBuilder.getUser().getId());
-        orderDtoTwo.setProducts(ProductBuilder.getProducts());
-        return orderDtoTwo;
-    }
+//    public static OrderDto getOrderDto() {
+//        OrderDto orderDto = new OrderDto();
+//        orderDto.setId(1L);
+//        orderDto.setPurchaseDate(LocalDateTime.parse("2022-04-26T12:00:00"));
+//        orderDto.setDeliveryDate(LocalDateTime.parse("2022-04-26T22:00:00"));
+//        orderDto.setIdUser(UserBuilder.getUser().getId());
+//        orderDto.setProducts(ProductBuilder.getProducts());
+//        return orderDto;
+//    }
+//
+//    public static OrderDto getOrderDtoTwo() {
+//        OrderDto orderDtoTwo = new OrderDto();
+//        orderDtoTwo.setId(2L);
+//        orderDtoTwo.setPurchaseDate(LocalDateTime.parse("2022-04-26T12:00:00"));
+//        orderDtoTwo.setDeliveryDate(LocalDateTime.parse("2022-04-26T22:00:00"));
+//        orderDtoTwo.setIdUser(UserBuilder.getUser().getId());
+//        orderDtoTwo.setProducts(ProductBuilder.getProducts());
+//        return orderDtoTwo;
+//    }
 
     public static OrderFormDto getOrderFormDto() {
         OrderFormDto orderFormDto = new OrderFormDto();
