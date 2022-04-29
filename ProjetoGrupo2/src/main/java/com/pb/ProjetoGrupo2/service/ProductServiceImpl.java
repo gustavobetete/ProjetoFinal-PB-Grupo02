@@ -1,27 +1,23 @@
 package com.pb.ProjetoGrupo2.service;
 
+import com.pb.ProjetoGrupo2.config.validation.ObjectNotFoundException;
 import com.pb.ProjetoGrupo2.dto.ProductDto;
 import com.pb.ProjetoGrupo2.dto.ProductFormDto;
-import com.pb.ProjetoGrupo2.dto.ProductOrderFormDto;
-import com.pb.ProjetoGrupo2.entities.Order;
 import com.pb.ProjetoGrupo2.entities.Product;
-import com.pb.ProjetoGrupo2.entities.User;
 import com.pb.ProjetoGrupo2.repository.OrderRepository;
 import com.pb.ProjetoGrupo2.repository.ProductRepository;
-import com.pb.ProjetoGrupo2.config.validation.ObjectNotFoundException;
 import com.pb.ProjetoGrupo2.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 
 @Service
 public class ProductServiceImpl implements ProductService{
@@ -57,6 +53,7 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public ProductDto save(ProductFormDto productFormDto){
+
         Product product = this.productRepository.save(modelMapper.map(productFormDto, Product.class));
         return modelMapper.map(product, ProductDto.class);
     }
@@ -73,14 +70,14 @@ public class ProductServiceImpl implements ProductService{
         throw new ObjectNotFoundException("Product not found!");
     }
 
-    @Override
+
     public String deleteById(Long id) {
         Optional<Product> product = productRepository.findById(id);
         if(product.isPresent()){
             productRepository.deleteById(id);
 
-            String idProduct = product.get().getName().toString();
-            return String.format("Product %s delete with success!", idProduct);
+            String idProduct = product.get().getId().toString();
+            return "Product " + idProduct + " deleted with success!";
         }
         throw new ObjectNotFoundException("Product not found!");
     }

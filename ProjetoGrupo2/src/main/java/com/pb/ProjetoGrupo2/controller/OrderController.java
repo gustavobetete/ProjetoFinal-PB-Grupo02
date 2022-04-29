@@ -37,9 +37,13 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderDto> save(@RequestBody @Valid OrderFormDto orderFormDto){
-        OrderDto orderDto = this.service.save(orderFormDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(orderDto);
+    public ResponseEntity<?> save(@RequestBody @Valid OrderFormDto orderFormDto){
+        try{
+            OrderDto orderDto = this.service.save(orderFormDto);
+            return ResponseEntity.status(HttpStatus.CREATED).body(orderDto);
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
+        }
     }
 
     @DeleteMapping(path = "/{id}")
