@@ -1,20 +1,19 @@
 package com.pb.ProjetoGrupo2.service;
 
-import com.pb.ProjetoGrupo2.dto.ProductDto;
-import com.pb.ProjetoGrupo2.dto.ProductFormDto;
+import com.pb.ProjetoGrupo2.dto.ProductDTO;
+import com.pb.ProjetoGrupo2.dto.ProductFormDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface ProductService {
 
-    Page<ProductDto> findAll(Pageable page);
+    ProductDTO getProductById(Long id);
 
-    ProductDto findById(Long id);
-
-    ProductDto save(ProductFormDto ProductFormDto);
-
-    ProductDto update(Long id, ProductFormDto productFormDto);
+    ProductDTO putProduct(Long id, ProductFormDTO productFormDto);
 
     String deleteById(Long id);
 
+    ProductDTO postProduct(ProductFormDTO productFormDTO);
+
+    Page<ProductDTO> getAllProducts(String type, Pageable pageable);
 }

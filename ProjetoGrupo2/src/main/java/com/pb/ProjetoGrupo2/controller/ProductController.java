@@ -1,7 +1,7 @@
 package com.pb.ProjetoGrupo2.controller;
 
-import com.pb.ProjetoGrupo2.dto.ProductDto;
-import com.pb.ProjetoGrupo2.dto.ProductFormDto;
+import com.pb.ProjetoGrupo2.dto.ProductDTO;
+import com.pb.ProjetoGrupo2.dto.ProductFormDTO;
 
 import com.pb.ProjetoGrupo2.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -24,35 +24,35 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @PostMapping
+    public ResponseEntity<ProductDTO> postProduct(@RequestBody ProductFormDTO productFormDTO){
+        ProductDTO product = productService.postProduct(productFormDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(product);
+    }
+
     @GetMapping
-    public ResponseEntity<Page<ProductDto>> findAll
-            (@PageableDefault(page = 0, size = 10,sort = "id",direction = Sort.Direction.ASC) Pageable page){
-        Page<ProductDto> products = this.productService.findAll(page);
-        return ResponseEntity.ok(products);
+    public Page<ProductDTO> getAllProducts
+            (@RequestParam(required = false) String type,
+             @PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
+        Page<ProductDTO> products = productService.getAllProducts(type, pageable);
+        return products;
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDto> findById(@PathVariable Long id){
-        return ResponseEntity.ok().body(productService.findById(id));
-    }
-
-    @PostMapping
-    public ResponseEntity<ProductDto> save(@RequestBody @Valid ProductFormDto productFormDto){
-        ProductDto productDto = this.productService.save(productFormDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(productDto);
+    public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id){
+        return ResponseEntity.ok().body(productService.getProductById(id));
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<ProductDto> update
-            (@PathVariable Long id, @RequestBody @Valid ProductFormDto productFormDto) {
-        ProductDto productDto = this.productService.update(id, productFormDto);
-        return ResponseEntity.ok(productDto);
+    public ResponseEntity<ProductDTO> putProduct
+            (@PathVariable Long id, @RequestBody @Valid ProductFormDTO productFormDto) {
+        ProductDTO product = productService.putProduct(id, productFormDto);
+        return ResponseEntity.ok(product);
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<String> delete(@PathVariable Long id) {
-        String response = this.productService.deleteById(id);
+    public ResponseEntity<String> deleteById(@PathVariable Long id) {
+        String response = productService.deleteById(id);
         return ResponseEntity.ok().body(response);
-
     }
 }

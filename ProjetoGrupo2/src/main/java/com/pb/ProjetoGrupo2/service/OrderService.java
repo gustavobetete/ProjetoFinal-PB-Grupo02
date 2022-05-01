@@ -4,16 +4,13 @@ import com.pb.ProjetoGrupo2.dto.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
-
 public interface OrderService {
 
-    Page<OrderDto> findAll(Pageable page);
+    OrderDTO postOrder(OrderFormDTO orderFormDTO);
 
-    OrderDto findById(Long id);
+    Page<OrderDTO> getAllOrders(Pageable pageable);
 
-    OrderDto save(OrderFormDto orderFormDto) throws Exception;
+    Page<OrderedProductDTO> getOrderProduct(Long orderId, Pageable pageable);
 
-    String deleteById(Long id);
-
+    OrderDTO putOrderStatus(Long orderId, StatusUpdateFormDTO statusUpdateFormDTO);
 }

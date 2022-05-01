@@ -7,15 +7,15 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductDto {
+@Data
+public class ProductDTO {
 
     private Long id;
     private String name;
     private Type type;
-    private Double unitPrice;
-    private Integer quantity;
+    private BigDecimal unityPrice;
+    private int quantity;
 
 }

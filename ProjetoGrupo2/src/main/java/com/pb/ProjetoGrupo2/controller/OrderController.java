@@ -1,8 +1,9 @@
 package com.pb.ProjetoGrupo2.controller;
 
-import com.pb.ProjetoGrupo2.dto.OrderDto;
-import com.pb.ProjetoGrupo2.dto.OrderFormDto;
-import com.pb.ProjetoGrupo2.dto.ProductDto;
+import com.pb.ProjetoGrupo2.dto.OrderDTO;
+import com.pb.ProjetoGrupo2.dto.OrderFormDTO;
+import com.pb.ProjetoGrupo2.dto.OrderedProductDTO;
+import com.pb.ProjetoGrupo2.dto.StatusUpdateFormDTO;
 import com.pb.ProjetoGrupo2.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,41 +15,46 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/order")
 public class OrderController {
 
     @Autowired
-    private OrderService service;
-
-    @GetMapping
-    public ResponseEntity<Page<OrderDto>> findAll(@PageableDefault(page = 0, size = 10,sort = "id",direction = Sort.Direction.ASC) Pageable page){
-        Page<OrderDto> orders = this.service.findAll(page);
-        return ResponseEntity.ok(orders);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<OrderDto> findById(@PathVariable Long id){
-        return ResponseEntity.ok().body(service.findById(id));
-    }
+    private OrderService orderService;
 
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody @Valid OrderFormDto orderFormDto){
-        try{
-            OrderDto orderDto = this.service.save(orderFormDto);
-            return ResponseEntity.status(HttpStatus.CREATED).body(orderDto);
-        }catch(Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
+    public ResponseEntity<OrderDTO> postOrder(@RequestBody OrderFormDTO orderFormDTO){
+        OrderDTO order = orderService.postOrder(orderFormDTO);
+        if (order != null){
+            return ResponseEntity.status(HttpStatus.CREATED).body(order);
         }
+        return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping(path = "/{id}")
-    public ResponseEntity<String> delete(@PathVariable Long id) {
-        String response = this.service.deleteById(id);
-        return ResponseEntity.ok().body(response);
+    @GetMapping
+    public Page<OrderDTO> getAllOrders(@PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
+        Page<OrderDTO> orders = orderService.getAllOrders(pageable);
+        return orders;
     }
 
+    @GetMapping("/{orderId}/product")
+    public Page<OrderedProductDTO> getOrderProduct
+            (@PathVariable Long orderId,
+             @PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
+
+        Page<OrderedProductDTO> orderedProducts = orderService.getOrderProduct(orderId, pageable);
+        return orderedProducts;
+    }
+
+    @PutMapping("/{orderId}")
+    public ResponseEntity<OrderDTO> putOrderStatus
+            (@PathVariable Long orderId, @RequestBody StatusUpdateFormDTO statusUpdateFormDTO){
+
+        OrderDTO order = orderService.putOrderStatus(orderId ,statusUpdateFormDTO);
+        if (order != null){
+            return ResponseEntity.ok().body(order);
+        }
+        return ResponseEntity.noContent().build();
+    }
 }

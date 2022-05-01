@@ -1,5 +1,6 @@
 package com.pb.ProjetoGrupo2.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,11 +12,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@Data
+@Entity(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "USERS")
+@Data
 public class User implements UserDetails {
 
     @Id
@@ -24,6 +24,10 @@ public class User implements UserDetails {
     private String name;
     private String email;
     private String password;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Order> orders = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Perfil> perfis = new ArrayList<>();
@@ -63,7 +67,4 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
-    @OneToMany(mappedBy = "user")
-    private List<Order> orders;
 }

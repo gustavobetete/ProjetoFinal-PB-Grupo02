@@ -1,12 +1,19 @@
 package com.pb.ProjetoGrupo2.service;
 
 import com.pb.ProjetoGrupo2.config.validation.ObjectNotFoundException;
-import com.pb.ProjetoGrupo2.dto.OrderDto;
-import com.pb.ProjetoGrupo2.dto.OrderFormDto;
+import com.pb.ProjetoGrupo2.constants.Status;
+import com.pb.ProjetoGrupo2.dto.OrderDTO;
+import com.pb.ProjetoGrupo2.dto.OrderFormDTO;
+import com.pb.ProjetoGrupo2.dto.OrderedProductDTO;
+import com.pb.ProjetoGrupo2.dto.StatusUpdateFormDTO;
 import com.pb.ProjetoGrupo2.entities.Order;
+import com.pb.ProjetoGrupo2.entities.OrderedProduct;
 import com.pb.ProjetoGrupo2.entities.Product;
+import com.pb.ProjetoGrupo2.entities.User;
 import com.pb.ProjetoGrupo2.repository.OrderRepository;
+import com.pb.ProjetoGrupo2.repository.OrderedProductRepository;
 import com.pb.ProjetoGrupo2.repository.ProductRepository;
+import com.pb.ProjetoGrupo2.repository.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,6 +21,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,81 +31,72 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
-
     @Autowired
     private ProductRepository productRepository;
-
-
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private OrderedProductRepository orderedProductRepository;
     @Autowired
     private ModelMapper modelMapper;
 
     @Override
-    public Page<OrderDto> findAll(Pageable page){
-        Page<Order> orders = this.orderRepository.findAll(page);
-        List<OrderDto> listOrders = orders.stream().map(order ->
-                modelMapper.map(order, OrderDto.class)).collect(Collectors.toList());
-        return new PageImpl<OrderDto>(listOrders, page, orders.getTotalElements());
-    }
+    public OrderDTO postOrder(OrderFormDTO orderFormDTO) {
 
-    @Override
-    public OrderDto findById(Long id){
-        Optional<Order> orders = orderRepository.findById(id);
-        if (orders.isPresent()){
-            return modelMapper.map(orders.get(), OrderDto.class);
+        Optional<User> optionalUser = userRepository.findById(orderFormDTO.getUserId());
+
+        if (optionalUser.isPresent()){
+            User user = optionalUser.get();
+            Order order = new Order(LocalDateTime.now(), user);
+            orderRepository.save(order);
+            user.getOrders().add(order);
+            userRepository.save(user);
+            return modelMapper.map(order, OrderDTO.class);
         }
-        throw new ObjectNotFoundException("Order not found!");
+        return null;
     }
 
     @Override
-    public OrderDto save(OrderFormDto orderFormDto) throws Exception{
-        Order order = modelMapper.map(orderFormDto, Order.class);
-        order.setId(null);
-
-        Order orderCreated = createOrder(orderFormDto, order);
-
-        this.orderRepository.save(orderCreated);
-        return modelMapper.map(orderCreated, OrderDto.class);
-
+    public Page<OrderDTO> getAllOrders(Pageable pageable) {
+        Page<Order> orders = orderRepository.findAll(pageable);
+        List<OrderDTO> orderDTOList =
+                orders.stream().map(o -> modelMapper.map(o, OrderDTO.class)).collect(Collectors.toList());
+        return new PageImpl<>(orderDTOList, pageable, orderDTOList.size());
     }
 
     @Override
-    public String deleteById(Long id) {
-        Optional<Order> order = orderRepository.findById(id);
-        if(order.isPresent()){
-            orderRepository.deleteById(id);
+    public Page<OrderedProductDTO> getOrderProduct(Long orderId, Pageable pageable) {
+        Optional<Order> optionalOrder = orderRepository.findById(orderId);
 
-            String idOrder = order.get().getId().toString();
-            return "Order " + idOrder + " deleted with success!";
+        if (optionalOrder.isPresent()){
+            Page<OrderedProduct> orderedProducts = orderedProductRepository.findByOrderId(orderId, pageable);
+            List<OrderedProductDTO> orderedProductDTOList =
+                    orderedProducts.stream().map(o ->
+                            modelMapper.map(o, OrderedProductDTO.class)).collect(Collectors.toList());
+            return new PageImpl<>(orderedProductDTOList, pageable, orderedProductDTOList.size());
         }
-        throw new ObjectNotFoundException("Order not found!");
+        return null;
     }
 
+    @Override
+    public OrderDTO putOrderStatus(Long orderId, StatusUpdateFormDTO statusUpdateFormDTO) {
+        Optional<Order> optionalOrder = orderRepository.findById(orderId);
 
+        if (optionalOrder.isPresent() && optionalOrder.get().getStatus().equals(Status.OPEN)){
+            Order order = optionalOrder.get();
+            order.setStatus(statusUpdateFormDTO.getStatus());
+            orderRepository.save(order);
 
-    private Order createOrder(OrderFormDto orderFormDto, Order order) throws Exception {
-        Double TotalValue = (double) 0;
-
-        for(int i = 0; i < order.getProducts().size(); i++ ){
-            Optional<Product> optionalProduct = this.productRepository.findById(orderFormDto.getProducts().get(i).getProductId());
-
-            if(optionalProduct.isPresent()){
-                Product product = optionalProduct.get();
-                if(product.getQuantity() < orderFormDto.getProducts().get(i).getQuantity())throw new Exception("Quantidade insuficiente");
-
-                order.getProducts().get(i).setName(product.getName());
-                order.getProducts().get(i).setUnitPrice(product.getUnitPrice());
-                order.getProducts().get(i).setType(product.getType());
-                order.getProducts().get(i).setQuantity(orderFormDto.getProducts().get(i).getQuantity());
-
-                product.setQuantity(product.getQuantity() - orderFormDto.getProducts().get(i).getQuantity());
-                this.productRepository.save(product);
-
-                TotalValue += order.getProducts().get(i).getUnitPrice() * order.getProducts().get(i).getQuantity();
-
+            if (order.getStatus().equals(Status.NOT_WITHDRAWN)){
+                List<OrderedProduct> orderedProducts = orderedProductRepository.findByOrderId(orderId);
+                for (int i = 0; i < orderedProducts.size(); i++) {
+                    Product product = orderedProducts.get(i).getProduct();
+                    product.setQuantity(product.getQuantity() + 1);
+                    productRepository.save(product);
+                }
+                return modelMapper.map(order, OrderDTO.class);
             }
-//            throw new Exception("Produto não encontrado");
         }
-        order.setTotal(TotalValue);
-        return order;
+        return null;
     }
 }
