@@ -8,9 +8,17 @@ public interface OrderService {
 
     OrderDTO postOrder(OrderFormDTO orderFormDTO);
 
+    OrderedProductDTO postProductIntoOrder(Long userId, Long orderId, OrderedProductFormDTO orderedProductFormDTO);
+
+    Page<OrderForUserDTO> getUserOrders(Long userId, Pageable pageable);
+
     Page<OrderDTO> getAllOrders(Pageable pageable);
 
     Page<OrderedProductDTO> getOrderProduct(Long orderId, Pageable pageable);
 
-    OrderDTO putOrderStatus(Long orderId, StatusUpdateFormDTO statusUpdateFormDTO);
+    OrderDTO putOrderStatus(Long orderId, OrderStatusUpdateFormDTO statusUpdateFormDTO);
+
+    String deleteProductFromUserOrder(Long orderId, Long orderedId);
+
+    OrderDTO getOrderById(Long id);
 }

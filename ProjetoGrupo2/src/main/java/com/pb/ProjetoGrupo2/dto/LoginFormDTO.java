@@ -13,7 +13,7 @@ public class LoginFormDTO {
     private String email;
     private String password;
 
-    public UsernamePasswordAuthenticationToken converter() {
+    public UsernamePasswordAuthenticationToken encrypt() {
         return new UsernamePasswordAuthenticationToken (email, password);
     }
 }

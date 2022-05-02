@@ -22,13 +22,12 @@ public class AuthenticationController {
 
     @Autowired
     private AuthenticationManager authManager;
-
     @Autowired
     private TokenService tokenService;
 
     @PostMapping
-    public ResponseEntity<TokenDTO> autenticar(@RequestBody @Valid LoginFormDTO loginFormDto) {
-        UsernamePasswordAuthenticationToken loginData = loginFormDto.converter();
+    public ResponseEntity<TokenDTO> authenticate(@RequestBody @Valid LoginFormDTO loginFormDto) {
+        UsernamePasswordAuthenticationToken loginData = loginFormDto.encrypt();
 
         try{
             Authentication authentication = authManager.authenticate(loginData);

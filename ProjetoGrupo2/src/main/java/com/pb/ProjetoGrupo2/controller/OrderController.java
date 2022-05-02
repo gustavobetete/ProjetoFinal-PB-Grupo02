@@ -1,9 +1,6 @@
 package com.pb.ProjetoGrupo2.controller;
 
-import com.pb.ProjetoGrupo2.dto.OrderDTO;
-import com.pb.ProjetoGrupo2.dto.OrderFormDTO;
-import com.pb.ProjetoGrupo2.dto.OrderedProductDTO;
-import com.pb.ProjetoGrupo2.dto.StatusUpdateFormDTO;
+import com.pb.ProjetoGrupo2.dto.*;
 import com.pb.ProjetoGrupo2.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +29,32 @@ public class OrderController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("/{orderId}/user/{userId}")
+    public ResponseEntity<Object> postProductIntoOrder
+            (@PathVariable Long userId,
+             @PathVariable Long orderId,
+             @RequestBody OrderedProductFormDTO orderedProductFormDTO){
+
+        OrderedProductDTO orderedProduct =
+                orderService.postProductIntoOrder(userId, orderId, orderedProductFormDTO);
+
+        if (orderedProduct != null){
+            return ResponseEntity.status(HttpStatus.CREATED).body(orderedProduct);
+        }
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping
-    public Page<OrderDTO> getAllOrders(@PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
+    public Page<OrderDTO> getAllOrders
+            (@PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
         Page<OrderDTO> orders = orderService.getAllOrders(pageable);
         return orders;
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<OrderDTO> getOrderById(@PathVariable Long id){
+        OrderDTO order = orderService.getOrderById(id);
+        return ResponseEntity.ok(order);
     }
 
     @GetMapping("/{orderId}/product")
@@ -47,9 +66,17 @@ public class OrderController {
         return orderedProducts;
     }
 
+    @GetMapping("/user/{userId}")
+    public Page<OrderForUserDTO> getUserOrder
+            (@PathVariable Long userId,
+             @PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
+        Page<OrderForUserDTO> userOrders = orderService.getUserOrders(userId, pageable);
+        return userOrders;
+    }
+
     @PutMapping("/{orderId}")
     public ResponseEntity<OrderDTO> putOrderStatus
-            (@PathVariable Long orderId, @RequestBody StatusUpdateFormDTO statusUpdateFormDTO){
+            (@PathVariable Long orderId, @RequestBody OrderStatusUpdateFormDTO statusUpdateFormDTO){
 
         OrderDTO order = orderService.putOrderStatus(orderId ,statusUpdateFormDTO);
         if (order != null){
@@ -57,4 +84,18 @@ public class OrderController {
         }
         return ResponseEntity.noContent().build();
     }
+
+    @DeleteMapping("/{orderId}/ordered/{orderedId}")
+    public ResponseEntity<?> deleteProductFromUserOrder
+            (@PathVariable Long orderId,
+             @PathVariable Long orderedId){
+
+        String response = orderService.deleteProductFromUserOrder(orderId, orderedId);
+
+        if (response != null){
+            return ResponseEntity.ok().body(response);
+        }
+        return ResponseEntity.noContent().build();
+    }
+
 }

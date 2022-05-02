@@ -1,6 +1,6 @@
 package com.pb.ProjetoGrupo2.dto;
 
-import com.pb.ProjetoGrupo2.constants.Status;
+import com.pb.ProjetoGrupo2.constants.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class StatusUpdateFormDTO {
+public class OrderStatusUpdateFormDTO {
 
-    private Status status;
+    private OrderStatus status;
 
 }

@@ -14,13 +14,6 @@ public interface UserService {
 
     UserDTO putUser(Long id, UpdatedUserFormDTO updatedUserFormDTO);
 
-    String deleteById(Long id);
-
-    OrderedProductDTO postProductIntoOrder(Long userId, Long orderId, OrderedProductFormDTO orderedProductFormDTO);
-
     Page<UserDTO> getAllUsers(Pageable pageable);
 
-    Page<OrderForUserDTO> getUserOrders(Long userId, Pageable pageable);
-
-    String deleteProductFromUserOrder(Long orderId, Long orderedId);
 }

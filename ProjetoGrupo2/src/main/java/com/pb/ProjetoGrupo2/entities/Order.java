@@ -1,6 +1,6 @@
 package com.pb.ProjetoGrupo2.entities;
 
-import com.pb.ProjetoGrupo2.constants.Status;
+import com.pb.ProjetoGrupo2.constants.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,7 +24,7 @@ public class Order {
     private LocalDateTime purchaseDate;
     private BigDecimal totalPrice = new BigDecimal(0);
     @Enumerated(EnumType.STRING)
-    private Status status = Status.OPEN;
+    private OrderStatus status = OrderStatus.OPEN;
 
     public Order(LocalDateTime localDate, User user){
         this.purchaseDate = localDate;
