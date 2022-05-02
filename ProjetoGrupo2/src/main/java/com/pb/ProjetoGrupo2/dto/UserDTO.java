@@ -12,7 +12,7 @@ public class UserDTO {
 
     private Long id;
     private String name;
-    private UserStatus userStatus;
+    private UserStatus status;
     private String email;
 
 }

@@ -1,9 +1,10 @@
 package com.pb.ProjetoGrupo2.service;
 
-import com.pb.ProjetoGrupo2.config.validation.ObjectNotFoundException;
 import com.pb.ProjetoGrupo2.constants.Type;
 import com.pb.ProjetoGrupo2.dto.ProductDTO;
 import com.pb.ProjetoGrupo2.dto.ProductFormDTO;
+import com.pb.ProjetoGrupo2.dto.UpdateProductStockFormDTO;
+import com.pb.ProjetoGrupo2.dto.UpdatedProductFormDTO;
 import com.pb.ProjetoGrupo2.entities.Product;
 import com.pb.ProjetoGrupo2.repository.OrderRepository;
 import com.pb.ProjetoGrupo2.repository.ProductRepository;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -60,30 +62,36 @@ public class ProductServiceImpl implements ProductService{
         if (product.isPresent()){
             return modelMapper.map(product.get(), ProductDTO.class);
         }
-        throw new ObjectNotFoundException("Product not found!");
+        return null;
     }
 
     @Override
-    public ProductDTO putProduct(Long id, ProductFormDTO productFormDto) {
+    public ProductDTO putProduct(Long id, @Valid UpdatedProductFormDTO updatedProductFormDTO) {
 
-        Optional<Product> product = productRepository.findById(id);
-        if(product.isPresent()) {
-            Product productUpdated = modelMapper.map(productFormDto, Product.class);
-            productUpdated.setId(id);
+        Optional<Product> optionalProduct = productRepository.findById(id);
+        if(optionalProduct.isPresent()) {
+            Product productUpdated = optionalProduct.get();
+            productUpdated.setName(updatedProductFormDTO.getName());
+            productUpdated.setType(updatedProductFormDTO.getType());
+            productUpdated.setUnityPrice(updatedProductFormDTO.getUnityPrice());
             productRepository.save(productUpdated);
             return modelMapper.map(productUpdated, ProductDTO.class);
         }
-        throw new ObjectNotFoundException("Product not found!");
+        return null;
     }
 
-    public String deleteById(Long id) {
-        Optional<Product> product = productRepository.findById(id);
-        if(product.isPresent()){
-
-            productRepository.deleteById(id);
-            String idProduct = product.get().getId().toString();
-            return "Product " + idProduct + " deleted with success!";
+    @Override
+    public ProductDTO putProductInStock(Long id, UpdateProductStockFormDTO updateProductStockFormDTO) {
+        Optional<Product> optionalProduct = productRepository.findById(id);
+        if (optionalProduct.isPresent()){
+            Product product = optionalProduct.get();
+            product.setQuantity(product.getQuantity() + updateProductStockFormDTO.getQuantity());
+            if (product.getQuantity() < 0){
+                product.setQuantity(0);
+            }
+            productRepository.save(product);
+            return modelMapper.map(product, ProductDTO.class);
         }
-        throw new ObjectNotFoundException("Product not found!");
+        return null;
     }
 }

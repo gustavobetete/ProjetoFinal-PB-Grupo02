@@ -3,6 +3,8 @@ package com.pb.ProjetoGrupo2.controller;
 import com.pb.ProjetoGrupo2.dto.ProductDTO;
 import com.pb.ProjetoGrupo2.dto.ProductFormDTO;
 
+import com.pb.ProjetoGrupo2.dto.UpdateProductStockFormDTO;
+import com.pb.ProjetoGrupo2.dto.UpdatedProductFormDTO;
 import com.pb.ProjetoGrupo2.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,7 @@ public class ProductController {
     private ProductService productService;
 
     @PostMapping
-    public ResponseEntity<ProductDTO> postProduct(@RequestBody ProductFormDTO productFormDTO){
+    public ResponseEntity<ProductDTO> postProduct(@RequestBody @Valid ProductFormDTO productFormDTO){
         ProductDTO product = productService.postProduct(productFormDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(product);
     }
@@ -40,19 +42,31 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id){
-        return ResponseEntity.ok().body(productService.getProductById(id));
+        ProductDTO product = productService.getProductById(id);
+        if (product != null){
+            return ResponseEntity.ok().body(product);
+        }
+        return ResponseEntity.noContent().build();
     }
 
-    @PutMapping(path = "/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ProductDTO> putProduct
-            (@PathVariable Long id, @RequestBody @Valid ProductFormDTO productFormDto) {
-        ProductDTO product = productService.putProduct(id, productFormDto);
-        return ResponseEntity.ok(product);
+            (@PathVariable Long id, @RequestBody @Valid UpdatedProductFormDTO updatedProductFormDTO) {
+        ProductDTO product = productService.putProduct(id, updatedProductFormDTO);
+        if (product != null){
+            return ResponseEntity.ok(product);
+        }
+        return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping(path = "/{id}")
-    public ResponseEntity<String> deleteById(@PathVariable Long id) {
-        String response = productService.deleteById(id);
-        return ResponseEntity.ok().body(response);
+    @PutMapping("/productStock/{id}")
+    public ResponseEntity<ProductDTO> putProductInStock
+            (@PathVariable Long id,
+             @RequestBody UpdateProductStockFormDTO updateProductStockFormDTO){
+        ProductDTO product = productService.putProductInStock(id, updateProductStockFormDTO);
+        if (product != null){
+            return ResponseEntity.ok(product);
+        }
+        return ResponseEntity.noContent().build();
     }
 }

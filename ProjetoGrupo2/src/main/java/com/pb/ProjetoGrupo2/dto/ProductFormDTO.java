@@ -15,15 +15,14 @@ import java.math.BigDecimal;
 @Data
 public class ProductFormDTO {
 
-    @NotNull(message = "O campo Name não pode ser nulo")
-    @NotEmpty(message = "O campo Name não pode ser vazio")
-    @NotBlank(message = "O campo Name não pode estar em branco")
+    @NotNull(message = "O campo name não pode ser nulo")
+    @NotEmpty(message = "O campo name não pode ser vazio")
+    @NotBlank(message = "O campo name não pode estar em branco")
     private String name;
     @NotNull(message = "O campo type não pode ser nulo")
     private Type type;
-    @NotNull(message = "O campo unitPrice não pode ser nulo")
+    @NotNull(message = "O campo unityPrice não pode ser nulo")
     private BigDecimal unityPrice;
-    @NotNull(message = "O campo quantity não pode ser nulo")
     private int quantity;
 
 }

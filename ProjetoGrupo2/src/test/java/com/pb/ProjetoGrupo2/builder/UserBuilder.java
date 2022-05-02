@@ -1,52 +1,48 @@
-//package com.pb.ProjetoGrupo2.builder;
-//
-//import com.pb.ProjetoGrupo2.dto.UserDto;
-//import com.pb.ProjetoGrupo2.dto.UserFormDto;
-//import com.pb.ProjetoGrupo2.entities.User;
-//
-//public class UserBuilder {
-//
-//    public static User getUser() {
-//
-//        User user = new User();
-//        user.setId(1L);
-//        user.setName("Aluno");
-//        user.setEmail("aluno@fatec.sp.gov.br");
-//        user.setPassword("aluno");
-//        return user;
-//    }
-//
-//    public static User getUserTwo() {
-//        User userTwo = new User();
-//        userTwo.setId(2L);
-//        userTwo.setName("Adm");
-//        userTwo.setEmail("adm@fatec.sp.gov.br");
-//        userTwo.setPassword("adm");
-//        return userTwo;
-//    }
-//
-//    public static UserDto getUserDto() {
-//
-//        UserDto userDto = new UserDto();
-//        userDto.setId(1L);
-//        userDto.setName("Aluno");
-//        userDto.setEmail("aluno@fatec.sp.gov.br");
-//        return userDto;
-//    }
-//
-//    public static UserDto getUserDtoTwo(){
-//        UserDto userDtoTwo = new UserDto();
-//        userDtoTwo.setId(2L);
-//        userDtoTwo.setName("Adm");
-//        userDtoTwo.setEmail("adm@fatec.sp.gov.br");
-//        return userDtoTwo;
-//    }
-//
-//    public static UserFormDto getUserFormDto() {
-//        UserFormDto UserFormDto = new UserFormDto();
-//        UserFormDto.setName("Aluno");
-//        UserFormDto.setEmail("aluno@fatec.sp.gov.br");
-//        UserFormDto.setPassword("aluno");
-//        return UserFormDto;
-//    }
-//}
+package com.pb.ProjetoGrupo2.builder;
+
+import com.pb.ProjetoGrupo2.constants.UserStatus;
+import com.pb.ProjetoGrupo2.dto.UserDTO;
+import com.pb.ProjetoGrupo2.dto.UserFormDTO;
+import com.pb.ProjetoGrupo2.entities.User;
+
+public class UserBuilder {
+
+    public static User getUser() {
+
+        User user = new User();
+        user.setId(1L);
+        user.setName("Aluno");
+        user.setStatus(UserStatus.ACTIVE);
+        user.setEmail("aluno@fatec.sp.gov.br");
+        user.setPassword("aluno");
+        return user;
+    }
+
+    public static UserDTO getUserDto() {
+        UserDTO userDto = new UserDTO();
+        userDto.setId(1L);
+        userDto.setName("Aluno");
+        userDto.setStatus(UserStatus.ACTIVE);
+        userDto.setEmail("aluno@fatec.sp.gov.br");
+        return userDto;
+    }
+
+    public static UserDTO getUserDtoTwo() {
+        UserDTO userDtoTwo = new UserDTO();
+        userDtoTwo.setId(2L);
+        userDtoTwo.setName("Aluno 02");
+        userDtoTwo.setStatus(UserStatus.ACTIVE);
+        userDtoTwo.setEmail("aluno02@fatec.sp.gov.br");
+        return userDtoTwo;
+    }
+
+    public static UserFormDTO getUserFormDTO() {
+        UserFormDTO userFormDto = new UserFormDTO();
+        userFormDto.setName("Aluno");
+        userFormDto.setEmail("aluno@fatec.sp.gov.br");
+        userFormDto.setPassword("aluno");
+        return userFormDto;
+    }
+
+
+}

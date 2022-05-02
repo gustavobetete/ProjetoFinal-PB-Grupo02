@@ -12,9 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -40,7 +38,10 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
         UserDTO user = userService.getUserById(id);
-        return ResponseEntity.ok(user);
+        if(user != null){
+            return ResponseEntity.ok(user);
+        }
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
@@ -48,6 +49,9 @@ public class UserController {
             (@PathVariable Long id,
              @RequestBody @Valid UpdatedUserFormDTO updatedUserFormDTO) {
         UserDTO user = userService.putUser(id, updatedUserFormDTO);
-        return ResponseEntity.ok(user);
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        }
+        return ResponseEntity.noContent().build();
     }
 }

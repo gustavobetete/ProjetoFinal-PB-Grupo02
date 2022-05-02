@@ -1,6 +1,5 @@
 package com.pb.ProjetoGrupo2.service;
 
-import com.pb.ProjetoGrupo2.config.validation.ObjectNotFoundException;
 import com.pb.ProjetoGrupo2.dto.*;
 import com.pb.ProjetoGrupo2.entities.User;
 import com.pb.ProjetoGrupo2.repository.OrderRepository;
@@ -54,7 +53,7 @@ public class UserServiceImpl implements UserService {
         if (optionalUser.isPresent()){
             return modelMapper.map(optionalUser.get(), UserDTO.class);
         }
-        throw new ObjectNotFoundException("User not found!");
+        return null;
     }
 
     @Override
@@ -67,7 +66,7 @@ public class UserServiceImpl implements UserService {
             userRepository.save(updatedUser);
             return modelMapper.map(updatedUser, UserDTO.class);
         }
-        throw new ObjectNotFoundException("User not found!");
+        return null;
     }
 }
 
