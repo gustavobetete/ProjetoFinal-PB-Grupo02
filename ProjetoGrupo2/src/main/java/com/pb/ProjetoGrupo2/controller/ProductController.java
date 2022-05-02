@@ -1,7 +1,10 @@
 package com.pb.ProjetoGrupo2.controller;
 
-import com.pb.ProjetoGrupo2.dto.ProductDto;
-import com.pb.ProjetoGrupo2.dto.ProductFormDto;
+import com.pb.ProjetoGrupo2.dto.ProductDTO;
+import com.pb.ProjetoGrupo2.dto.ProductFormDTO;
+
+import com.pb.ProjetoGrupo2.dto.UpdateProductStockFormDTO;
+import com.pb.ProjetoGrupo2.dto.UpdatedProductFormDTO;
 import com.pb.ProjetoGrupo2.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,36 +24,49 @@ import javax.validation.Valid;
 public class ProductController {
 
     @Autowired
-    private ProductService service;
+    private ProductService productService;
+
+    @PostMapping
+    public ResponseEntity<ProductDTO> postProduct(@RequestBody @Valid ProductFormDTO productFormDTO){
+        ProductDTO product = productService.postProduct(productFormDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(product);
+    }
 
     @GetMapping
-    public ResponseEntity<Page<ProductDto>> findAll(@PageableDefault(page = 0, size = 10,sort = "id",direction = Sort.Direction.ASC) Pageable page){
-        Page<ProductDto> products = this.service.findAll(page);
-        return ResponseEntity.ok(products);
+    public Page<ProductDTO> getAllProducts
+            (@RequestParam(required = false) String type,
+             @PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
+        Page<ProductDTO> products = productService.getAllProducts(type, pageable);
+        return products;
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDto> findById(@PathVariable Long id){
-        return ResponseEntity.ok().body(service.findById(id));
+    public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id){
+        ProductDTO product = productService.getProductById(id);
+        if (product != null){
+            return ResponseEntity.ok().body(product);
+        }
+        return ResponseEntity.noContent().build();
     }
 
-    @PostMapping
-    public ResponseEntity<ProductDto> save(@RequestBody @Valid ProductFormDto productFormDto){
-        ProductDto productDto = this.service.save(productFormDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(productDto);
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductDTO> putProduct
+            (@PathVariable Long id, @RequestBody @Valid UpdatedProductFormDTO updatedProductFormDTO) {
+        ProductDTO product = productService.putProduct(id, updatedProductFormDTO);
+        if (product != null){
+            return ResponseEntity.ok(product);
+        }
+        return ResponseEntity.noContent().build();
     }
 
-
-    @PutMapping(path = "/{id}")
-    public ResponseEntity<ProductDto> update(@PathVariable Long id, @RequestBody @Valid ProductFormDto productFormDto) {
-        ProductDto productDto = this.service.update(id, productFormDto);
-        return ResponseEntity.ok(productDto);
-    }
-
-    @DeleteMapping(path = "/{id}")
-    public ResponseEntity<String> delete(@PathVariable Long id) {
-        String response = this.service.deleteById(id);
-        return ResponseEntity.ok().body(response);
-
+    @PutMapping("/productStock/{id}")
+    public ResponseEntity<ProductDTO> putProductInStock
+            (@PathVariable Long id,
+             @RequestBody UpdateProductStockFormDTO updateProductStockFormDTO){
+        ProductDTO product = productService.putProductInStock(id, updateProductStockFormDTO);
+        if (product != null){
+            return ResponseEntity.ok(product);
+        }
+        return ResponseEntity.noContent().build();
     }
 }

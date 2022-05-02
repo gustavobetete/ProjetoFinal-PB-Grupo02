@@ -1,11 +1,9 @@
 package com.pb.ProjetoGrupo2.service;
 
-import com.pb.ProjetoGrupo2.config.validation.ObjectNotFoundException;
 import com.pb.ProjetoGrupo2.dto.*;
-import com.pb.ProjetoGrupo2.entities.Order;
-import com.pb.ProjetoGrupo2.entities.Product;
 import com.pb.ProjetoGrupo2.entities.User;
 import com.pb.ProjetoGrupo2.repository.OrderRepository;
+import com.pb.ProjetoGrupo2.repository.OrderedProductRepository;
 import com.pb.ProjetoGrupo2.repository.ProductRepository;
 import com.pb.ProjetoGrupo2.repository.UserRepository;
 import org.modelmapper.ModelMapper;
@@ -13,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -27,48 +24,49 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private OrderRepository orderRepository;
-
     @Autowired
     private ProductRepository productRepository;
-
+    @Autowired
+    private OrderedProductRepository orderedProductRepository;
     @Autowired
     private ModelMapper modelMapper;
 
     @Override
-    public Page<UserDto> findAll(Pageable page) {
-        Page<User> users = this.userRepository.findAll(page);
-        List<UserDto> usersList = users.stream().map(product ->
-                modelMapper.map(product, UserDto.class)).collect(Collectors.toList());
-        return new PageImpl<UserDto>(usersList, page, users.getTotalElements());
+    public UserDTO postUser(UserFormDTO userFormDto) {
+        User user = userRepository.save(modelMapper.map(userFormDto, User.class));
+        return modelMapper.map(user, UserDTO.class);
     }
 
     @Override
-    public UserDto findById(Long id) {
-        Optional<User> user = userRepository.findById(id);
-        if (user.isPresent()){
-            return modelMapper.map(user.get(), UserDto.class);
+    public Page<UserDTO> getAllUsers(Pageable pageable) {
+        Page<User> users = userRepository.findAll(pageable);
+        List<UserDTO> userDTOList =
+                users.stream().map(u -> modelMapper.map(u, UserDTO.class)).collect(Collectors.toList());
+        return new PageImpl<>(userDTOList, pageable, userDTOList.size());
+    }
+
+    @Override
+    public UserDTO getUserById(Long id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isPresent()){
+            return modelMapper.map(optionalUser.get(), UserDTO.class);
         }
-        throw new ObjectNotFoundException("User not found!");
+        return null;
     }
 
     @Override
-    public UserDto save(UserFormDto userFormDto) {
-            User user = this.userRepository.save(modelMapper.map(userFormDto, User.class));
-            return modelMapper.map(user, UserDto.class);
-    }
-
-    @Override
-    public UserDto update(Long id, UserFormDto userFormDto) {
-        Optional<User> user = this.userRepository.findById(id);
-        if(user.isPresent()) {
-            User userUpdated = modelMapper.map(userFormDto, User.class);
-            userUpdated.setId(id);
-            userRepository.save(userUpdated);
-            return modelMapper.map(userUpdated, UserDto.class);
+    public UserDTO putUser(Long id, UpdatedUserFormDTO updatedUserFormDTO) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if(optionalUser.isPresent()) {
+            User updatedUser = optionalUser.get();
+            updatedUser.setName(updatedUserFormDTO.getName());
+            updatedUser.setStatus(updatedUserFormDTO.getStatus());
+            userRepository.save(updatedUser);
+            return modelMapper.map(updatedUser, UserDTO.class);
         }
+<<<<<<< HEAD
         throw new ObjectNotFoundException("User not found!");
     }
 
@@ -106,5 +104,9 @@ public class UserServiceImpl implements UserService {
             return String.format("Product %s removed from order %s with success", idProduct, idOrder);
         }
         throw new ObjectNotFoundException("Product or Order not found!");
+=======
+        return null;
+>>>>>>> a619e47e734eaa2b3cf18a322b562d7ae3b30baa
     }
 }
+

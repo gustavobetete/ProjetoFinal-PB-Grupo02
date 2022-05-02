@@ -1,23 +1,24 @@
 package com.pb.ProjetoGrupo2.service;
 
-import com.pb.ProjetoGrupo2.dto.OrderDto;
-import com.pb.ProjetoGrupo2.dto.OrderFormDto;
-import com.pb.ProjetoGrupo2.dto.ProductDto;
-import com.pb.ProjetoGrupo2.dto.ProductOrderFormDto;
+import com.pb.ProjetoGrupo2.dto.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
-
-import java.util.List;
 
 public interface OrderService {
 
-    Page<OrderDto> findAll(Pageable page);
+    OrderDTO postOrder(OrderFormDTO orderFormDTO);
 
-    OrderDto findById(Long id);
+    OrderedProductDTO postProductIntoOrder(Long userId, Long orderId, OrderedProductFormDTO orderedProductFormDTO);
 
-    OrderDto save(OrderFormDto orderFormDto) throws Exception;
+    Page<OrderForUserDTO> getUserOrders(Long userId, Pageable pageable);
 
-    String deleteById(Long id);
+    Page<OrderDTO> getAllOrders(Pageable pageable);
 
+    Page<OrderedProductDTO> getOrderProduct(Long orderId, Pageable pageable);
+
+    OrderDTO putOrderStatus(Long orderId, OrderStatusUpdateFormDTO statusUpdateFormDTO);
+
+    String deleteProductFromUserOrder(Long orderId, Long orderedId);
+
+    OrderDTO getOrderById(Long id);
 }

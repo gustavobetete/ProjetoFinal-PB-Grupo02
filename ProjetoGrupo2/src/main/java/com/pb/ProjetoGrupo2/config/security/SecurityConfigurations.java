@@ -5,6 +5,7 @@ import com.pb.ProjetoGrupo2.service.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,6 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @EnableWebSecurity
 @Configuration
+@Profile("prod")
 public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -62,11 +64,12 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web)throws Exception {
 
     }
-
         public static void main(String[] args){
+<<<<<<< HEAD
             System.out.println(new BCryptPasswordEncoder().encode("adm123"));
+=======
+            System.out.println(new BCryptPasswordEncoder().encode("teste"));
+>>>>>>> a619e47e734eaa2b3cf18a322b562d7ae3b30baa
         }
-
-
 
 }

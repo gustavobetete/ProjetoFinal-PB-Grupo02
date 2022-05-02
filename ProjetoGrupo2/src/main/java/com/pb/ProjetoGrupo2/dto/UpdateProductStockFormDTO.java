@@ -4,13 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto {
+@Data
+public class UpdateProductStockFormDTO {
 
-    private Long id;
-    private String name;
-    private String email;
+    private int quantity;
 
 }

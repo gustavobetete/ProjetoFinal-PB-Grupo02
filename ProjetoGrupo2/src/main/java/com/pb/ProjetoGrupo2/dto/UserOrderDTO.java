@@ -4,10 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TokenDto {
-    private String token;
-    private String type;
+@Data
+public class UserOrderDTO {
+
+    private Long id;
+    private String name;
+
 }
