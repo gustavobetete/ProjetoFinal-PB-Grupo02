@@ -66,7 +66,7 @@ public class OrderServiceImpl implements OrderService {
             orderRepository.deleteById(id);
 
             String idOrder = order.get().getId().toString();
-            return "Order " + idOrder + " deleted with success!";
+            return String.format("Order %s deleted with success!", idOrder);
         }
         throw new ObjectNotFoundException("Order not found!");
     }
@@ -80,7 +80,7 @@ public class OrderServiceImpl implements OrderService {
 
             if(optionalProduct.isPresent()){
                 Product product = optionalProduct.get();
-                if(product.getQuantity() < orderFormDto.getProducts().get(i).getQuantity())throw new Exception("Quantidade insuficiente");
+                if(product.getQuantity() < orderFormDto.getProducts().get(i).getQuantity())throw new Exception("Insufficient quantity in stock");
 
                 order.getProducts().get(i).setName(product.getName());
                 order.getProducts().get(i).setUnitPrice(product.getUnitPrice());
@@ -92,8 +92,10 @@ public class OrderServiceImpl implements OrderService {
 
                 TotalValue += order.getProducts().get(i).getUnitPrice() * order.getProducts().get(i).getQuantity();
 
+            }else{
+                throw new Exception("Product not found!");
             }
-//            throw new Exception("Produto não encontrado");
+
         }
         order.setTotal(TotalValue);
         return order;

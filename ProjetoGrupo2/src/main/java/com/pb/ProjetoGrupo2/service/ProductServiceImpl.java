@@ -76,8 +76,8 @@ public class ProductServiceImpl implements ProductService{
         if(product.isPresent()){
             productRepository.deleteById(id);
 
-            String idProduct = product.get().getId().toString();
-            return "Product " + idProduct + " deleted with success!";
+            String nameProduct = product.get().getName();
+            return String.format("Product %s deleted with success!", nameProduct);
         }
         throw new ObjectNotFoundException("Product not found!");
     }

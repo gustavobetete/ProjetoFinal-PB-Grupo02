@@ -116,36 +116,6 @@ public class OrderServiceTest {
                 .isThrownBy(() -> this.orderService.findById(order.getId()));
     }
 
-
-//    @Test
-//    @DisplayName("Update order")
-//    public void updateOrder() {
-//        Order order = OrderBuilder.getOrder();
-//        OrderFormDto orderFormDTO = OrderBuilder.getOrderFormDto();
-//
-//        when(this.repository.findById(anyLong())).thenReturn(Optional.of(order));
-//        when(this.repository.save(any(Order.class))).thenReturn(order);
-//
-//        OrderDto orderDTO = this.orderService.update(order.getId(), orderFormDTO);
-//
-//        assertThat(orderDTO.getId()).isNotNull();
-//        assertThat(orderDTO.getIdUser()).isEqualTo(orderFormDTO.getIdUser());
-//        assertThat(orderDTO.getProducts()).isEqualTo(orderFormDTO.getProducts());
-//
-//
-//    }
-
-    @Test
-    @DisplayName("Update order not found")
-    public void updateOrder_NotFound() {
-        Order order = OrderBuilder.getOrder();
-
-        when(this.repository.findById(anyLong())).thenReturn(Optional.empty());
-
-        assertThatExceptionOfType(ObjectNotFoundException.class)
-                .isThrownBy(() -> this.orderService.update(order.getId(), OrderBuilder.getOrderFormDto()));
-    }
-
     @Test
     @DisplayName("Delete order")
     public void deleteOrder() {

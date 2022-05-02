@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
             userRepository.deleteById(id);
 
             String idUser = user.get().getId().toString();
-            return "User " + idUser + " deleted with success";
+            return String.format("User %s deleted with success", idUser);
         }
         throw new ObjectNotFoundException("User not found!");
     }
@@ -103,7 +103,7 @@ public class UserServiceImpl implements UserService {
             String idProduct = product.get().getId().toString();
             String idOrder = order.get().getId().toString();
 
-            return "Product " + idProduct + " removed from order " + idOrder + " with success";
+            return String.format("Product %s removed from order %s with success", idProduct, idOrder);
         }
         throw new ObjectNotFoundException("Product or Order not found!");
     }

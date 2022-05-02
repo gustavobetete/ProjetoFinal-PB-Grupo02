@@ -50,6 +50,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET,"/product/*").permitAll()
                 .antMatchers(HttpMethod.POST,"/auth").permitAll()
                 .antMatchers(HttpMethod.GET,"/actuator/**").permitAll()
+                .antMatchers(HttpMethod.POST,"/users").permitAll()
                 .anyRequest().authenticated()
                 .and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -63,7 +64,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
     }
 
         public static void main(String[] args){
-            System.out.println(new BCryptPasswordEncoder().encode("ceu"));
+            System.out.println(new BCryptPasswordEncoder().encode("adm123"));
         }
 
 

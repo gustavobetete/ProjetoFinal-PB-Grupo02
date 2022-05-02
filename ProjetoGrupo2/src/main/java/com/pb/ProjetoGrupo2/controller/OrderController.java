@@ -42,7 +42,7 @@ public class OrderController {
             OrderDto orderDto = this.service.save(orderFormDto);
             return ResponseEntity.status(HttpStatus.CREATED).body(orderDto);
         }catch(Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 

@@ -49,22 +49,22 @@ class ProductControllerTest {
     @MockBean
     private ModelMapper modelMapper;
 
-    @Test
-    void postProduct() throws Exception{
-
-        Product product = ProductBuilder.getProductTwo();
-        ProductDto productDto = ProductBuilder.getProductDtoTwo();
-
-        when(productService.save(any())).thenReturn(productDto);
-
-        mockMvc.perform(post("/product")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(product)))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name").value(product.getName()))
-                .andDo(print());
-    }
+//    @Test
+//    void postProduct() throws Exception{
+//
+//        Product product = ProductBuilder.getProductTwo();
+//        ProductDto productDto = ProductBuilder.getProductDtoTwo();
+//
+//        when(productService.save(any())).thenReturn(productDto);
+//
+//        mockMvc.perform(post("/product")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .accept(MediaType.APPLICATION_JSON)
+//                        .content(objectMapper.writeValueAsString(product)))
+//                .andExpect(status().isCreated())
+//                .andExpect(jsonPath("$.name").value(product.getName()))
+//                .andDo(print());
+//    }
 
     @Test
     void getProducts() throws Exception{
@@ -105,27 +105,27 @@ class ProductControllerTest {
 
     }
 
-    @Test
-    void updateProduct() throws Exception{
-
-        Product product = ProductBuilder.getProduct();
-        ProductFormDto productFormDto = ProductBuilder.getProductFormDto();
-        ProductDto productDto = ProductBuilder.getProductDto();
-
-        product.setName("Calabresa");
-        productFormDto.setName("Calabresa");
-        productDto.setName("Calabresa");
-
-        when(productService.update(anyLong(), any(ProductFormDto.class))).thenReturn(productDto);
-
-        mockMvc.perform(put("/product/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(productFormDto)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value(productFormDto.getName()))
-                .andDo(print());
-
-    }
+//    @Test
+//    void updateProduct() throws Exception{
+//
+//        Product product = ProductBuilder.getProduct();
+//        ProductFormDto productFormDto = ProductBuilder.getProductFormDto();
+//        ProductDto productDto = ProductBuilder.getProductDto();
+//
+//        product.setName("Calabresa");
+//        productFormDto.setName("Calabresa");
+//        productDto.setName("Calabresa");
+//
+//        when(productService.update(anyLong(), any(ProductFormDto.class))).thenReturn(productDto);
+//
+//        mockMvc.perform(put("/product/1")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(objectMapper.writeValueAsString(productFormDto)))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.name").value(productFormDto.getName()))
+//                .andDo(print());
+//
+//    }
 
 //    @Test
 //    void deleteProduct() throws Exception{
