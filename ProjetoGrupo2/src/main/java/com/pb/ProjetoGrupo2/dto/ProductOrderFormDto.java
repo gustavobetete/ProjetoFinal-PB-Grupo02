@@ -12,9 +12,9 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class ProductOrderFormDto {
 
-   @NotNull(message = "O campo Name não pode ser nulo")
+   @NotNull(message = "O campo name não pode ser nulo")
    private Long productId;
 
-   @NotNull(message = "O campo Name não pode ser nulo")
+   @NotNull(message = "O campo quantidade não pode ser nulo")
    private Integer quantity;
 }

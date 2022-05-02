@@ -36,7 +36,7 @@ public class OrderServiceImpl implements OrderService {
         Page<Order> orders = this.orderRepository.findAll(page);
         List<OrderDto> listOrders = orders.stream().map(order ->
                 modelMapper.map(order, OrderDto.class)).collect(Collectors.toList());
-        return new PageImpl<OrderDto>(listOrders, page, orders.getTotalElements());
+        return new PageImpl<OrderDto>(listOrders);
     }
 
     @Override
@@ -92,8 +92,10 @@ public class OrderServiceImpl implements OrderService {
 
                 TotalValue += order.getProducts().get(i).getUnitPrice() * order.getProducts().get(i).getQuantity();
 
+            }else{
+                throw new Exception("Produto não encontrado");
             }
-//            throw new Exception("Produto não encontrado");
+
         }
         order.setTotal(TotalValue);
         return order;

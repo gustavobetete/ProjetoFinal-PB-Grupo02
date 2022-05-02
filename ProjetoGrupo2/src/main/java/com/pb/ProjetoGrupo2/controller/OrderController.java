@@ -3,6 +3,8 @@ package com.pb.ProjetoGrupo2.controller;
 import com.pb.ProjetoGrupo2.dto.OrderDto;
 import com.pb.ProjetoGrupo2.dto.OrderFormDto;
 import com.pb.ProjetoGrupo2.dto.ProductDto;
+import com.pb.ProjetoGrupo2.entities.Order;
+import com.pb.ProjetoGrupo2.repository.OrderRepository;
 import com.pb.ProjetoGrupo2.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +27,15 @@ public class OrderController {
     @Autowired
     private OrderService service;
 
+    @Autowired
+    private OrderRepository orderRepository;
+
     @GetMapping
     public ResponseEntity<Page<OrderDto>> findAll(@PageableDefault(page = 0, size = 10,sort = "id",direction = Sort.Direction.ASC) Pageable page){
         Page<OrderDto> orders = this.service.findAll(page);
         return ResponseEntity.ok(orders);
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<OrderDto> findById(@PathVariable Long id){
@@ -42,7 +48,7 @@ public class OrderController {
             OrderDto orderDto = this.service.save(orderFormDto);
             return ResponseEntity.status(HttpStatus.CREATED).body(orderDto);
         }catch(Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 

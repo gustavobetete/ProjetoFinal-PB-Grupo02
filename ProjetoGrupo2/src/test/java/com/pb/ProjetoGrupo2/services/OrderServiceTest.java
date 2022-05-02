@@ -1,11 +1,8 @@
 package com.pb.ProjetoGrupo2.services;
 
-//import com.pb.ProjetoGrupo2.builder.OrderBuilder;
 import com.pb.ProjetoGrupo2.builder.OrderBuilder;
-import com.pb.ProjetoGrupo2.builder.ProductBuilder;
 import com.pb.ProjetoGrupo2.config.validation.ObjectNotFoundException;
 import com.pb.ProjetoGrupo2.dto.OrderDto;
-import com.pb.ProjetoGrupo2.dto.OrderFormDto;
 import com.pb.ProjetoGrupo2.entities.Order;
 import com.pb.ProjetoGrupo2.repository.OrderRepository;
 import com.pb.ProjetoGrupo2.repository.ProductRepository;
@@ -134,17 +131,6 @@ public class OrderServiceTest {
 //
 //
 //    }
-
-    @Test
-    @DisplayName("Update order not found")
-    public void updateOrder_NotFound() {
-        Order order = OrderBuilder.getOrder();
-
-        when(this.repository.findById(anyLong())).thenReturn(Optional.empty());
-
-        assertThatExceptionOfType(ObjectNotFoundException.class)
-                .isThrownBy(() -> this.orderService.update(order.getId(), OrderBuilder.getOrderFormDto()));
-    }
 
     @Test
     @DisplayName("Delete order")
