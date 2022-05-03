@@ -49,6 +49,7 @@ public class OrderController {
     public ResponseEntity<DailyReportDTO> generateDailyReport(){
         DailyReportDTO dailyReport = orderService.generateDailyReport();
         return ResponseEntity.status(HttpStatus.CREATED).body(dailyReport);
+
     }
 
     @GetMapping
