@@ -1,20 +1,21 @@
 package com.pb.ProjetoGrupo2.service;
 
-import com.pb.ProjetoGrupo2.dto.ProductDto;
-import com.pb.ProjetoGrupo2.dto.ProductFormDto;
+import com.pb.ProjetoGrupo2.dto.ProductDTO;
+import com.pb.ProjetoGrupo2.dto.ProductFormDTO;
+import com.pb.ProjetoGrupo2.dto.UpdateProductStockFormDTO;
+import com.pb.ProjetoGrupo2.dto.UpdatedProductFormDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface ProductService {
 
-    Page<ProductDto> findAll(Pageable page);
+    ProductDTO getProductById(Long id);
 
-    ProductDto findById(Long id);
+    ProductDTO putProduct(Long id, UpdatedProductFormDTO productFormDto);
 
-    ProductDto save(ProductFormDto ProductFormDto);
+    ProductDTO postProduct(ProductFormDTO productFormDTO);
 
-    ProductDto update(Long id, ProductFormDto productFormDto);
+    Page<ProductDTO> getAllProducts(String type, Pageable pageable);
 
-    String deleteById(Long id);
-
+    ProductDTO putProductInStock(Long id, UpdateProductStockFormDTO updateProductStockFormDTO);
 }

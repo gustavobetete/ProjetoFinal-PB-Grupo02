@@ -6,11 +6,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
-@Data
+@Entity(name = "products")
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
+@Data
 public class Product {
 
     @Id
@@ -19,10 +20,7 @@ public class Product {
     private String name;
     @Enumerated(EnumType.STRING)
     private Type type;
-    private Double unitPrice;
-    private Integer quantity;
-    private Integer virtualStock;
-    private Integer stock;
-
+    private BigDecimal unityPrice;
+    private int quantity;
 
 }

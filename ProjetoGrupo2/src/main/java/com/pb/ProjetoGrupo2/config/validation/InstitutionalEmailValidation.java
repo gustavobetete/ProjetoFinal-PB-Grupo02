@@ -12,6 +12,9 @@ public class InstitutionalEmailValidation implements ConstraintValidator <Instit
 
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
+        if (s == ""){
+            return false;
+        }
         String emailDomain = "fatec.sp.gov.br";
         String[] splitedEmail = s.split("@");
 
