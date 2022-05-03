@@ -48,6 +48,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/user").permitAll()
                 .antMatchers(HttpMethod.GET,"/product").permitAll()
                 .antMatchers(HttpMethod.GET,"/product/*").permitAll()
                 .antMatchers(HttpMethod.POST,"/auth").permitAll()
@@ -63,8 +64,8 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web)throws Exception {
 
     }
-        public static void main(String[] args){
-            System.out.println(new BCryptPasswordEncoder().encode("teste"));
-        }
+//        public static void main(String[] args){
+//            System.out.println(new BCryptPasswordEncoder().encode("teste"));
+//        }
 
 }

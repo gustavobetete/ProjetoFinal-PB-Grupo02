@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -35,7 +36,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO postUser(UserFormDTO userFormDto) {
-        User user = userRepository.save(modelMapper.map(userFormDto, User.class));
+        User user = new User();
+        user.setName(userFormDto.getName());
+        user.setEmail(userFormDto.getEmail());
+        user.setPassword(new BCryptPasswordEncoder().encode(userFormDto.getPassword()));
+        userRepository.save(user);
         return modelMapper.map(user, UserDTO.class);
     }
 
