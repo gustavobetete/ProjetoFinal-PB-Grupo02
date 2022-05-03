@@ -1,14 +1,7 @@
 package com.pb.ProjetoGrupo2.controller;
 
-<<<<<<< HEAD
-import com.pb.ProjetoGrupo2.dto.OrderDto;
-import com.pb.ProjetoGrupo2.dto.OrderFormDto;
-import com.pb.ProjetoGrupo2.dto.ProductDto;
-import com.pb.ProjetoGrupo2.entities.Order;
-import com.pb.ProjetoGrupo2.repository.OrderRepository;
-=======
+
 import com.pb.ProjetoGrupo2.dto.*;
->>>>>>> a619e47e734eaa2b3cf18a322b562d7ae3b30baa
 import com.pb.ProjetoGrupo2.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
