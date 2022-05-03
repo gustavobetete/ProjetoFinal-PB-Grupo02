@@ -101,4 +101,17 @@ public class OrderController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+
+    @PostMapping("/report")
+    public ResponseEntity<DailyReportDTO> generateDailyReport(){
+        DailyReportDTO dailyReport = orderService.generateDailyReport();
+        return ResponseEntity.status(HttpStatus.CREATED).body(dailyReport);
+    }
+
+    @GetMapping("/report")
+    public Page<DailyReportDTO> getAllDailyReports
+            (@PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
+        Page<DailyReportDTO> dailyReports = orderService.getAllDailyReports(pageable);
+        return dailyReports;
+    }
 }

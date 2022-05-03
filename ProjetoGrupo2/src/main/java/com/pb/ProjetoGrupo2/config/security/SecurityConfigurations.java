@@ -56,16 +56,14 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().addFilterBefore(new AuthenticationByTokenFilter(tokenService,userRepository), UsernamePasswordAuthenticationFilter.class); //
+                .and().addFilterBefore(new AuthenticationByTokenFilter(tokenService,userRepository), UsernamePasswordAuthenticationFilter.class);
     }
 
     //Configurações de recursos estáticos
     @Override
     public void configure(WebSecurity web)throws Exception {
-
-    }
-//        public static void main(String[] args){
-//            System.out.println(new BCryptPasswordEncoder().encode("teste"));
-//        }
+        web.ignoring()
+                .antMatchers("/**.html", "/v2/api-docs", "/webjars/**", "/configuration/**", "/swagger-resources/**");
+   }
 
 }
