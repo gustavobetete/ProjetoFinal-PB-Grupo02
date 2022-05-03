@@ -74,73 +74,6 @@
 //        assertThat(orderDTO.getIdUser()).isEqualTo(order.getUser().getId());
 //    }
 
-<<<<<<< HEAD
-    @Test
-    @DisplayName("List all orders")
-    public void listOrders() {
-        Order order = OrderBuilder.getOrder();
-
-        PageRequest pageRequest = PageRequest.of(0, 10);
-        List<Order> orders = Arrays.asList(order);
-        Page<Order> page = new PageImpl<>(orders, pageRequest, 1);
-
-        when(this.repository.findAll(any(PageRequest.class))).thenReturn(page);
-
-        Page<OrderDto> pageOrderDTO = this.orderService.findAll(pageRequest);
-
-        assertThat(pageOrderDTO.getContent()).hasSize(1);
-        assertThat(pageOrderDTO.getTotalPages()).isEqualTo(1);
-        assertThat(pageOrderDTO.getTotalElements()).isEqualTo(1);
-    }
-
-    @Test
-    @DisplayName("FindById orders")
-    public void findByIdOrder() {
-        Order order = OrderBuilder.getOrder();
-
-        when(this.repository.findById(anyLong())).thenReturn(Optional.of(order));
-
-        OrderDto orderDTO = this.orderService.findById(order.getId());
-
-        assertThat(orderDTO.getId()).isNotNull();
-        assertThat(orderDTO.getDeliveryDate()).isEqualTo(order.getDeliveryDate());
-        assertThat(orderDTO.getPurchaseDate()).isEqualTo(order.getPurchaseDate());
-
-    }
-
-    @Test
-    @DisplayName("findById Order not found")
-    public void findByIdOrder_NotFound() {
-        Order order = OrderBuilder.getOrder();
-
-        when(this.repository.findById(anyLong())).thenReturn(Optional.empty());
-
-        assertThatExceptionOfType(ObjectNotFoundException.class)
-                .isThrownBy(() -> this.orderService.findById(order.getId()));
-    }
-
-    @Test
-    @DisplayName("Delete order")
-    public void deleteOrder() {
-        Order order = OrderBuilder.getOrder();
-
-        when(this.repository.findById(anyLong())).thenReturn(Optional.of(order));
-
-        this.orderService.deleteById(1L);
-
-        verify(this.repository, times(1)).deleteById(1L);
-    }
-
-    @Test
-    @DisplayName("Delete order not found")
-    public void deleteOrder_NotFound() {
-        when(this.repository.findById(anyLong())).thenReturn(Optional.empty());
-
-        assertThatExceptionOfType(ObjectNotFoundException.class)
-                .isThrownBy(() -> this.orderService.deleteById(1L));
-    }
-}
-=======
 //    @Test
 //    @DisplayName("List all orders")
 //    public void listOrders() {
@@ -236,4 +169,3 @@
 //    }
 //}
 
->>>>>>> a619e47e734eaa2b3cf18a322b562d7ae3b30baa

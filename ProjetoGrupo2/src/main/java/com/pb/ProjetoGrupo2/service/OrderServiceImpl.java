@@ -43,15 +43,20 @@ public class OrderServiceImpl implements OrderService {
 
         Optional<User> optionalUser = userRepository.findById(orderFormDTO.getUserId());
 
-        if (optionalUser.isPresent() && optionalUser.get().getStatus().equals(UserStatus.ACTIVE)){
-            User user = optionalUser.get();
-            Order order = new Order(LocalDateTime.now(), user);
-            orderRepository.save(order);
-            user.getOrders().add(order);
-            userRepository.save(user);
-            return modelMapper.map(order, OrderDTO.class);
+        if (optionalUser.isPresent()){
+            if(optionalUser.get().getStatus().equals(UserStatus.ACTIVE)){
+                User user = optionalUser.get();
+                Order order = new Order(LocalDateTime.now(), user);
+                orderRepository.save(order);
+                user.getOrders().add(order);
+                userRepository.save(user);
+                return modelMapper.map(order, OrderDTO.class);
+            }else{
+                throw new RuntimeException("User status is INACTIVE");
+            }
+        }else {
+            throw new RuntimeException("User not found!");
         }
-        return null;
     }
 
     @Override
@@ -63,52 +68,17 @@ public class OrderServiceImpl implements OrderService {
         Optional<Product> optionalProduct = productRepository.findById(orderedProductFormDTO.getProductId());
 
         if (optionalUser.isPresent() && optionalOrder.isPresent() && optionalProduct.isPresent()){
-
             Order order = optionalOrder.get();
             Product product = optionalProduct.get();
-
-<<<<<<< HEAD
-            String idOrder = order.get().getId().toString();
-            return String.format("Order %s deleted with success!", idOrder);
-        }
-        throw new ObjectNotFoundException("Order not found!");
-    }
-
-
-    private Order createOrder(OrderFormDto orderFormDto, Order order) throws Exception {
-        Double TotalValue = (double) 0;
-
-        for(int i = 0; i < order.getProducts().size(); i++ ){
-            Optional<Product> optionalProduct = this.productRepository.findById(orderFormDto.getProducts().get(i).getProductId());
-
-            if(optionalProduct.isPresent()){
-                Product product = optionalProduct.get();
-                if(product.getQuantity() < orderFormDto.getProducts().get(i).getQuantity())throw new Exception("Insufficient quantity in stock");
-
-                order.getProducts().get(i).setName(product.getName());
-                order.getProducts().get(i).setUnitPrice(product.getUnitPrice());
-                order.getProducts().get(i).setType(product.getType());
-                order.getProducts().get(i).setQuantity(orderFormDto.getProducts().get(i).getQuantity());
-
-                product.setQuantity(product.getQuantity() - orderFormDto.getProducts().get(i).getQuantity());
-                this.productRepository.save(product);
-
-                TotalValue += order.getProducts().get(i).getUnitPrice() * order.getProducts().get(i).getQuantity();
-
-            }else{
-                throw new Exception("Product not found!");
-            }
-
-=======
             OrderedProduct orderedProduct = null;
             int minusQuantity = 0;
 
             if(order.getStatus().equals(OrderStatus.WITHDRAWN) || order.getStatus().equals(OrderStatus.NOT_WITHDRAWN)){
-                return null;
+                throw new RuntimeException("Order is closed, so you can't edit");
             }
 
             if(product.getQuantity() < orderedProductFormDTO.getOrderedQuantity()){
-                return null;
+                throw new RuntimeException("Product quantity in stock is insufficient");
             }
 
             for (int i = 0; i < orderedProductFormDTO.getOrderedQuantity(); i++) {
@@ -123,9 +93,9 @@ public class OrderServiceImpl implements OrderService {
             product.setQuantity(product.getQuantity() - minusQuantity);
             productRepository.save(product);
             return modelMapper.map(orderedProduct, OrderedProductDTO.class);
->>>>>>> a619e47e734eaa2b3cf18a322b562d7ae3b30baa
+        }else {
+            throw new RuntimeException("No content");
         }
-        return  null;
     }
 
     @Override
@@ -142,7 +112,7 @@ public class OrderServiceImpl implements OrderService {
         if (optionalOrder.isPresent()){
             return modelMapper.map(optionalOrder.get(), OrderDTO.class);
         }
-        throw new ObjectNotFoundException("Order not found!");
+        return null;
     }
 
     @Override
@@ -199,8 +169,11 @@ public class OrderServiceImpl implements OrderService {
         Optional<Order> optionalOrder = orderRepository.findById(orderId);
         Optional<OrderedProduct> optionalOrderedProduct = orderedProductRepository.findById(orderedId);
 
-        if(optionalOrder.isPresent() && optionalOrderedProduct.isPresent() &&
-                optionalOrder.get().getStatus().equals(OrderStatus.OPEN)){
+        if(optionalOrder.isPresent() && optionalOrderedProduct.isPresent()){
+
+            if (!optionalOrder.get().getStatus().equals(OrderStatus.OPEN)){
+                throw new RuntimeException("Order is closed, so you can't edit");
+            }
 
             OrderedProduct orderedProduct = optionalOrderedProduct.get();
             Product product = optionalOrderedProduct.get().getProduct();
@@ -213,7 +186,10 @@ public class OrderServiceImpl implements OrderService {
             productRepository.save(product);
 
             return "1x produto: " + orderedProduct.getName() + " foi retirado do seu pedido: " + order.getId();
+
+        }else {
+            throw new RuntimeException("No Content");
         }
-        return null;
+
     }
 }

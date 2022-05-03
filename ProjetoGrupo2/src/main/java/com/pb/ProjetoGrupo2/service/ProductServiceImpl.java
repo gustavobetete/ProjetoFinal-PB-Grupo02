@@ -80,16 +80,6 @@ public class ProductServiceImpl implements ProductService{
         return null;
     }
 
-<<<<<<< HEAD
-
-    public String deleteById(Long id) {
-        Optional<Product> product = productRepository.findById(id);
-        if(product.isPresent()){
-            productRepository.deleteById(id);
-
-            String nameProduct = product.get().getName();
-            return String.format("Product %s deleted with success!", nameProduct);
-=======
     @Override
     public ProductDTO putProductInStock(Long id, UpdateProductStockFormDTO updateProductStockFormDTO) {
         Optional<Product> optionalProduct = productRepository.findById(id);
@@ -101,7 +91,6 @@ public class ProductServiceImpl implements ProductService{
             }
             productRepository.save(product);
             return modelMapper.map(product, ProductDTO.class);
->>>>>>> a619e47e734eaa2b3cf18a322b562d7ae3b30baa
         }
         return null;
     }

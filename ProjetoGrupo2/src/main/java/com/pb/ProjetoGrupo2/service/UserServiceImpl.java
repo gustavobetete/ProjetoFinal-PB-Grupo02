@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -35,7 +36,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO postUser(UserFormDTO userFormDto) {
-        User user = userRepository.save(modelMapper.map(userFormDto, User.class));
+        User user = new User();
+        user.setName(userFormDto.getName());
+        user.setEmail(userFormDto.getEmail());
+        user.setPassword(new BCryptPasswordEncoder().encode(userFormDto.getPassword()));
+        userRepository.save(user);
         return modelMapper.map(user, UserDTO.class);
     }
 
@@ -66,47 +71,7 @@ public class UserServiceImpl implements UserService {
             userRepository.save(updatedUser);
             return modelMapper.map(updatedUser, UserDTO.class);
         }
-<<<<<<< HEAD
-        throw new ObjectNotFoundException("User not found!");
-    }
-
-    @Override
-    public String deleteById(Long id) {
-        Optional<User> user = userRepository.findById(id);
-        if(user.isPresent()){
-            userRepository.deleteById(id);
-
-            String idUser = user.get().getId().toString();
-            return String.format("User %s deleted with success", idUser);
-        }
-        throw new ObjectNotFoundException("User not found!");
-    }
-
-    @Override
-    public List<OrderDto> listAllOrders(Long id){
-        List<Order> orders = orderRepository.findByUserId(id);
-        List<OrderDto> orderDto = orders.stream().map(i -> modelMapper.map(i, OrderDto.class)).collect(Collectors.toList());
-        return orderDto;
-    }
-
-    public String removeProductOrder(Long productId, Long orderId) {
-
-        Optional<Product> product = productRepository.findById(productId);
-        Optional<Order> order = orderRepository.findById(orderId);
-
-        if(product.isPresent() && order.isPresent()){
-            order.get().getProducts().remove(product.get());
-            orderRepository.save(order.get());
-
-            String idProduct = product.get().getId().toString();
-            String idOrder = order.get().getId().toString();
-
-            return String.format("Product %s removed from order %s with success", idProduct, idOrder);
-        }
-        throw new ObjectNotFoundException("Product or Order not found!");
-=======
         return null;
->>>>>>> a619e47e734eaa2b3cf18a322b562d7ae3b30baa
     }
 }
 

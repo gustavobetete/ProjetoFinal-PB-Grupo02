@@ -48,11 +48,11 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/user").permitAll()
                 .antMatchers(HttpMethod.GET,"/product").permitAll()
                 .antMatchers(HttpMethod.GET,"/product/*").permitAll()
                 .antMatchers(HttpMethod.POST,"/auth").permitAll()
                 .antMatchers(HttpMethod.GET,"/actuator/**").permitAll()
-                .antMatchers(HttpMethod.POST,"/users").permitAll()
                 .anyRequest().authenticated()
                 .and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -64,12 +64,8 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web)throws Exception {
 
     }
-        public static void main(String[] args){
-<<<<<<< HEAD
-            System.out.println(new BCryptPasswordEncoder().encode("adm123"));
-=======
-            System.out.println(new BCryptPasswordEncoder().encode("teste"));
->>>>>>> a619e47e734eaa2b3cf18a322b562d7ae3b30baa
-        }
+//        public static void main(String[] args){
+//            System.out.println(new BCryptPasswordEncoder().encode("teste"));
+//        }
 
 }
