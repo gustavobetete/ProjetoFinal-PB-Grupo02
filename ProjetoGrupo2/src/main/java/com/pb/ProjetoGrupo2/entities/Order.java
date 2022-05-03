@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity(name = "orders")
@@ -21,12 +22,12 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    private LocalDateTime purchaseDate;
+    private LocalDate purchaseDate;
     private BigDecimal totalPrice = new BigDecimal(0);
     @Enumerated(EnumType.STRING)
     private OrderStatus status = OrderStatus.OPEN;
 
-    public Order(LocalDateTime localDate, User user){
+    public Order(LocalDate localDate, User user){
         this.purchaseDate = localDate;
         this.user = user;
     }

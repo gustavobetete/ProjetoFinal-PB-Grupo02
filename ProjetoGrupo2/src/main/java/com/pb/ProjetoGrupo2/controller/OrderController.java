@@ -45,6 +45,12 @@ public class OrderController {
         }
     }
 
+    @PostMapping("/report")
+    public ResponseEntity<DailyReportDTO> generateDailyReport(){
+        DailyReportDTO dailyReport = orderService.generateDailyReport();
+        return ResponseEntity.status(HttpStatus.CREATED).body(dailyReport);
+    }
+
     @GetMapping
     public Page<OrderDTO> getAllOrders
             (@PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
@@ -76,6 +82,13 @@ public class OrderController {
              @PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
         Page<OrderForUserDTO> userOrders = orderService.getUserOrders(userId, pageable);
         return userOrders;
+    }
+
+    @GetMapping("/report")
+    public Page<DailyReportDTO> getAllDailyReports
+            (@PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
+        Page<DailyReportDTO> dailyReports = orderService.getAllDailyReports(pageable);
+        return dailyReports;
     }
 
     @PutMapping("/{orderId}")

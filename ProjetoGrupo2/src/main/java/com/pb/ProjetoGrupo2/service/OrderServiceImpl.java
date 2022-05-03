@@ -1,17 +1,10 @@
 package com.pb.ProjetoGrupo2.service;
 
-import com.pb.ProjetoGrupo2.config.validation.ObjectNotFoundException;
 import com.pb.ProjetoGrupo2.constants.OrderStatus;
 import com.pb.ProjetoGrupo2.constants.UserStatus;
 import com.pb.ProjetoGrupo2.dto.*;
-import com.pb.ProjetoGrupo2.entities.Order;
-import com.pb.ProjetoGrupo2.entities.OrderedProduct;
-import com.pb.ProjetoGrupo2.entities.Product;
-import com.pb.ProjetoGrupo2.entities.User;
-import com.pb.ProjetoGrupo2.repository.OrderRepository;
-import com.pb.ProjetoGrupo2.repository.OrderedProductRepository;
-import com.pb.ProjetoGrupo2.repository.ProductRepository;
-import com.pb.ProjetoGrupo2.repository.UserRepository;
+import com.pb.ProjetoGrupo2.entities.*;
+import com.pb.ProjetoGrupo2.repository.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +12,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -36,6 +30,8 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderedProductRepository orderedProductRepository;
     @Autowired
+    private DailyReportRepository dailyReportRepository;
+    @Autowired
     private ModelMapper modelMapper;
 
     @Override
@@ -46,7 +42,7 @@ public class OrderServiceImpl implements OrderService {
         if (optionalUser.isPresent()){
             if(optionalUser.get().getStatus().equals(UserStatus.ACTIVE)){
                 User user = optionalUser.get();
-                Order order = new Order(LocalDateTime.now(), user);
+                Order order = new Order(LocalDate.now(), user);
                 orderRepository.save(order);
                 user.getOrders().add(order);
                 userRepository.save(user);
@@ -99,6 +95,30 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public DailyReportDTO generateDailyReport() {
+        List<Order> orderList = orderRepository.findByPurchaseDate(LocalDate.now());
+        DailyReport dailyReport = new DailyReport();
+        for (int i = 0; i < orderList.size(); i++) {
+
+            if (orderList.get(i).getStatus().equals(OrderStatus.OPEN)) {
+                orderList.get(i).setStatus(OrderStatus.NOT_WITHDRAWN);
+                List<OrderedProduct> orderedProducts = orderedProductRepository.findByOrderId(orderList.get(i).getId());
+                for (int j = 0; j < orderedProducts.size(); j++) {
+                    Product product = orderedProducts.get(j).getProduct();
+                    product.setQuantity(product.getQuantity() + 1);
+                    productRepository.save(product);
+                }
+            }
+            if (orderList.get(i).getStatus().equals(OrderStatus.WITHDRAWN)) {
+                System.out.println(orderList.get(i).getTotalPrice());
+                dailyReport.setTotalAmountSold(dailyReport.getTotalAmountSold().add(orderList.get(i).getTotalPrice()));
+            }
+        }
+        dailyReportRepository.save(dailyReport);
+        return modelMapper.map(dailyReport, DailyReportDTO.class);
+    }
+
+    @Override
     public Page<OrderDTO> getAllOrders(Pageable pageable) {
         Page<Order> orders = orderRepository.findAll(pageable);
         List<OrderDTO> orderDTOList =
@@ -143,6 +163,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Page<DailyReportDTO> getAllDailyReports(Pageable pageable) {
+        Page<DailyReport> dailyReports = dailyReportRepository.findAll(pageable);
+        List<DailyReportDTO> dailyReportDTOList =
+                dailyReports.stream().map(d ->
+                        modelMapper.map(d, DailyReportDTO.class)).collect(Collectors.toList());
+        return new PageImpl<>(dailyReportDTOList, pageable, dailyReportDTOList.size());
+    }
+
+    @Override
     public OrderDTO putOrderStatus(Long orderId, OrderStatusUpdateFormDTO statusUpdateFormDTO) {
         Optional<Order> optionalOrder = orderRepository.findById(orderId);
 
@@ -158,8 +187,8 @@ public class OrderServiceImpl implements OrderService {
                     product.setQuantity(product.getQuantity() + 1);
                     productRepository.save(product);
                 }
-                return modelMapper.map(order, OrderDTO.class);
             }
+            return modelMapper.map(order, OrderDTO.class);
         }
         return null;
     }

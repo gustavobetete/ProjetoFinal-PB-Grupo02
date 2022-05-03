@@ -1,7 +1,6 @@
 package com.pb.ProjetoGrupo2.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.pb.ProjetoGrupo2.constants.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,13 +11,11 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class OrderDTO {
+public class DailyReportDTO {
 
     private Long id;
+    private BigDecimal totalAmountSold;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR")
-    private LocalDate localDate;
-    private UserOrderDTO user;
-    private BigDecimal totalPrice;
-    private OrderStatus status;
+    private LocalDate generateDate;
 
 }
