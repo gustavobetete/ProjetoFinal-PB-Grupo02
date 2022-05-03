@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+<<<<<<< HEAD
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
@@ -11,4 +12,7 @@
   <component name="ProjectType">
     <option name="id" value="jpab" />
   </component>
+=======
+  <component name="ProjectRootManager" version="2" project-jdk-name="17" project-jdk-type="JavaSDK" />
+>>>>>>> a619e47e734eaa2b3cf18a322b562d7ae3b30baa
 </project>

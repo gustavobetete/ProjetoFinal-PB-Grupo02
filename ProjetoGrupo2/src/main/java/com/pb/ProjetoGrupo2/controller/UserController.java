@@ -12,65 +12,46 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
-    private UserService service;
+    private UserService userService;
 
-    @GetMapping
-    public ResponseEntity<Page<UserDto>> findAll(@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable page) {
-        Page<UserDto> users = this.service.findAll(page);
-        return ResponseEntity.ok(users);
+    @PostMapping
+    public ResponseEntity<UserDTO> postUser(@RequestBody @Valid UserFormDTO userFormDto) {
+        UserDTO user = userService.postUser(userFormDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    }
+
+    @GetMapping()
+    public Page<UserDTO> getAllUsers
+            (@PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
+        Page<UserDTO> users = userService.getAllUsers(pageable);
+        return users;
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> findById(@PathVariable Long id) {
-        UserDto user = this.service.findById(id);
-        return ResponseEntity.ok(user);
-    }
-
-    @PostMapping
-    public ResponseEntity<UserDto> save(@RequestBody @Valid UserFormDto userFormDto) {
-        UserDto userDto = this.service.save(userFormDto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(userDto);
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
+        UserDTO user = userService.getUserById(id);
+        if(user != null){
+            return ResponseEntity.ok(user);
+        }
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDto> update(@PathVariable Long id, @RequestBody @Valid UserFormDto userFormDto) {
-        UserDto userDto = this.service.update(id, userFormDto);
-        return ResponseEntity.ok(userDto);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteById(@PathVariable Long id) {
-        String response = this.service.deleteById(id);
-        return ResponseEntity.ok().body(response);
-    }
-
-    @GetMapping("/{id}/orders")
-    public ResponseEntity<List<OrderDto>> listAllOrders(@PathVariable Long id){
-        List<OrderDto> orderDto = service.listAllOrders(id);
-
-        if(orderDto.isEmpty()){
-            return ResponseEntity.noContent().build();
-        }else {
-            return ResponseEntity.ok().body(orderDto);
+    public ResponseEntity<UserDTO> putUser
+            (@PathVariable Long id,
+             @RequestBody @Valid UpdatedUserFormDTO updatedUserFormDTO) {
+        UserDTO user = userService.putUser(id, updatedUserFormDTO);
+        if (user != null) {
+            return ResponseEntity.ok(user);
         }
-    }
-
-
-    @DeleteMapping("/orders/{orderId}/product/{productId}")
-    @Transactional
-    public ResponseEntity<String> removeProductOrder(@PathVariable Long productId, @PathVariable Long orderId){
-
-        String response = this.service.removeProductOrder(productId, orderId);
-        return ResponseEntity.ok().body(response);
+        return ResponseEntity.noContent().build();
     }
 }

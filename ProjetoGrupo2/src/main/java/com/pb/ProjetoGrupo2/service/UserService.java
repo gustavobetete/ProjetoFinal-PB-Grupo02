@@ -1,27 +1,19 @@
 package com.pb.ProjetoGrupo2.service;
 
-import com.pb.ProjetoGrupo2.dto.OrderDto;
-import com.pb.ProjetoGrupo2.dto.ProductOrderFormDto;
-import com.pb.ProjetoGrupo2.dto.UserDto;
-import com.pb.ProjetoGrupo2.dto.UserFormDto;
+import com.pb.ProjetoGrupo2.dto.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 public interface UserService {
-    Page<UserDto> findAll(Pageable page);
 
-    UserDto findById(Long id);
+    UserDTO getUserById(Long id);
 
-    UserDto save(UserFormDto userFormDto);
+    UserDTO postUser(UserFormDTO userFormDto);
 
-    UserDto update(Long id, UserFormDto userFormDto);
+    UserDTO putUser(Long id, UpdatedUserFormDTO updatedUserFormDTO);
 
-    String deleteById(Long id);
+    Page<UserDTO> getAllUsers(Pageable pageable);
 
-    List<OrderDto> listAllOrders(Long id);
-
-    String removeProductOrder(Long productId, Long orderId);
 }

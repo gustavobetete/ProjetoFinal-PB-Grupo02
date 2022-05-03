@@ -2,8 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/.idea/ProjetoFinal-PB-Grupo02.iml" filepath="$PROJECT_DIR$/.idea/ProjetoFinal-PB-Grupo02.iml" />
       <module fileurl="file://$PROJECT_DIR$/ProjetoGrupo2/ProjetoGrupo2.iml" filepath="$PROJECT_DIR$/ProjetoGrupo2/ProjetoGrupo2.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/.idea/codigo.iml" filepath="$PROJECT_DIR$/.idea/codigo.iml" />
+>>>>>>> a619e47e734eaa2b3cf18a322b562d7ae3b30baa
     </modules>
   </component>
 </project>

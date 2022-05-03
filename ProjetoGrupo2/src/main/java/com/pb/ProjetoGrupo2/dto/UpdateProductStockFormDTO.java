@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class TokenDTO {
-    private String token;
-    private String type;
+public class UpdateProductStockFormDTO {
+
+    private int quantity;
+
 }
