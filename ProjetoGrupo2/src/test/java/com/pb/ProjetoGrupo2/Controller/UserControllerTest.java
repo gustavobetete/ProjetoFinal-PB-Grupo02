@@ -1,4 +1,4 @@
-package com.pb.ProjetoGrupo2.Controller;
+package com.pb.ProjetoGrupo2.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pb.ProjetoGrupo2.builder.UserBuilder;

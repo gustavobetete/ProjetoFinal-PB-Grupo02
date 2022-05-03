@@ -29,12 +29,13 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping
-    public ResponseEntity<OrderDTO> postOrder(@RequestBody OrderFormDTO orderFormDTO){
-        OrderDTO order = orderService.postOrder(orderFormDTO);
-        if (order != null){
+    public ResponseEntity<Object> postOrder(@RequestBody OrderFormDTO orderFormDTO){
+        try {
+            OrderDTO order = orderService.postOrder(orderFormDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(order);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/{orderId}/user/{userId}")
@@ -43,13 +44,19 @@ public class OrderController {
              @PathVariable Long orderId,
              @RequestBody OrderedProductFormDTO orderedProductFormDTO){
 
-        OrderedProductDTO orderedProduct =
-                orderService.postProductIntoOrder(userId, orderId, orderedProductFormDTO);
-
-        if (orderedProduct != null){
+        try {
+            OrderedProductDTO orderedProduct =
+                    orderService.postProductIntoOrder(userId, orderId, orderedProductFormDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(orderedProduct);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/report")
+    public ResponseEntity<DailyReportDTO> generateDailyReport(){
+        DailyReportDTO dailyReport = orderService.generateDailyReport();
+        return ResponseEntity.status(HttpStatus.CREATED).body(dailyReport);
     }
 
     @GetMapping
@@ -63,7 +70,10 @@ public class OrderController {
     @GetMapping("/{id}")
     public ResponseEntity<OrderDTO> getOrderById(@PathVariable Long id){
         OrderDTO order = orderService.getOrderById(id);
-        return ResponseEntity.ok(order);
+        if (order != null){
+            return ResponseEntity.ok(order);
+        }
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{orderId}/product")
@@ -84,6 +94,13 @@ public class OrderController {
 
     }
 
+    @GetMapping("/report")
+    public Page<DailyReportDTO> getAllDailyReports
+            (@PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable pageable){
+        Page<DailyReportDTO> dailyReports = orderService.getAllDailyReports(pageable);
+        return dailyReports;
+    }
+
     @PutMapping("/{orderId}")
     public ResponseEntity<OrderDTO> putOrderStatus
             (@PathVariable Long orderId, @RequestBody OrderStatusUpdateFormDTO statusUpdateFormDTO){
@@ -100,12 +117,11 @@ public class OrderController {
             (@PathVariable Long orderId,
              @PathVariable Long orderedId){
 
-        String response = orderService.deleteProductFromUserOrder(orderId, orderedId);
-
-        if (response != null){
+        try {
+            String response = orderService.deleteProductFromUserOrder(orderId, orderedId);
             return ResponseEntity.ok().body(response);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-        return ResponseEntity.noContent().build();
     }
-
 }

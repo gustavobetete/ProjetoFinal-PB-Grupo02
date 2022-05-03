@@ -7,9 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
-
-import static java.time.ZonedDateTime.now;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,8 +15,8 @@ import static java.time.ZonedDateTime.now;
 public class OrderDTO {
 
     private Long id;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy HH:mm:ss", locale = "pt-BR")
-    private LocalDateTime localDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR")
+    private LocalDate localDate;
     private UserOrderDTO user;
     private BigDecimal totalPrice;
     private OrderStatus status;

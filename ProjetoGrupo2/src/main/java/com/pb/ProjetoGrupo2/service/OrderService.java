@@ -23,4 +23,8 @@ public interface OrderService {
     String deleteProductFromUserOrder(Long orderId, Long orderedId);
 
     OrderDTO getOrderById(Long id);
+
+    DailyReportDTO generateDailyReport();
+
+    Page<DailyReportDTO> getAllDailyReports(Pageable pageable);
 }
