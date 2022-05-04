@@ -2,6 +2,7 @@
 //
 //import com.fasterxml.jackson.databind.ObjectMapper;
 //import com.pb.ProjetoGrupo2.builder.ProductBuilder;
+//import com.pb.ProjetoGrupo2.dto.ProductDTO;
 //import com.pb.ProjetoGrupo2.dto.ProductDto;
 //import com.pb.ProjetoGrupo2.dto.ProductFormDto;
 //import com.pb.ProjetoGrupo2.entities.Product;
@@ -53,7 +54,7 @@
 //    void postProduct() throws Exception{
 //
 //        Product product = ProductBuilder.getProductTwo();
-//        ProductDto productDto = ProductBuilder.getProductDtoTwo();
+//        ProductDTO productDto = ProductBuilder.getProductDtoTwo();
 //
 //        when(productService.save(any())).thenReturn(productDto);
 //
@@ -126,7 +127,7 @@
 //                .andDo(print());
 //
 //    }
-
+//
 //    @Test
 //    void deleteProduct() throws Exception{
 //
@@ -136,5 +137,5 @@
 //        mockMvc.perform(delete("/product/1")).andExpect(status().isOk()).andDo(print());
 //
 //    }
-
-
+//
+//

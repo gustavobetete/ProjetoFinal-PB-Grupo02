@@ -1,51 +1,54 @@
-//package com.pb.ProjetoGrupo2.builder;
-//
-//import com.pb.ProjetoGrupo2.dto.OrderDto;
-//import com.pb.ProjetoGrupo2.dto.OrderFormDto;
-//import com.pb.ProjetoGrupo2.entities.Order;
-//
-//import java.time.LocalDateTime;
-//import java.util.Arrays;
-//
-//public class OrderBuilder {
-//
-//    public static Order getOrder() {
-//        Order order = new Order();
-//        order.setId(1L);
-//        order.setQuantity(1);
-//        order.setPurchaseDate(LocalDateTime.parse("2022-04-26T12:00:00"));
-//        order.setDeliveryDate(LocalDateTime.parse("2022-04-26T22:00:00"));
-//        order.setUser(UserBuilder.getUser());
-//        order.setProducts(ProductBuilder.getProducts());
-//        return order;
-//    }
+package com.pb.ProjetoGrupo2.builder;
 
-//    public static OrderDto getOrderDto() {
-//        OrderDto orderDto = new OrderDto();
-//        orderDto.setId(1L);
-//        orderDto.setPurchaseDate(LocalDateTime.parse("2022-04-26T12:00:00"));
-//        orderDto.setDeliveryDate(LocalDateTime.parse("2022-04-26T22:00:00"));
-//        orderDto.setIdUser(UserBuilder.getUser().getId());
-//        orderDto.setProducts(ProductBuilder.getProducts());
-//        return orderDto;
-//    }
-//
-//    public static OrderDto getOrderDtoTwo() {
-//        OrderDto orderDtoTwo = new OrderDto();
-//        orderDtoTwo.setId(2L);
-//        orderDtoTwo.setPurchaseDate(LocalDateTime.parse("2022-04-26T12:00:00"));
-//        orderDtoTwo.setDeliveryDate(LocalDateTime.parse("2022-04-26T22:00:00"));
-//        orderDtoTwo.setIdUser(UserBuilder.getUser().getId());
-//        orderDtoTwo.setProducts(ProductBuilder.getProducts());
-//        return orderDtoTwo;
-//    }
+import com.pb.ProjetoGrupo2.constants.OrderStatus;
+import com.pb.ProjetoGrupo2.dto.OrderDTO;
+import com.pb.ProjetoGrupo2.dto.OrderFormDTO;
+import com.pb.ProjetoGrupo2.dto.OrderStatusUpdateFormDTO;
+import com.pb.ProjetoGrupo2.entities.Order;
 
-//    public static OrderFormDto getOrderFormDto() {
-//        OrderFormDto orderFormDto = new OrderFormDto();
-//        orderFormDto.setIdUser(UserBuilder.getUser().getId());
-//        orderFormDto.setProducts(Arrays.asList(ProductBuilder.getProductOrderFormDto()));
-//
-//        return orderFormDto;
-//    }
-//}
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
+public class OrderBuilder {
+
+    public static Order getOrder(){
+        Order order = new Order();
+        order.setId(1L);
+        order.setUser(UserBuilder.getUser());
+        order.setPurchaseDate(LocalDate.now());
+        order.setTotalPrice(new BigDecimal(7));
+        return order;
+    }
+
+    public static OrderDTO getOrderDTO() {
+        OrderDTO orderDTO = new OrderDTO();
+        orderDTO.setId(1L);
+        orderDTO.setLocalDate(LocalDate.now());
+        orderDTO.setTotalPrice(new BigDecimal(7));
+        orderDTO.setStatus(OrderStatus.OPEN);
+        return orderDTO;
+    }
+
+    public static OrderDTO getOrderDTOTwo() {
+        OrderDTO orderDTOTwo = new OrderDTO();
+        orderDTOTwo.setId(2L);
+        orderDTOTwo.setLocalDate(LocalDate.now());
+        orderDTOTwo.setTotalPrice(new BigDecimal(7));
+        orderDTOTwo.setStatus(OrderStatus.OPEN);
+        return orderDTOTwo;
+    }
+
+    public static OrderFormDTO getOrderFormDTO() {
+        OrderFormDTO orderFormDTO = new OrderFormDTO();
+        orderFormDTO.setUserId(2L);
+        return orderFormDTO;
+    }
+
+    public static OrderStatusUpdateFormDTO getOrderStatusUpdateFormDTO() {
+        OrderStatusUpdateFormDTO orderStatusUpdateFormDTO = new OrderStatusUpdateFormDTO();
+        orderStatusUpdateFormDTO.setStatus(OrderStatus.OPEN);
+        return orderStatusUpdateFormDTO;
+    }
+}
 
