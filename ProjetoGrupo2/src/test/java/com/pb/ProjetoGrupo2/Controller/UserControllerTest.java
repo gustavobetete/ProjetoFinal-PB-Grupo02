@@ -1,7 +1,8 @@
-package com.pb.ProjetoGrupo2.controller;
+package com.pb.ProjetoGrupo2.Controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pb.ProjetoGrupo2.builder.UserBuilder;
+import com.pb.ProjetoGrupo2.dto.UpdatedUserFormDTO;
 import com.pb.ProjetoGrupo2.dto.UserDTO;
 import com.pb.ProjetoGrupo2.entities.User;
 import com.pb.ProjetoGrupo2.service.UserService;
@@ -43,7 +44,7 @@ public class UserControllerTest {
     private ModelMapper modelMapper;
 
     @Test
-    void postUser_ShouldReturn_OK() throws Exception {
+    void postUser_ShouldReturn_SUCCESS() throws Exception {
 
         User user = UserBuilder.getUser();
         UserDTO userDto = UserBuilder.getUserDto();
@@ -60,7 +61,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void getUsers_ShouldReturn_OK() throws Exception {
+    void getAllUsers_ShouldReturn_SUCCESS() throws Exception {
 
         List<UserDTO> userDTOList = new ArrayList<>(
                 Arrays.asList(UserBuilder.getUserDto(), UserBuilder.getUserDtoTwo())
@@ -82,53 +83,41 @@ public class UserControllerTest {
 
     }
 
-//    @Test
-//    void getUserById() throws Exception {
-//
-//        User user = UserBuilder.getUser();
-//        UserDto userDto = UserBuilder.getUserDto();
-//
-//        when(userService.findById(user.getId())).thenReturn(userDto);
-//
-//        long id = 1;
-//
-//        mockMvc.perform(get("/users/{id}", id))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.name").value(userDto.getName()))
-//                .andDo(print());
-//    }
-//
-//    @Test
-//    void updateUser() throws Exception {
-//
-//        User user = UserBuilder.getUser();
-//        UserFormDto userFormDto = UserBuilder.getUserFormDto();
-//        UserDto userDto = UserBuilder.getUserDto();
-//
-//        user.setName("Novo usuário");
-//        userFormDto.setName("Novo usuário");
-//        userDto.setName("Novo usuário");
-//
-//        when(userService.update(anyLong(), any(UserFormDto.class))).thenReturn(userDto);
-//
-//        mockMvc.perform(put("/users/1")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(userFormDto)))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.name").value(userFormDto.getName()))
-//                .andDo(print());
-//    }
-//
-//
-//    @Test
-//    void deleteUser() throws Exception {
-//
-//        User user = UserBuilder.getUser();
-//
-//        when(userService.deleteById(user.getId())).thenReturn(ResponseEntity.ok().build());
-//        mockMvc.perform(delete("/users/1")).andExpect(status().isOk()).andDo(print());
-//
-//    }
-}
+    @Test
+    void getUserById_ShouldReturn_SUCCESS() throws Exception {
 
+        User user = UserBuilder.getUser();
+        UserDTO userDto = UserBuilder.getUserDto();
+
+        when(userService.getUserById(user.getId())).thenReturn(userDto);
+
+        long id = 1;
+
+        mockMvc.perform(get("/user/{id}", id))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value(userDto.getName()))
+                .andDo(print());
+    }
+
+    @Test
+    void putUser_ShouldReturn_SUCCESS() throws Exception {
+
+        User user = UserBuilder.getUser();
+        UpdatedUserFormDTO updatedUserFormDTO = UserBuilder.getUpdatedUserFormDTO();
+        UserDTO userDto = UserBuilder.getUserDto();
+
+        user.setName("Novo usuário");
+        updatedUserFormDTO.setName("Novo usuário");
+        userDto.setName("Novo usuário");
+
+        when(userService.putUser(anyLong(), any(UpdatedUserFormDTO.class))).thenReturn(userDto);
+
+        mockMvc.perform(put("/user/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updatedUserFormDTO)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value(updatedUserFormDTO.getName()))
+                .andDo(print());
+    }
+}
 

@@ -77,6 +77,14 @@ public class ProductBuilder {
         return updatedProductFormDTO;
     }
 
+    public static UpdatedProductFormDTO getUpdatedProductFormDTOTwo() {
+        UpdatedProductFormDTO updatedProductFormDTO = new UpdatedProductFormDTO();
+        updatedProductFormDTO.setName("Fanta");
+        updatedProductFormDTO.setType(Type.BEBIDA);
+        updatedProductFormDTO.setUnityPrice(new BigDecimal(4));
+        return updatedProductFormDTO;
+    }
+
     public static UpdateProductStockFormDTO getUpdateProductStockFormDTO() {
         UpdateProductStockFormDTO updateProductStockFormDTO = new UpdateProductStockFormDTO();
         updateProductStockFormDTO.setQuantity(12);
