@@ -21,6 +21,6 @@ public enum OrderStatus {
                 return status;
             }
         }
-        return null;
+        throw new RuntimeException("invalid option, you can use Withdrawn and Not_withdrawn");
     }
 }
