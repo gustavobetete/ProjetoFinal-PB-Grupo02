@@ -1,11 +1,13 @@
 package com.pb.ProjetoGrupo2.services;
 
 import com.pb.ProjetoGrupo2.builder.OrderBuilder;
+import com.pb.ProjetoGrupo2.builder.UserBuilder;
 import com.pb.ProjetoGrupo2.config.validation.ObjectNotFoundException;
 import com.pb.ProjetoGrupo2.dto.OrderDTO;
 import com.pb.ProjetoGrupo2.dto.OrderFormDTO;
 import com.pb.ProjetoGrupo2.dto.OrderStatusUpdateFormDTO;
 import com.pb.ProjetoGrupo2.entities.Order;
+import com.pb.ProjetoGrupo2.entities.User;
 import com.pb.ProjetoGrupo2.repository.OrderRepository;
 import com.pb.ProjetoGrupo2.repository.ProductRepository;
 import com.pb.ProjetoGrupo2.repository.UserRepository;
@@ -62,13 +64,15 @@ public class OrderServiceTest {
     @DisplayName("Save order")
     public void postOrder() {
         Order order = OrderBuilder.getOrder();
+        User user = UserBuilder.getUser();
+        order.setUser(user);
 
         when(this.orderRepository.save(any(Order.class))).thenReturn(order);
 
         assertThat(order.getId()).isEqualTo(1L);
         assertThat(order.getUser().getId()).isEqualTo(1L);
         assertThat(order.getPurchaseDate()).isEqualTo(LocalDate.now());
-        assertThat(order.getTotalPrice()).isEqualTo(new BigDecimal(7));
+        assertThat(order.getTotalPrice()).isEqualTo(new BigDecimal(15));
 
     }
 

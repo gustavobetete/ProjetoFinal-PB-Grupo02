@@ -60,12 +60,13 @@ public class ProductServiceTest {
 //    @DisplayName("List all product")
 //    public void listProducts() {
 //        Product product = ProductBuilder.getProduct();
+//        Product productTwo = ProductBuilder.getProductTwo();
 //
 //        PageRequest pageRequest = PageRequest.of(0, 10);
-//        List<ProductDTO> products = new ArrayList<>(Arrays.asList(ProductBuilder.getProductDto()));
-//        Page<ProductDTO> page = new PageImpl<>(products, pageRequest, products.size());
+//        List<Product> products = new ArrayList<>(Arrays.asList(product, productTwo));
+//        Page<Product> page = new PageImpl<>(products, pageRequest, products.size());
 //
-//        when(this.repository.findAll(any(PageRequest.class))).thenReturn();
+//        when(this.repository.findAll(any(), any(PageRequest.class))).thenReturn(page);
 //
 //        Page<ProductDTO> pageProductDTO = this.productService.getAllProducts(Type.ASSADO.name(), pageRequest);
 //
