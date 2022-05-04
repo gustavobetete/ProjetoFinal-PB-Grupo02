@@ -16,7 +16,7 @@ public class ProductBuilder {
         product.setId(1L);
         product.setName("Coxinha");
         product.setType(Type.FRITO);
-        product.setUnityPrice(new BigDecimal(7.00));
+        product.setUnityPrice(new BigDecimal(5));
         product.setQuantity(10);
         return product;
     }
@@ -26,7 +26,7 @@ public class ProductBuilder {
         productDto.setId(1L);
         productDto.setName("Coxinha");
         productDto.setType(Type.FRITO);
-        productDto.setUnityPrice(new BigDecimal(7.00));
+        productDto.setUnityPrice(new BigDecimal(5));
         productDto.setQuantity(10);
         return productDto;
     }
@@ -36,7 +36,7 @@ public class ProductBuilder {
         productDtoTwo.setId(2L);
         productDtoTwo.setName("Calabresa");
         productDtoTwo.setType(Type.ASSADO);
-        productDtoTwo.setUnityPrice(new BigDecimal(5.00));
+        productDtoTwo.setUnityPrice(new BigDecimal(5));
         productDtoTwo.setQuantity(12);
         return productDtoTwo;
     }
@@ -45,7 +45,7 @@ public class ProductBuilder {
         ProductFormDTO productFormDto = new ProductFormDTO();
         productFormDto.setName("Coxinha");
         productFormDto.setType(Type.FRITO);
-        productFormDto.setUnityPrice(new BigDecimal(7.00));
+        productFormDto.setUnityPrice(new BigDecimal(5));
         productFormDto.setQuantity(10);
         return productFormDto;
     }
@@ -55,12 +55,21 @@ public class ProductBuilder {
         product.setId(2L);
         product.setName("Calabresa");
         product.setType(Type.ASSADO);
-        product.setUnityPrice(new BigDecimal(5.00));
+        product.setUnityPrice(new BigDecimal(5));
         product.setQuantity(12);
         return product;
     }
 
-    public static UpdatedProductFormDTO getUpdatedProductFormDTO(){
+
+    public static UpdatedProductFormDTO getUpdatedProductFormDTO() {
+        UpdatedProductFormDTO updatedProductFormDTO = new UpdatedProductFormDTO();
+        updatedProductFormDTO.setName("Calabresa");
+        updatedProductFormDTO.setType(Type.ASSADO);
+        updatedProductFormDTO.setUnityPrice(new BigDecimal(5));
+        return updatedProductFormDTO;
+    }
+
+    public static UpdatedProductFormDTO getUpdatedProductFormDTOTwo() {
         UpdatedProductFormDTO updatedProductFormDTO = new UpdatedProductFormDTO();
         updatedProductFormDTO.setName("Fanta");
         updatedProductFormDTO.setType(Type.BEBIDA);
@@ -68,9 +77,10 @@ public class ProductBuilder {
         return updatedProductFormDTO;
     }
 
-    public static UpdateProductStockFormDTO getUpdateProductStockFormDTO(){
+
+    public static UpdateProductStockFormDTO getUpdateProductStockFormDTO() {
         UpdateProductStockFormDTO updateProductStockFormDTO = new UpdateProductStockFormDTO();
-        updateProductStockFormDTO.setQuantity(10);
+        updateProductStockFormDTO.setQuantity(12);
         return updateProductStockFormDTO;
     }
 }

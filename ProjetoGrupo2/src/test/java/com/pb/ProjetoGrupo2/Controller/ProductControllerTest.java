@@ -2,7 +2,6 @@ package com.pb.ProjetoGrupo2.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pb.ProjetoGrupo2.builder.ProductBuilder;
-import com.pb.ProjetoGrupo2.constants.Type;
 import com.pb.ProjetoGrupo2.dto.ProductDTO;
 import com.pb.ProjetoGrupo2.dto.UpdateProductStockFormDTO;
 import com.pb.ProjetoGrupo2.dto.UpdatedProductFormDTO;
@@ -110,7 +109,7 @@ class ProductControllerTest {
     void putProduct_ShouldReturn_SUCCESS() throws Exception{
 
         Product product = ProductBuilder.getProduct();
-        UpdatedProductFormDTO updatedProductFormDTO = ProductBuilder.getUpdatedProductFormDTO();
+        UpdatedProductFormDTO updatedProductFormDTO = ProductBuilder.getUpdatedProductFormDTOTwo();
         ProductDTO productDto = ProductBuilder.getProductDto();
 
         product.setName("Fanta");
@@ -145,5 +144,4 @@ class ProductControllerTest {
                 .andDo(print());
     }
 }
-
 

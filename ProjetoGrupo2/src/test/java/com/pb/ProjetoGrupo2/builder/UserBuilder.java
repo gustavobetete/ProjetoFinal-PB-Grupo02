@@ -3,6 +3,7 @@ package com.pb.ProjetoGrupo2.builder;
 import com.pb.ProjetoGrupo2.constants.UserStatus;
 import com.pb.ProjetoGrupo2.dto.UpdatedUserFormDTO;
 import com.pb.ProjetoGrupo2.dto.UserDTO;
+import com.pb.ProjetoGrupo2.dto.UserFormDTO;
 import com.pb.ProjetoGrupo2.dto.UserOrderDTO;
 import com.pb.ProjetoGrupo2.entities.User;
 
@@ -17,6 +18,14 @@ public class UserBuilder {
         user.setEmail("aluno@fatec.sp.gov.br");
         user.setPassword("aluno");
         return user;
+    }
+
+    public static UserFormDTO getUserFormDTO(){
+        UserFormDTO userFormDTO = new UserFormDTO();
+        userFormDTO.setName("Aluno");
+        userFormDTO.setEmail("aluno@fatec.sp.gov.br");
+        userFormDTO.setPassword("aluno");
+        return userFormDTO;
     }
 
     public static UserDTO getUserDto() {
@@ -50,4 +59,6 @@ public class UserBuilder {
         userOrderDTO.setName("Aluno");
         return userOrderDTO;
     }
+
+
 }

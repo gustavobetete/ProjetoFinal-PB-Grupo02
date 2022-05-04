@@ -8,10 +8,43 @@ import com.pb.ProjetoGrupo2.dto.OrderedProductFormDTO;
 import com.pb.ProjetoGrupo2.entities.DailyReport;
 import com.pb.ProjetoGrupo2.entities.Order;
 
+
+import com.pb.ProjetoGrupo2.dto.*;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class OrderBuilder {
+
+    public static OrderDTO getOrderDTO() {
+        OrderDTO orderDTO = new OrderDTO();
+        orderDTO.setId(1L);
+        orderDTO.setPurchaseDate(LocalDate.now());
+        orderDTO.setTotalPrice(new BigDecimal(7));
+        orderDTO.setStatus(OrderStatus.OPEN);
+        return orderDTO;
+    }
+
+    public static OrderDTO getOrderDTOTwo() {
+        OrderDTO orderDTOTwo = new OrderDTO();
+        orderDTOTwo.setId(2L);
+        orderDTOTwo.setPurchaseDate(LocalDate.now());
+        orderDTOTwo.setTotalPrice(new BigDecimal(7));
+        orderDTOTwo.setStatus(OrderStatus.OPEN);
+        return orderDTOTwo;
+    }
+
+    public static OrderFormDTO getOrderFormDTO() {
+        OrderFormDTO orderFormDTO = new OrderFormDTO();
+        orderFormDTO.setUserId(2L);
+        return orderFormDTO;
+    }
+
+    public static OrderStatusUpdateFormDTO getOrderStatusUpdateFormDTO() {
+        OrderStatusUpdateFormDTO orderStatusUpdateFormDTO = new OrderStatusUpdateFormDTO();
+        orderStatusUpdateFormDTO.setStatus(OrderStatus.OPEN);
+        return orderStatusUpdateFormDTO;
+    }
 
     public static Order getOrder() {
         Order order = new Order();
@@ -79,23 +112,5 @@ public class OrderBuilder {
         dailyReportDTO.setTotalAmountSold(new BigDecimal(100));
         return dailyReportDTO;
     }
-//
-//    public static OrderDto getOrderDtoTwo() {
-//        OrderDto orderDtoTwo = new OrderDto();
-//        orderDtoTwo.setId(2L);
-//        orderDtoTwo.setPurchaseDate(LocalDateTime.parse("2022-04-26T12:00:00"));
-//        orderDtoTwo.setDeliveryDate(LocalDateTime.parse("2022-04-26T22:00:00"));
-//        orderDtoTwo.setIdUser(UserBuilder.getUser().getId());
-//        orderDtoTwo.setProducts(ProductBuilder.getProducts());
-//        return orderDtoTwo;
-//    }
-
-//    public static OrderFormDto getOrderFormDto() {
-//        OrderFormDto orderFormDto = new OrderFormDto();
-//        orderFormDto.setIdUser(UserBuilder.getUser().getId());
-//        orderFormDto.setProducts(Arrays.asList(ProductBuilder.getProductOrderFormDto()));
-//
-//        return orderFormDto;
-//    }
 }
 

@@ -89,9 +89,9 @@ class OrderControllerTest {
                 .thenReturn(orderedProductDTO);
 
         mockMvc.perform(post("/order/{orderId}/user/{userId}", order.getId(), user.getId())
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(orderedProductFormDTO)))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(orderedProductFormDTO)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name").value("Coxinha"))
                 .andDo(print());
@@ -176,5 +176,4 @@ class OrderControllerTest {
 //                .andExpect(jsonPath("$.products").value(orderFormDto.getProducts()))
 //                .andDo(print());
 //    }
-
 }
