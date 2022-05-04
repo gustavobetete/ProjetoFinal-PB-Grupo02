@@ -2,11 +2,12 @@ package com.pb.ProjetoGrupo2.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pb.ProjetoGrupo2.builder.OrderBuilder;
+import com.pb.ProjetoGrupo2.builder.ProductBuilder;
 import com.pb.ProjetoGrupo2.builder.UserBuilder;
+import com.pb.ProjetoGrupo2.constants.OrderStatus;
 import com.pb.ProjetoGrupo2.dto.*;
-import com.pb.ProjetoGrupo2.entities.DailyReport;
-import com.pb.ProjetoGrupo2.entities.Order;
-import com.pb.ProjetoGrupo2.entities.User;
+import com.pb.ProjetoGrupo2.entities.*;
+import com.pb.ProjetoGrupo2.repository.DailyReportRepository;
 import com.pb.ProjetoGrupo2.repository.OrderRepository;
 import com.pb.ProjetoGrupo2.service.OrderService;
 import org.aspectj.weaver.ast.Or;
@@ -19,6 +20,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -31,8 +33,7 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -81,8 +82,8 @@ class OrderControllerTest {
 
         Order order = OrderBuilder.getOrder();
         User user = UserBuilder.getUser();
-        OrderedProductFormDTO orderedProductFormDTO = OrderBuilder.getOrderedProductFormDTO();
-        OrderedProductDTO orderedProductDTO = OrderBuilder.getOrderedProductDTO();
+        OrderedProductFormDTO orderedProductFormDTO = ProductBuilder.getOrderedProductFormDTO();
+        OrderedProductDTO orderedProductDTO = ProductBuilder.getOrderedProductDTO();
 
         when(orderService
                 .postProductIntoOrder(anyLong(), anyLong(), any(OrderedProductFormDTO.class)))
@@ -155,25 +156,116 @@ class OrderControllerTest {
                 .andDo(print());
 
     }
-//
-//    @Test
-//    void updateOrder() throws Exception{
-//
-//        Order order = OrderBuilder.getOrder();
-//        OrderFormDto orderFormDto = OrderBuilder.getOrderFormDto();
-//        OrderDto orderDto = OrderBuilder.getOrderDto();
-//
-//        order.setQuantity(10);
-//        orderFormDto.setIdUser(1L);
-//        orderDto.setDeliveryDate(LocalDateTime.parse("2022-04-26T22:00:00"));
-//
-//        when(orderService.update(anyLong(), any(OrderFormDto.class))).thenReturn(orderDto);
-//
-//        mockMvc.perform(put("/order/1")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(orderFormDto)))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.products").value(orderFormDto.getProducts()))
-//                .andDo(print());
-//    }
+
+    @Test
+    void getOrderProduct_ShouldReturn_SUCCESS() throws Exception{
+
+
+        Product product = ProductBuilder.getProduct();
+        Product productTwo = ProductBuilder.getProductTwo();
+
+        OrderedProductDTO orderedProductDTO = ProductBuilder.getOrderedProductDTO();
+        OrderedProductDTO orderedProductDTOTwo = ProductBuilder.getOrderedProductDTOTwo();
+
+
+        List<OrderedProductDTO> orderedProductDTOList =
+                new ArrayList<>(Arrays.asList(orderedProductDTO, orderedProductDTOTwo));
+
+        PageRequest pageRequest = PageRequest.of(0, 5);
+
+        Page<OrderedProductDTO> orderedProductDTOPage =
+                new PageImpl<>(orderedProductDTOList, pageRequest, orderedProductDTOList.size());
+
+        when(orderService.getOrderProduct(anyLong(), any(Pageable.class))).thenReturn(orderedProductDTOPage);
+
+        mockMvc.perform(get("/order/1/product")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content.[0].name").value(product.getName()))
+                .andExpect(jsonPath("$.content.[1].name").value(productTwo.getName()))
+                .andDo(print());
+    }
+
+    @Test
+    void getUserOrder_ShouldReturn_SUCCESS() throws Exception{
+
+        OrderForUserDTO orderForUserDTO = OrderBuilder.getOrderForUserDTO();
+        OrderForUserDTO orderForUserDTOTwo = OrderBuilder.getOrderForUserDTOTwo();
+
+        Order order = OrderBuilder.getOrder();
+        Order orderTwo = OrderBuilder.getOrderTwo();
+
+
+        List<OrderForUserDTO> orderForUserDTOList =
+                new ArrayList<>(Arrays.asList(orderForUserDTO, orderForUserDTOTwo));
+
+        PageRequest pageRequest = PageRequest.of(0, 5);
+
+        Page<OrderForUserDTO> orderedProductDTOPage =
+                new PageImpl<>(orderForUserDTOList, pageRequest, orderForUserDTOList.size());
+
+        when(orderService.getUserOrders(anyLong(), any(Pageable.class))).thenReturn(orderedProductDTOPage);
+
+        mockMvc.perform(get("/order/user/1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content.[0].id").value(order.getId()))
+                .andExpect(jsonPath("$.content.[1].id").value(orderTwo.getId()))
+                .andDo(print());
+    }
+
+    @Test
+    void getAllDailyReports_ShouldReturn_SUCCESS() throws Exception{
+
+        DailyReport dailyReport = OrderBuilder.getDailyReport();
+        DailyReportDTO dailyReportDTO = OrderBuilder.getDailyReportDTO();
+        DailyReport dailyReportTwo = OrderBuilder.getDailyReportTwo();
+        DailyReportDTO dailyReportDTOTwo = OrderBuilder.getDailyReportDTOTwo();
+
+        List<DailyReportDTO> dailyReportDTOList =
+                new ArrayList<>(Arrays.asList(dailyReportDTO, dailyReportDTOTwo));
+
+        PageRequest pageRequest = PageRequest.of(0, 5);
+
+        Page<DailyReportDTO> dailyReportDTOPage =
+                new PageImpl<>(dailyReportDTOList, pageRequest, dailyReportDTOList.size());
+
+        when(orderService.getAllDailyReports(any(Pageable.class))).thenReturn(dailyReportDTOPage);
+
+        mockMvc.perform(get("/order/report")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content.[0].id").value(dailyReport.getId()))
+                .andExpect(jsonPath("$.content.[1].id").value(dailyReportTwo.getId()))
+                .andDo(print());
+    }
+
+    @Test
+    void putOrderStatus_ShouldReturn_SUCCESS() throws Exception{
+
+        OrderDTO orderDTO = OrderBuilder.getOrderDto();
+        OrderStatusUpdateFormDTO orderStatusUpdateFormDTO = OrderBuilder.getOrderStatusUpdateFormDTO();
+        orderDTO.setStatus(OrderStatus.WITHDRAWN);
+
+        when(orderService.putOrderStatus(anyLong(), any(OrderStatusUpdateFormDTO.class))).thenReturn(orderDTO);
+
+        mockMvc.perform(put("/order/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(orderStatusUpdateFormDTO)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.status").value(orderDTO.getStatus().name()))
+                .andDo(print());
+    }
+
+    @Test
+    void deleteProductFromUserOrder_ShouldReturn_SUCCESS() throws Exception{
+
+        String response = "SUCCESS";
+
+        when(orderService.deleteProductFromUserOrder(anyLong(), anyLong())).thenReturn(response);
+
+        mockMvc.perform(delete("/order/1/ordered/1"))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
 }

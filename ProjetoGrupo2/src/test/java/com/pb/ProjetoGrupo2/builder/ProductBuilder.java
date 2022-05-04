@@ -1,10 +1,8 @@
 package com.pb.ProjetoGrupo2.builder;
 
 import com.pb.ProjetoGrupo2.constants.Type;
-import com.pb.ProjetoGrupo2.dto.ProductDTO;
-import com.pb.ProjetoGrupo2.dto.ProductFormDTO;
-import com.pb.ProjetoGrupo2.dto.UpdateProductStockFormDTO;
-import com.pb.ProjetoGrupo2.dto.UpdatedProductFormDTO;
+import com.pb.ProjetoGrupo2.dto.*;
+import com.pb.ProjetoGrupo2.entities.OrderedProduct;
 import com.pb.ProjetoGrupo2.entities.Product;
 
 import java.math.BigDecimal;
@@ -82,5 +80,55 @@ public class ProductBuilder {
         UpdateProductStockFormDTO updateProductStockFormDTO = new UpdateProductStockFormDTO();
         updateProductStockFormDTO.setQuantity(12);
         return updateProductStockFormDTO;
+    }
+
+    public static OrderedProduct getOrderedProduct(){
+        OrderedProduct orderedProduct = new OrderedProduct();
+        orderedProduct.setId(1L);
+        orderedProduct.setName("Coxinha");
+        orderedProduct.setType(Type.FRITO);
+        orderedProduct.setOrderedQuantity(10);
+        orderedProduct.setUnityPrice(new BigDecimal(5));
+        return orderedProduct;
+    }
+
+    public static OrderedProduct getOrderedProductTwo(){
+        OrderedProduct orderedProductTwo = new OrderedProduct();
+        orderedProductTwo.setId(2L);
+        orderedProductTwo.setName("Calabresa");
+        orderedProductTwo.setType(Type.ASSADO);
+        orderedProductTwo.setOrderedQuantity(10);
+        orderedProductTwo.setUnityPrice(new BigDecimal(5));
+        return orderedProductTwo;
+    }
+
+    public static OrderedProductFormDTO getOrderedProductFormDTO(){
+        OrderedProductFormDTO orderedProductFormDTO = new OrderedProductFormDTO();
+        orderedProductFormDTO.setProductId(1L);
+        orderedProductFormDTO.setOrderedQuantity(10);
+        return orderedProductFormDTO;
+    }
+
+    public static OrderedProductFormDTO getOrderedProductFormDTOTwo(){
+        OrderedProductFormDTO orderedProductFormDTOTwo = new OrderedProductFormDTO();
+        orderedProductFormDTOTwo.setProductId(2L);
+        orderedProductFormDTOTwo.setOrderedQuantity(10);
+        return orderedProductFormDTOTwo;
+    }
+
+    public static OrderedProductDTO getOrderedProductDTO(){
+        OrderedProductDTO orderedProductDTO = new OrderedProductDTO();
+        orderedProductDTO.setId(1L);
+        orderedProductDTO.setName("Coxinha");
+        orderedProductDTO.setUnityPrice(new BigDecimal(5));
+        return orderedProductDTO;
+    }
+
+    public static OrderedProductDTO getOrderedProductDTOTwo(){
+        OrderedProductDTO orderedProductDTOTwo = new OrderedProductDTO();
+        orderedProductDTOTwo.setId(2L);
+        orderedProductDTOTwo.setName("Calabresa");
+        orderedProductDTOTwo.setUnityPrice(new BigDecimal(5));
+        return orderedProductDTOTwo;
     }
 }

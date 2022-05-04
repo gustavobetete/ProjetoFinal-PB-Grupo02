@@ -104,7 +104,7 @@ public class UserServiceTest {
         User user = UserBuilder.getUser();
         UpdatedUserFormDTO updatedUserFormDTO = UserBuilder.getUpdatedUserFormDTO();
         UserFormDTO userFormDTO = UserBuilder.getUserFormDTO();
-        userFormDTO.setName("Aluno");
+        userFormDTO.setName("Aluno Atualizado");
 
         when(this.repository.findById(anyLong())).thenReturn(Optional.of(user));
         when(this.repository.save(any(User.class))).thenReturn(user);

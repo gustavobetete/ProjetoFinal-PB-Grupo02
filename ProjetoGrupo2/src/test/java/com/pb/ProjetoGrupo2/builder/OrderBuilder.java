@@ -10,6 +10,7 @@ import com.pb.ProjetoGrupo2.entities.Order;
 
 
 import com.pb.ProjetoGrupo2.dto.*;
+import com.pb.ProjetoGrupo2.entities.OrderedProduct;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -82,21 +83,6 @@ public class OrderBuilder {
         return orderDtoTwo;
     }
 
-    public static OrderedProductFormDTO getOrderedProductFormDTO(){
-        OrderedProductFormDTO orderedProductFormDTO = new OrderedProductFormDTO();
-        orderedProductFormDTO.setProductId(1L);
-        orderedProductFormDTO.setOrderedQuantity(10);
-        return orderedProductFormDTO;
-    }
-
-    public static OrderedProductDTO getOrderedProductDTO(){
-        OrderedProductDTO orderedProductDTO = new OrderedProductDTO();
-        orderedProductDTO.setId(1L);
-        orderedProductDTO.setName("Coxinha");
-        orderedProductDTO.setUnityPrice(new BigDecimal(7));
-        return orderedProductDTO;
-    }
-
     public static DailyReport getDailyReport(){
         DailyReport dailyReport = new DailyReport();
         dailyReport.setId(1L);
@@ -112,5 +98,40 @@ public class OrderBuilder {
         dailyReportDTO.setTotalAmountSold(new BigDecimal(100));
         return dailyReportDTO;
     }
+
+    public static DailyReport getDailyReportTwo(){
+        DailyReport dailyReportTwo = new DailyReport();
+        dailyReportTwo.setId(2L);
+        dailyReportTwo.setGenerateDate(LocalDate.now());
+        dailyReportTwo.setTotalAmountSold(new BigDecimal(150));
+        return dailyReportTwo;
+    }
+
+    public static DailyReportDTO getDailyReportDTOTwo(){
+        DailyReportDTO dailyReportDTOTwo = new DailyReportDTO();
+        dailyReportDTOTwo.setId(2L);
+        dailyReportDTOTwo.setGenerateDate(LocalDate.now());
+        dailyReportDTOTwo.setTotalAmountSold(new BigDecimal(150));
+        return dailyReportDTOTwo;
+    }
+
+    public static OrderForUserDTO getOrderForUserDTO(){
+        OrderForUserDTO orderForUserDTO = new OrderForUserDTO();
+        orderForUserDTO.setId(1L);
+        orderForUserDTO.setPurchaseDate(LocalDate.now());
+        orderForUserDTO.setTotalPrice(new BigDecimal(15));
+        orderForUserDTO.setStatus(OrderStatus.OPEN);
+        return orderForUserDTO;
+    }
+
+    public static OrderForUserDTO getOrderForUserDTOTwo(){
+        OrderForUserDTO orderForUserDTOTwo = new OrderForUserDTO();
+        orderForUserDTOTwo.setId(2L);
+        orderForUserDTOTwo.setPurchaseDate(LocalDate.now());
+        orderForUserDTOTwo.setTotalPrice(new BigDecimal(17));
+        orderForUserDTOTwo.setStatus(OrderStatus.OPEN);
+        return orderForUserDTOTwo;
+    }
+
 }
 
