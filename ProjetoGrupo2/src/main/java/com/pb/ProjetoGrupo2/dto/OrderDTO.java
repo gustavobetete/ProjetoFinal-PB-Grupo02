@@ -16,9 +16,8 @@ public class OrderDTO {
 
     private Long id;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR")
-    private LocalDate localDate;
+    private LocalDate purchaseDate;
     private UserOrderDTO user;
     private BigDecimal totalPrice;
     private OrderStatus status;
-
 }

@@ -1,8 +1,9 @@
 package com.pb.ProjetoGrupo2.builder;
 
 import com.pb.ProjetoGrupo2.constants.UserStatus;
+import com.pb.ProjetoGrupo2.dto.UpdatedUserFormDTO;
 import com.pb.ProjetoGrupo2.dto.UserDTO;
-import com.pb.ProjetoGrupo2.dto.UserFormDTO;
+import com.pb.ProjetoGrupo2.dto.UserOrderDTO;
 import com.pb.ProjetoGrupo2.entities.User;
 
 public class UserBuilder {
@@ -36,13 +37,17 @@ public class UserBuilder {
         return userDtoTwo;
     }
 
-    public static UserFormDTO getUserFormDTO() {
-        UserFormDTO userFormDto = new UserFormDTO();
-        userFormDto.setName("Aluno");
-        userFormDto.setEmail("aluno@fatec.sp.gov.br");
-        userFormDto.setPassword("aluno");
-        return userFormDto;
+    public static UpdatedUserFormDTO getUpdatedUserFormDTO(){
+        UpdatedUserFormDTO updatedUserFormDTO = new UpdatedUserFormDTO();
+        updatedUserFormDTO.setName("Aluno Atualizado");
+        updatedUserFormDTO.setStatus(UserStatus.ACTIVE);
+        return updatedUserFormDTO;
     }
 
-
+    public static UserOrderDTO getUserOrderDTO(){
+        UserOrderDTO userOrderDTO = new UserOrderDTO();
+        userOrderDTO.setId(1L);
+        userOrderDTO.setName("Aluno");
+        return userOrderDTO;
+    }
 }
