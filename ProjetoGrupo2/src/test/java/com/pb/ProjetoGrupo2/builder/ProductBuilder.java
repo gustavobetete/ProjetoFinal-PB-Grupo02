@@ -1,26 +1,26 @@
-//package com.pb.ProjetoGrupo2.builder;
-//
-//import com.pb.ProjetoGrupo2.constants.Type;
-//import com.pb.ProjetoGrupo2.dto.ProductDto;
-//import com.pb.ProjetoGrupo2.dto.ProductFormDto;
-//import com.pb.ProjetoGrupo2.dto.ProductOrderFormDto;
-//import com.pb.ProjetoGrupo2.entities.Product;
-//
-//import java.math.BigDecimal;
-//import java.util.ArrayList;
-//import java.util.List;
-//
-//public class ProductBuilder {
-//
-//    public static Product getProduct() {
-//        Product product = new Product();
-//        product.setId(1L);
-//        product.setName("Coxinha");
-//        product.setType(Type.FRITO);
-//        product.setUnitPrice(Double.valueOf(7.00));
-//        product.setQuantity(10);
-//        return product;
-//    }
+package com.pb.ProjetoGrupo2.builder;
+
+import com.pb.ProjetoGrupo2.constants.Type;
+import com.pb.ProjetoGrupo2.entities.Product;
+import lombok.Data;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+public class ProductBuilder {
+
+    public static Product getProduct() {
+        Product product = new Product();
+        product.setId(1L);
+        product.setName("Coxinha");
+        product.setType(Type.FRITO);
+        product.setUnityPrice(new BigDecimal(7));
+        product.setQuantity(10);
+        return product;
+    }
+
+
 //
 //    public static List<Product> getProducts(){
 //        List<Product> products = new ArrayList<>();
@@ -40,15 +40,15 @@
 //        return productDto;
 //    }
 //
-//    public static ProductDto getProductDtoTwo() {
-//        ProductDto productDtoTwo = new ProductDto();
-//        productDtoTwo.setId(2L);
-//        productDtoTwo.setName("Calabresa");
-//        productDtoTwo.setType(Type.ASSADO);
-//        productDtoTwo.setUnitPrice(Double.valueOf(5.00));
-//        productDtoTwo.setQuantity(12);
-//        return productDtoTwo;
-//    }
+    public static Product getProductDtoTwo() {
+        Product productDtoTwo = new Product();
+        productDtoTwo.setId(2L);
+        productDtoTwo.setName("Calabresa");
+        productDtoTwo.setType(Type.ASSADO);
+        productDtoTwo.setUnityPrice(new BigDecimal(5.00));
+        productDtoTwo.setQuantity(12);
+        return productDtoTwo;
+    }
 //
 //    public static ProductFormDto getProductFormDto() {
 //        ProductFormDto productFormDto = new ProductFormDto();
@@ -74,4 +74,4 @@
 //        productOrderFormDto.setQuantity(getProduct().getQuantity());
 //        return productOrderFormDto;
 //    }
-//}
+}

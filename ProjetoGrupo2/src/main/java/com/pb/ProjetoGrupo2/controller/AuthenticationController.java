@@ -1,9 +1,8 @@
 package com.pb.ProjetoGrupo2.controller;
 
 import com.pb.ProjetoGrupo2.config.security.TokenService;
-import com.pb.ProjetoGrupo2.dto.LoginFormDto;
+import com.pb.ProjetoGrupo2.dto.LoginFormDTO;
 import com.pb.ProjetoGrupo2.dto.TokenDTO;
-import com.pb.ProjetoGrupo2.dto.TokenDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,14 +27,14 @@ public class AuthenticationController {
     private TokenService tokenService;
 
     @PostMapping
-    public ResponseEntity<TokenDto> autenticar(@RequestBody @Valid LoginFormDto loginFormDto) {
-        UsernamePasswordAuthenticationToken loginData = loginFormDto.converter();
+    public ResponseEntity<TokenDTO> autenticate(@RequestBody @Valid LoginFormDTO loginFormDto) {
+        UsernamePasswordAuthenticationToken loginData = loginFormDto.encrypt();
 
 
         try{
             Authentication authentication = authManager.authenticate(loginData);
             String token = tokenService.generateToken(authentication);
-            return ResponseEntity.ok(new TokenDto(token,"Bearer"));
+            return ResponseEntity.ok(new TokenDTO(token,"Bearer"));
         }catch (AuthenticationException e){
             return ResponseEntity.badRequest().build();
         }

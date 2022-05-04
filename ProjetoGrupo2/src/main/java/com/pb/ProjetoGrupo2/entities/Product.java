@@ -2,6 +2,7 @@ package com.pb.ProjetoGrupo2.entities;
 
 import com.pb.ProjetoGrupo2.constants.Type;
 import lombok.AllArgsConstructor;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
